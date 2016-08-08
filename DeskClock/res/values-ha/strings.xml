@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<string name="app_label">Agogo</string>
+<string name="alarm_list_title">Su kararrawa</string>
+<string name="add_alarm">Kara kararrawa</string>
+<string name="menu_desk_clock">Agogon Teburi</string>
+<string name="menu_edit_alarm">Gyara kararrawa</string>
+<string name="delete_alarm">Soke kararrawa</string>
+<string name="enable_alarm">Kunna kararrawa</string>
+<string name="disable_alarm">Kashe kararrawa</string>
+<string name="delete_alarm_confirm">"Share wannan kararrawar?"</string>
+<string name="show_clock">Nuna agogo</string>
+<string name="hide_clock">Boye Agogo</string>
+<string name="label">Kula</string>
+<string name="default_label">Kararrawa</string>
+<string name="set_alarm">Saita kararrawa</string>
+<string name="alarm_vibrate">Jijjiga</string>
+<string name="alarm_repeat">Maimaita</string>
+<string name="alert">"Kararrawar kiran waya"</string>
+<string name="ringtone">Sautin kira</string>
+<string name="time">Lokaci</string>
+<string name="alarm_tomorrow">gobe</string>
+<string name="alarm_today">"Yau"</string>
+<string name="alarm_alert_wake_up">"Farka\u0021"</string>
+<string name="alarm_alert_off_action_text">Kashe</string>
+<string name="alarm_alert_dismiss_text">Sallama</string>
+<string name="alarm_alert_dismiss_now_text">"Bar shi yanzu"</string>
+<string name="alarm_missed_title">"Tunin da aka rasa"</string>
+<string name="alarm_alert_snoozed_text">"Fadakarwa"</string>
+<plurals name="alarm_alert_snooze_duration">
+<item quantity="one">Minti 1</item>
+</plurals>
+<string name="alarm_alert_off_text">"Kararrawar a kashe"</string>
+<string name="alarm_alert_snooze_text">Maimaita kararrwa</string>
+<plurals name="alarm_alert_snooze_set">
+<item quantity="one">"Maimaicin ankararwa na minti 1"</item>
+<item quantity="other">Barci na mintuna <xliff:g id="minutes">%d</xliff:g>.</item>
+</plurals>
+<string name="alarm_alert_snooze_until">"A maimaita har <xliff:g id="time">%s</xliff:g>"</string>
+<string name="alarm_alert_predismiss_title">"Tuni mai zuwa"</string>
+<string name="missed_alarm_has_been_deleted">"Tunin da ka rasa an goge"</string>
+<string-array name="timer_notifications">
+<item>"Kasa da minti guda ya rage"</item>
+<item>"<xliff:g id="HOURS" example="2 hours">%1$s</xliff:g>ragowa"</item>
+<item>"<xliff:g id="MINUTES" example="2 minutes">%2$s</xliff:g> ragowa"</item>
+<item>"<xliff:g id="HOURS" example="2 hours">%1$s</xliff:g> <xliff:g id="MINUTES" example="2 minutes">%2$s</xliff:g> remaining"</item>
+</string-array>
+<string-array name="alarm_set">
+<item>An saita wannan kararrawa zuwa kasa da minti daya daga yanzu.</item>
+<item>Wannan kararrawa an saita ta don  <xliff:g id="DAYS">%1$s</xliff:g> daga yanzu.</item>
+<item>Wannan kararrawa an saita ta don <xliff:g id="HOURS">%2$s</xliff:g> daga yanzu.</item>
+<item>Wannan kararrawa an saita ta don<xliff:g id="DAYS">%1$s</xliff:g> <xliff:g id="HOURS">%2$s</xliff:g> daga yanzu.</item>
+<item>An saita wannan kararrawa don <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> daga yanzu.</item>
+<item>Wannan kararrawa an saita ta don <xliff:g id="DAYS">%1$s</xliff:g> <xliff:g id="MINUTES">%3$s</xliff:g> daga yanzu.</item>
+<item>Wannan kararrawa an saita ta don <xliff:g id="HOURS">%2$s</xliff:g> <xliff:g id="MINUTES">%3$s</xliff:g> daga yanzu.</item>
+<item>Wannan kararrawa an saita ta don <xliff:g id="DAYS" example="2 days">%1$s</xliff:g>, <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g>, da <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> daga yanzu.</item>
+</string-array>
+<string name="day">Rana 1</string>
+<string name="days">"<xliff:g id="days">%s</xliff:g> kwanaki"</string>
+<string name="hour">Awa 1</string>
+<string name="hours"><xliff:g id="hours">%s</xliff:g> awa</string>
+<string name="minute">Minti 1</string>
+<string name="minutes">"<xliff:g id="minutes">%s</xliff:g> mintuna"</string>
+<string name="every_day">kowace rana</string>
+<string name="never">Har abada</string>
+<string name="clock_instructions">Zabi agogo ka bijiro da shi.</string>
+<string name="analog_gadget">Agogo tsohon yayi</string>
+<string name="help">Taimako</string>
+<string name="settings">Saituna</string>
+<string name="snooze_duration_title">"Tsawon maimaicin ankararwa"</string>
+<plurals name="snooze_duration">
+<item quantity="one">Minti 1</item>
+<item quantity="other">"<xliff:g id="number" example="7">%d</xliff:g> mintoci"</item>
+</plurals>
+<plurals name="snooze_picker_label">
+<item quantity="one">minti</item>
+<item quantity="other">"mintuna"</item>
+</plurals>
+<string name="auto_silence_title">"Shiru a baya"</string>
+<string name="auto_silence_never">Har abada</string>
+<string-array name="auto_silence_entries">
+<item>Minti 1</item>
+<item>Minti 5</item>
+<item>Minti 10</item>
+<item>Minti 15</item>
+<item>Minti 20</item>
+<item>Minti 25</item>
+<item>Har abada</item>
+</string-array>
+<string name="done">An gama</string>
+<string name="revert">Koma</string>
+<string name="delete">Goge</string>
+<string name="alarm_volume_title">Karfin muryar kararawa</string>
+<string name="silent_alarm_summary">Shiru</string>
+<string name="alarm_notify_text">Zabi ka rufe sauti ko ka kashe alam.</string>
+<string name="alarm_notify_snooze_label"><xliff:g id="label">%s</xliff:g> (barci)</string>
+<string name="alarm_notify_snooze_text">An saita kararrawa ga <xliff:g id="time">%s</xliff:g>. Zabi don sokewa.</string>
+<string name="volume_button_setting_title">Masarrafin sauti da Kyamara</string>
+<string name="volume_button_dialog_title">Aikin botin</string>
+<string-array name="volume_button_setting_entries">
+<item>Maimaita kararrwa</item>
+<item>Sallama</item>
+<item>Kada ka yi komai</item>
+</string-array>
+<string name="default_ringtone_setting_title">Sanya sautin kira na dindindin</string>
+<string name="alarm_button_description">Su kararrawa</string>
+<string name="gallery_button_description">Gallery</string>
+<string name="music_button_description">Waka</string>
+<string name="nightmode_button_description">Yi dim</string>
+<string name="home_button_description">Mabudin-shiri</string>
+<string name="desk_clock_button_description">Nuna agogo</string>
+<string name="label_description">Kula</string>
+<string name="ringtone_description">Sautin kira</string>
+<string name="weather_fetch_failure">Babu bayanan yanayi yanzu.</string>
+<string name="alarm_klaxon_service_desc">An saita tariyar-baya na sauti don kararrawa a cikin AgogonTebur.</string>
+<string name="loading_ringtone">Ana loda sautin kira\u2026</string>
+<string name="timer_ring_service_desc">"Sake jin sauti ga Agogon da aka saita."</string>
+<string name="control_set_alarm">Saita kararrawa</string>
+<string name="menu_alarm">Kararrawa</string>
+<string name="menu_timer">Mai saita lokaci</string>
+<string name="menu_clock">Agogo</string>
+<string name="menu_stopwatch">Agogon tsaida lokaci</string>
+<string name="button_alarms">Kara kararrawa</string>
+<string name="button_cities">"Birane"</string>
+<string name="button_menu">Karin zabuka</string>
+<string name="menu_item_settings">Saituna</string>
+<string name="menu_item_help">Taimako</string>
+<string name="menu_item_night_mode">"Yanayin dare"</string>
+<string name="menu_item_sort_by_gmt_offset">Fayyace ta lokaci</string>
+<string name="menu_item_sort_by_name">Jere</string>
+<string name="selected_cities_label">"Zababbun birane"</string>
+<string name="sw_resume_button">Cigaba</string>
+<string name="sw_start_button">Fara</string>
+<string name="sw_stop_button">Dakata</string>
+<string name="sw_lap_button">Lap</string>
+<string name="sw_reset_button">Sake assasawa</string>
+<string name="sw_share_button">Raba</string>
+<string name="hours_label">H</string>
+<string name="minutes_label">M</string>
+<string name="seconds_label">"s"</string>
+<string name="hours_label_description">awoyi</string>
+<string name="minutes_label_description">"mintuna"</string>
+<string name="seconds_label_description">"dakikoki"</string>
+<string name="sw_share_main">"Lokacina shi ne<xliff:g id="time">%s</xliff:g>"</string>
+<string name="sw_share_laps">"Lokacin tafiya:"</string>
+<string name="sw_notification_lap_number">"Tafiya <xliff:g id="number">%d</xliff:g>"</string>
+<plurals name="Nhours_description">
+<item quantity="one">Awa 1</item>
+<item quantity="other">"<xliff:g id="number" example="7">%d</xliff:g> awanni"</item>
+</plurals>
+<plurals name="Nminutes_description">
+<item quantity="one">Minti 1</item>
+<item quantity="other">"<xliff:g id="number" example="7">%d</xliff:g> mintoci"</item>
+</plurals>
+<plurals name="Nseconds_description">
+<item quantity="one">\'\'Dakika 1\'\'</item>
+<item quantity="other">"<xliff:g id="number" example="7">%d</xliff:g>dakikoki"</item>
+</plurals>
+<string name="timer_add_timer">"Kara mai sa lokaci"</string>
+<string name="timer_start">Fara</string>
+<string name="timer_delete">Goge</string>
+<string name="timer_plus_one">"Kara minti 1"</string>
+<string name="timer_plus_1_min">"Kara minti 1"</string>
+<string name="timer_stop">Dakata</string>
+<string name="timer_done">An gama</string>
+<string name="timer_reset">Sake assasawa</string>
+<string name="timer_cancel">Soke</string>
+<string name="timer_times_up">"Lokaci ya cika"</string>
+<string name="timer_notification_label">Mai saita lokaci</string>
+<string name="timers_max_count_reached">"Iyaka ma\'aunin lokaci 4"</string>
+<string-array name="sw_share_strings">
+<item>"Akwai ka da gudun tsiya."</item>
+<item>"Ka ji dadin ladan kwadagonka."</item>
+<item>"An san Android da sauri, amma ba su kai ka ba!"</item>
+<item>"Wai."</item>
+<item>"Lokacin L33t."</item>
+<item>"Wannan irin sauri."</item>
+<item>"Mu sake nunka lokacin kuma."</item>
+<item>"Tsalle kawai zuwa hagu."</item>
+<item>"Kana da kashin hanzari."</item>
+<item>"Gudun hoto."</item>
+</string-array>
+<plurals name="timers_num">
+<item quantity="one">Minti 1</item>
+<item quantity="other">"<xliff:g id="number" example="7">%d</xliff:g>masu saita lokaci"</item>
+</plurals>
+<string name="home_label">Shafin farko</string>
+<string name="cities_activity_title">"Birane"</string>
+<string name="clock_settings">Agogo</string>
+<string name="clock_style">"Salo"</string>
+<string-array name="clock_style_entries">
+<item>"Tsarin Analog"</item>
+<item>"Tsarin Digital"</item>
+</string-array>
+<string name="automatic_home_clock">"Agogon gida Automatik"</string>
+<string name="automatic_home_clock_summary">"Yayin tafi a inda lokaci ya bambanta, ka kara Agogon gida"</string>
+<string name="home_time_zone">yankin lokaci na gida</string>
+<string name="home_time_zone_title">yankin lokaci na gida</string>
+<string name="time_picker_cancel">Soke</string>
+<string name="time_picker_set">OK</string>
+<string-array name="timezone_labels">
+        <item>"Marshall Islands"</item>
+        <item>"Midway Island"</item>
+        <item>"Hawaii"</item>
+        <item>Alaska</item>
+        <item>Lokacin Fasifik</item>
+        <item>"Tijuana"</item>
+        <item>Arizona</item>
+        <item>"Chihuahua"</item>
+        <item>Lokacin Tsauni</item>
+        <item>Amerika Ta tsakiya</item>
+        <item>Lokacin Tsakiya</item>
+        <item>"Mexico City"</item>
+        <item>"Saskatchewan"</item>
+        <item>"Bogota</item>
+        <item>Lokacin Gabashi</item>
+        <item>"Venezuela"</item>
+        <item>"Agogon Atlantic (Barbados)"</item>
+        <item>"Agogon Atlantic (Canada)"</item>
+        <item>"Manaus"</item>
+        <item>"Santiago"</item>
+        <item>"Newfoundland</item>
+        <item>"Brasilia"</item>
+        <item>"Buenos Aires"</item>
+        <item>Greenland</item>
+        <item>"Montevideo"</item>
+        <item>"Mid-Atlantic"</item>
+        <item>"Azores"</item>
+        <item>Tsibiran Cape Verde</item>
+        <item>Casablanca</item>
+        <item>"London, Dublin"</item>
+        <item>"Amsterdam, Berlin"</item>
+        <item>Belgrade</item>
+        <item>"Brussels"</item>
+        <item>"Sarayebo</item>
+        <item>"Windhoek"</item>
+        <item>"Windhoek"</item>
+        <item>Amman, Jordan"</item>
+        <item>"Athens, Istanbul</item>
+        <item>"Athens, Istanbul</item>
+        <item>"Beirut, Lebanon"</item>
+        <item>"Helsinki"</item>
+        <item>"Helsinki"</item>
+        <item>Kudus</item>
+        <item>Harare</item>
+        <item>Bagadaza</item>
+        <item>Bagadaza</item>
+        <item>Kuwait</item>
+        <item>Kuwait</item>
+        <item>Nairobi</item>
+        <item>"Baku"</item>
+        <item>"Baku"</item>
+        <item>Tbilisi</item>
+        <item>Dubai</item>
+        <item>Dubai</item>
+        <item>"Islamabad, Karachi"</item>
+        <item>"Islamabad, Karachi"</item>
+        <item>"Ural\'sk"</item>
+        <item>"Kolkata"</item>
+        <item>"Kolkata"</item>
+        <item>"Kathmandu"</item>
+        <item>"Astana"</item>
+        <item>"Astana"</item>
+        <item>"Krasnoyarsk"</item>
+        <item>"Bangkok</item>
+        <item>"Bangkok</item>
+        <item>"Hong Kong"</item>
+        <item>"Irkutsk</item>
+        <item>"Kuala Lumpur"</item>
+        <item>Perth</item>
+        <item>Taipei</item>
+        <item>Seoul</item>
+        <item>"Tokyo, Osaka"</item>
+        <item>"Yakutsk"</item>
+        <item>"Adelaide"</item>
+        <item>Darwin</item>
+        <item>"Brisbane"</item>
+        <item>"Hobart"</item>
+        <item>"Sydney, Canberra"</item>
+        <item>"Vladivostok"</item>
+        <item>Guam</item>
+        <item>Magadan</item>
+        <item>"Auckland"</item>
+        <item>Fiji</item>
+        <item>"Tonga"</item>
+        <item>"Jakarta"</item>
+    </string-array>
+<string name="alarm_settings">Su kararrawa</string>
+<string name="stopwatch_service_desc">"Tsai da agogo don kunna Tuni."</string>
+<string name="swn_stopped">"An tsayar"</string>
+<string name="description_direction_right">"Ja dama don kora"</string>
+<string name="description_direction_left">"Ja hagu don maimaicin ankararwa"</string>
+<string name="timer_stopped">"An tsaida mai saita lokaci"</string>
+<string name="timers_stopped">"<xliff:g id="number" example="7">%d</xliff:g> An tsaida masu saita lokaci"</string>
+<string name="all_timers_stopped_notif">"Taba ka ga masu saita lokacinka"</string>
+<string name="timers_in_use">"<xliff:g id="number" example="7">%d</xliff:g>masu saita lokaci"</string>
+<string name="next_timer_notif">"Mai saita lokaci na gaba: <xliff:g id="time_remaining" example="2 minutes remaining">%s</xliff:g>"</string>
+<string name="screensaver_settings">"Saitocin da ake fata"</string>
+<string name="night_mode_title">"Yanayin dare"</string>
+<string name="night_mode_summary">"Nunin da yake dushu-dushu(don dakuna masu duhu)"</string>
+<string name="expand_alarm">"Fadada kararrawa"</string>
+<string name="collapse_alarm">"Rusa kararrawa"</string>
+<string name="alarm_undo">Kwance</string>
+<string name="alarm_deleted">"Kararrawa an goge."</string>
+<string name="next_alarm_description">"Kararrawa na gaba: <xliff:g id="alarm_time" example="Wed 8:00am">%s</xliff:g>"</string>
+<string name="alarms_selected">"<xliff:g id="alarms">%d</xliff:g> an zaba"</string>
+<string name="deleted_message">an share</string>
+<plurals name="alarm_delete_confirmation">
+<item quantity="one">"Goge kararrawar da aka zaba?"</item>
+<item quantity="other">"Goge kararrawan da aka zaba?"</item>
+</plurals>
+<string name="timer_delete_confirmation">"Goge mai saita lokaci?"</string>
+<string name="city_delete_confirmation">"Cire wannan birnin?"</string>
+<string name="digital_gadget">"Agogon Digital"</string>
+<string name="no_alarms">"Ba kararrawa"</string>
+<string name="no_alarms_set">"Ba saita kararrawa"</string>
+<string name="no_upcoming_alarms">"BA KARARRAWA NAN GABA"</string>
+<string name="auto_silence_cancel">Soke</string>
+<string name="repeat_every_days">"kowace rana"</string>
+<string name="repeat_work_days">"ranekun aiki"</string>
+<string name="repeat_single">Har abada</string>
+<string name="repeat_dialog_done">OK</string>
+<string name="repeat_dialog_cancel">Soke</string>
+<string name="title_too_long">"Umurnin ya yi tsawo sosai."</string>
+<string name="alarm_label">Kula</string>
+<string name="pause">Tsaida</string>
+<string name="reorder_city">Canja tsari</string>
+<string name="delete_city">Goge</string>
+<string name="delete_alarm_cancel">Soke</string>
+<string name="delete_alarm_done">An gama</string>
+<string name="cancel_select">Soke duk</string>
+<string name="all_select">An karanta/Ba a karanta ba</string>
+
+<!-- Add for alarm clock hoslter -->
+    <string name="alarm_hoslter_slide_right_stop">slide dama tasha</string>
+</resources>

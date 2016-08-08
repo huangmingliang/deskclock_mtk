@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:gravity="center_horizontal"
+    android:layoutDirection="ltr"
+    android:background="@android:color/black"
+    android:orientation="vertical" >
+
+    <com.android.deskclock.HolsterCircleView
+        android:id="@+id/bg_content" 
+        android:layout_marginTop="15dp"
+        android:layout_width="@dimen/alarm_holster_bg_width"
+        android:layout_height="@dimen/alarm_holster_bg_height"/>
+    
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="@dimen/alarm_holster_bg_width"
+        android:layout_height="@dimen/alarm_holster_bg_height"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bg_alarm_holster"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="vertical" >
+
+        <TextClock
+            android:id="@+id/digital_clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:format12Hour="@string/alarm_time_12_hours_format"
+            android:format24Hour="@string/clock_24_hours_format"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:singleLine="true"
+            android:textAppearance="@style/alarm_holster_thin"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:drawablePadding="4dp"
+            android:drawableStart="@drawable/stat_notify_alarm"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textAppearance="@style/header_not_caps"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/alarm_dissmiss_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:alpha="0.6"
+            android:drawableEnd="@drawable/ic_dismiss_next"
+            android:drawablePadding="2dp"
+            android:gravity="center"
+            android:text="@string/alarm_hoslter_slide_right_stop"
+            android:textSize="14sp" />
+    </LinearLayout>
+ </RelativeLayout>
