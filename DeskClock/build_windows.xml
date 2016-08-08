@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="DeskClock" default="release">
+
+     <import file="build_common_windows.xml" />
+  	<property name="jar-path" value="lib" />
+  	<property name="proguard-file" value="proguard-project.txt" />
+  	<path id="jar-classpath">
+  	    <fileset dir="${jar-path}">
+         	<include name="*.jar" />
+         </fileset>
+  	</path>
+ 
+</project>

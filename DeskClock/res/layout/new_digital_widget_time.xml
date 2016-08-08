@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2012 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+
+<!-- digital clock for the digital widget -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/selectableItemBackground"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal">
+
+    <!--
+    <TextClock
+        android:id="@+id/the_clock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:format12Hour="@string/new_clock_widget_time_12_hours_format"
+        android:format24Hour="@string/new_clock_widget_time_24_hours_format"
+        android:gravity="center"
+        android:shadowColor="#f3000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="4"
+        android:singleLine="true"
+        android:textColor="@color/clock_white" />
+-->
+    
+    <ImageView
+        android:id="@+id/the_clock"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:scaleType="center" />
+    
+<!--
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1" />
+-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@id/the_clock"
+        android:orientation="vertical" >
+
+        <TextClock
+            android:id="@+id/week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="sans-serif"
+            android:format12Hour=""
+            android:format24Hour=""
+            android:gravity="bottom"
+            android:shadowColor="#05000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="4"
+            android:textColor="@color/clock_white"
+            android:textSize="14sp" />
+
+        <TextClock
+            android:id="@+id/date"
+            android:layout_marginTop="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:format12Hour=""
+            android:format24Hour=""
+            android:gravity="top"
+            android:shadowColor="#05000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="4"
+            android:textColor="@color/clock_white"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</RelativeLayout>
