@@ -59,11 +59,12 @@
     <property name="out-unsigned-package-ospath" value="${basedir}/${out-unsigned-package}" />  
       
     <!-- 证书文件 -->  
-    <property name="keystore-file" value="E:/sign/platform.keystore" />
-    <property name="keystore-debug-file" value="E:/sign/platform.keystore" />
-    <property name="keystore-jar" value="E:/sign/signapk.jar" /> 
-    <property name="keystore-pk8" value="E:/sign/platform.pk8" /> 
-    <property name="keystore-pem" value="E:/sign/platform.x509.pem" />    
+    <property name="keystore-file" value="/home/yaolinnan/public/release/platform.keystore" />  
+    <property name="keystore-file-release" value="/home/yaolinnan/public/release/platform.keystore" />
+    <property name="keystore-debug-file" value="/home/yaolinnan/public/platform.keystore" />
+	<property name="keystore-jar" value="/home/yaolinnan/public/signapk.jar" /> 
+    <property name="keystore-pk8" value="/home/yaolinnan/public/platform.pk8" /> 
+    <property name="keystore-pem" value="/home/yaolinnan/public/platform.x509.pem" />     
       
     <!-- 已认证apk包 -->  
     <property name="out-signed-package" value="${outdir-bin}/${appName}.apk" />  
@@ -71,9 +72,9 @@
     
     <!-- 混淆配置 -->
     <property name="proguard-home" value="${sdk-tools}/proguard/lib"/>
-    <property name="library-dir1" value="D:/currentWork/MTKDeskClock/deskclock_mtk/code/datetimepicker" />
-    <property name="library-dir2" value="D:/currentWork/MTKDeskClock/deskclock_mtk/code/appcompat" />
-    <property name="library-dir3" value="D:/currentWork/MTKDeskClock/deskclock_mtk/code/gridlayout" />
+    <property name="library-dir1" value="${basedir}/../datetimepicker" />
+    <property name="library-dir2" value="${basedir}/../appcompat" />
+    <property name="library-dir3" value="${basedir}/../gridlayout" />
     
     <path id="lib_classpath">
 		<path refid="jar-classpath"/>
