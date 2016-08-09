@@ -59,11 +59,11 @@
     <property name="out-unsigned-package-ospath" value="${basedir}/${out-unsigned-package}" />  
       
     <!-- 证书文件 -->  
-    <property name="keystore-file" value="E:/sign/platform.keystore" />
-    <property name="keystore-debug-file" value="E:/sign/platform.keystore" />
-    <property name="keystore-jar" value="E:/sign/signapk.jar" /> 
-    <property name="keystore-pk8" value="E:/sign/platform.pk8" /> 
-    <property name="keystore-pem" value="E:/sign/platform.x509.pem" />    
+    <property name="keystore-file" value="/home/yaolinnan/public/platform.keystore"" />
+    <property name="keystore-debug-file" value="/home/yaolinnan/public/platform.keystore" />
+    <property name="keystore-jar" value="/home/yaolinnan/public/signapk.jar" /> 
+    <property name="keystore-pk8" value="/home/yaolinnan/public/platform.pk8" /> 
+    <property name="keystore-pem" value="/home/yaolinnan/public/platform.x509.pem" />     
       
     <!-- 已认证apk包 -->  
     <property name="out-signed-package" value="${outdir-bin}/${appName}.apk" />  
