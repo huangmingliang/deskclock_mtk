@@ -71,9 +71,9 @@
     
     <!-- 混淆配置 -->
     <property name="proguard-home" value="${sdk-tools}/proguard/lib"/>
-    <property name="library-dir1" value="${basedir}../datetimepicker" />
-    <property name="library-dir2" value="${basedir}../appcompat" />
-    <property name="library-dir3" value="${basedir}../gridlayout" />
+    <property name="library-dir1" value="${basedir}/../datetimepicker" />
+    <property name="library-dir2" value="${basedir}/../appcompat" />
+    <property name="library-dir3" value="${basedir}/../gridlayout" />
     
     <path id="lib_classpath">
 		<path refid="jar-classpath"/>
