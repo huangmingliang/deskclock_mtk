@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Settings" default="release">
+<project name="DeskClock" default="release">
 
        <import file="build_common.xml" />
   	<property name="jar-path" value="lib" />
