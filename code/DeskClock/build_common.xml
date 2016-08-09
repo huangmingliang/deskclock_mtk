@@ -59,9 +59,10 @@
     <property name="out-unsigned-package-ospath" value="${basedir}/${out-unsigned-package}" />  
       
     <!-- 证书文件 -->  
-    <property name="keystore-file" value="/home/yaolinnan/public/platform.keystore" />
+    <property name="keystore-file" value="/home/yaolinnan/public/platform.keystore" />  
+    <property name="keystore-file-release" value="/home/yaolinnan/public/release/platform.keystore" />
     <property name="keystore-debug-file" value="/home/yaolinnan/public/platform.keystore" />
-    <property name="keystore-jar" value="/home/yaolinnan/public/signapk.jar" /> 
+	<property name="keystore-jar" value="/home/yaolinnan/public/signapk.jar" /> 
     <property name="keystore-pk8" value="/home/yaolinnan/public/platform.pk8" /> 
     <property name="keystore-pem" value="/home/yaolinnan/public/platform.x509.pem" />     
       
