@@ -69,15 +69,12 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 	public void onEnabled(Context context) {
 		super.onEnabled(context);
 		startAlarmOnQuarterHour(context);
-		// register(context);
-		Log.i(TAG, "onEnabled: ");
 	}
 
 	@Override
 	public void onDisabled(Context context) {
 		super.onDisabled(context);
 		cancelAlarmOnQuarterHour(context);
-		// context.getApplicationContext().unregisterReceiver(mTimeChangeReceiver);
 	}
 
 	@Override
@@ -106,23 +103,6 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 					RemoteViews widget = new RemoteViews(
 							context.getPackageName(),
 							R.layout.new_digital_appwidget);
-					// float ratio = WidgetUtils.getScaleRatio(context, null,
-					// appWidgetId);
-					// SPRD for bug421127 add am/pm for widget
-					// WidgetUtils.setTimeFormat(widget, dip2px(context, 40f),
-					// R.id.the_clock);
-					// widget.setTextViewTextSize(R.id.the_clock,
-					// TypedValue.COMPLEX_UNIT_PX, dip2px(context, 40f));
-
-					// modify:relayout the RemoteViews's layout
-					 TextClock clock = new TextClock(context);
-					 clock.setFormat12Hour(Utils.get12ModeFormat(dip2px(context,
-					 40f)));
-					 clock.setFormat24Hour(Utils.get24ModeFormat());
-					 widget.setImageViewBitmap(R.id.the_clock,
-					 buildUpdate(clock.getText().toString(), context));
-					 clock = null;
-
 					refreshAlarm(context, widget);
 					appWidgetManager.partiallyUpdateAppWidget(appWidgetId,
 							widget);
@@ -158,6 +138,10 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 				int[] appWidgetIds = appWidgetManager
 						.getAppWidgetIds(getComponentName(context));
 				for (int appWidgetId : appWidgetIds) {
+					RemoteViews widget = new RemoteViews(
+							context.getPackageName(),
+							R.layout.new_digital_appwidget);
+					refreshAlarm(context, widget);
 					appWidgetManager.notifyAppWidgetViewDataChanged(
 							appWidgetId, R.id.digital_appwidget_listview);
 				}
@@ -207,24 +191,6 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 							DeskClock.class), 0));
 		}
 
-		// Setup alarm text clock's format and font sizes
-		refreshAlarm(context, widget);
-		// SPRD for bug421127 add am/pm for widget
-		// yaolinnan modify:
-		// WidgetUtils.setTimeFormat(widget, dip2px(context, 40f),
-		// R.id.the_clock);
-		// widget.setTextViewTextSize(R.id.the_clock,
-		// TypedValue.COMPLEX_UNIT_PX,
-		// dip2px(context, 40f));
-
-		// modify:relayout the RemoteViews's layout
-		 TextClock clock = new TextClock(context);
-		 clock.setFormat12Hour(Utils.get12ModeFormat(dip2px(context, 40f)));
-		 clock.setFormat24Hour(Utils.get24ModeFormat());
-		 widget.setImageViewBitmap(R.id.the_clock,
-		 buildUpdate(clock.getText().toString(), context));
-		 clock = null;
-
 		// Set today's date format
 		String ee = DateFormat.getBestDateTimePattern(Locale.getDefault(),
 				"eeee");
@@ -237,6 +203,9 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		widget.setCharSequence(R.id.week, "setFormat24Hour", ee);
 		widget.setCharSequence(R.id.date, "setFormat12Hour", mm);
 		widget.setCharSequence(R.id.date, "setFormat24Hour", mm);
+
+		// Setup alarm text clock's format and font sizes
+		refreshAlarm(context, widget);
 
 		// Set up R.id.digital_appwidget_listview to use a remote views adapter
 		// That remote views adapter connects to a RemoteViewsService through
@@ -274,6 +243,15 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		// Log.v(TAG, "DigitalWidget sets next alarm string to null");
 		// }
 		// }
+		if (null != widget) {
+			TextClock textClock = new TextClock(context);
+			textClock.setFormat12Hour(Utils
+					.get12ModeFormat(dip2px(context, 40f)));
+			textClock.setFormat24Hour(Utils.get24ModeFormat());
+			widget.setImageViewBitmap(R.id.the_clock,
+					buildUpdate(textClock.getText().toString() + "", context));
+			textClock = null;
+		}
 	}
 
 	/**
@@ -375,7 +353,8 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		paint.setColor(Color.WHITE);
 		paint.setTextSize(dip2px(context, 40f));
 		paint.setShadowLayer(4, 1, 1, 0x05000000);
-		myCanvas.drawText(time, dip2px(context, 10), dip2px(context, 40f), paint);
+		myCanvas.drawText(time, dip2px(context, 10), dip2px(context, 40f),
+				paint);
 		return myBitmap;
 	}
 
@@ -402,15 +381,6 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 						RemoteViews widget = new RemoteViews(
 								context.getPackageName(),
 								R.layout.new_digital_appwidget);
-						// modify:relayout the RemoteViews's layout
-						 TextClock clock = new TextClock(context);
-						 clock.setFormat12Hour(Utils.get12ModeFormat(dip2px(
-						 context, 40f)));
-						 clock.setFormat24Hour(Utils.get24ModeFormat());
-						 widget.setImageViewBitmap(
-						 R.id.the_clock,
-						 buildUpdate(clock.getText().toString(), context));
-						 clock = null;
 						refreshAlarm(context, widget);
 						appWidgetManager.partiallyUpdateAppWidget(appWidgetId,
 								widget);

@@ -10,7 +10,7 @@
 
     <com.android.deskclock.HolsterCircleView
         android:id="@+id/bg_content" 
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="26dp"
         android:layout_width="@dimen/alarm_holster_bg_width"
         android:layout_height="@dimen/alarm_holster_bg_height"/>
     
@@ -18,7 +18,7 @@
         android:id="@+id/content"
         android:layout_width="@dimen/alarm_holster_bg_width"
         android:layout_height="@dimen/alarm_holster_bg_height"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="26dp"
         android:background="@drawable/bg_alarm_holster"
         android:gravity="center"
         android:layout_gravity="center"
