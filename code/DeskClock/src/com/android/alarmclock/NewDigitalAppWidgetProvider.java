@@ -43,11 +43,12 @@ import android.widget.TextClock;
 import com.android.deskclock.DeskClock;
 import com.android.deskclock.R;
 import com.android.deskclock.Utils;
+import com.android.deskclock.alarms.AlarmStateManager;
 import com.android.deskclock.worldclock.Cities;
 import com.android.deskclock.worldclock.CitiesActivity;
 
 public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
-	private static final String TAG = "DigitalAppWidgetProvider";
+	private static final String TAG = "NewDigitalAppWidgetProvider";
 
 	/**
 	 * Intent to be used for checking if a world clock's date has changed. Must
@@ -83,8 +84,7 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		// if (DigitalAppWidgetService.LOGGING) {
 		Log.i(TAG, "onReceive: " + action);
 		// }
-		super.onReceive(context, intent);
-
+		// super.onReceive(context, intent);
 		if (ACTION_ON_QUARTER_HOUR.equals(action)
 				|| Intent.ACTION_DATE_CHANGED.equals(action)
 				|| Intent.ACTION_TIMEZONE_CHANGED.equals(action)
@@ -112,7 +112,7 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 				cancelAlarmOnQuarterHour(context);
 			}
 			startAlarmOnQuarterHour(context);
-		} else if (AlarmManager.ACTION_NEXT_ALARM_CLOCK_CHANGED.equals(action)
+		} else if (isNextAlarmChangedAction(action)
 				|| Intent.ACTION_SCREEN_ON.equals(action)) {
 			// Refresh the next alarm
 			Log.i(TAG, "refreshAlarm: ");
@@ -147,6 +147,11 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 				}
 			}
 		}
+		else if(Intent.ACTION_USER_PRESENT.equals(action))
+		{
+			register(context);
+		}
+		super.onReceive(context, intent);
 	}
 
 	@Override
@@ -175,6 +180,20 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		updateClock(context, widgetManager, appWidgetId, ratio);
 	}
 
+	/**
+	 * Determine whether action received corresponds to a "next alarm" changed
+	 * action depending on the SDK version.
+	 */
+	private boolean isNextAlarmChangedAction(String action) {
+		final String nextAlarmIntentAction;
+		if (Utils.isLOrLater()) {
+			nextAlarmIntentAction = AlarmManager.ACTION_NEXT_ALARM_CLOCK_CHANGED;
+		} else {
+			nextAlarmIntentAction = AlarmStateManager.SYSTEM_ALARM_CHANGE_ACTION;
+		}
+		return nextAlarmIntentAction.equals(action);
+	}
+
 	private void updateClock(Context context,
 			AppWidgetManager appWidgetManager, int appWidgetId, float ratio) {
 		RemoteViews widget = new RemoteViews(context.getPackageName(),
@@ -191,6 +210,9 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 							DeskClock.class), 0));
 		}
 
+		// Setup alarm text clock's format and font sizes
+		refreshAlarm(context, widget);
+
 		// Set today's date format
 		String ee = DateFormat.getBestDateTimePattern(Locale.getDefault(),
 				"eeee");
@@ -203,9 +225,6 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		widget.setCharSequence(R.id.week, "setFormat24Hour", ee);
 		widget.setCharSequence(R.id.date, "setFormat12Hour", mm);
 		widget.setCharSequence(R.id.date, "setFormat24Hour", mm);
-
-		// Setup alarm text clock's format and font sizes
-		refreshAlarm(context, widget);
 
 		// Set up R.id.digital_appwidget_listview to use a remote views adapter
 		// That remote views adapter connects to a RemoteViewsService through
@@ -389,5 +408,4 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 			}
 		}
 	};
-
 }

@@ -44,7 +44,7 @@
     <!-- @} -->
     <!-- M: For multiuser -->
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
-
+    
     <application
         android:name=".DeskClockApplication"
         android:allowBackup="true"
@@ -350,6 +350,7 @@
                 <action android:name="android.intent.action.LOCALE_CHANGED" />
                 <action android:name="android.app.action.NEXT_ALARM_CLOCK_CHANGED" />
                 <action android:name="com.android.deskclock.worldclock.update" />
+                <action android:name="android.intent.action.USER_PRESENT"/>
             </intent-filter>
 
             <meta-data

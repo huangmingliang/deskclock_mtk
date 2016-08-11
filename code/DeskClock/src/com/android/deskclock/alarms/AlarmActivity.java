@@ -49,7 +49,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.animation.PathInterpolatorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -210,10 +209,11 @@ public class AlarmActivity extends AppCompatActivity implements
 		getWindow()
 				.addFlags(
 						WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-								| WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+//								| WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
 								| WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
 								| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-								| WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
+								| WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
+								| WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		// /M: Don't show the wallpaper when the alert arrive. @{
 		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER);
 		// /@}
@@ -243,9 +243,9 @@ public class AlarmActivity extends AppCompatActivity implements
 			mIsHolsterClosed = queryHallState();
 		}
 		if (mIsHolsterClosed) {
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 			setContentView(R.layout.alarm_holster_activity);
 		} else {
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 			setContentView(R.layout.alarm_activity);
 		}
 
