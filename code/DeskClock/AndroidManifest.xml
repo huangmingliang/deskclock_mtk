@@ -18,7 +18,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.deskclock"
     android:versionCode="20160809"
-    android:versionName="1.0" >
+    android:versionName="1.0.160809" >
 
     <original-package android:name="com.android.alarmclock" />
     <original-package android:name="com.android.deskclock" />
