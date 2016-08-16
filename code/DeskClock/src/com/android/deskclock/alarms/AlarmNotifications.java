@@ -23,7 +23,6 @@ package com.android.deskclock.alarms;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
-
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +33,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import com.android.deskclock.AlarmClockFragment;
 import com.android.deskclock.AlarmUtils;
 import com.android.deskclock.DeskClock;
+import com.android.deskclock.HolsterUtil;
 import com.android.deskclock.LogUtils;
 import com.android.deskclock.R;
 import com.android.deskclock.provider.Alarm;
@@ -46,7 +46,6 @@ public final class AlarmNotifications {
         // Sets a surrogate alarm with alarm manager that provides the AlarmClockInfo for the
         // alarm that is going to fire next. The operation is constructed such that it is ignored
         // by AlarmStateManager.
-
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         int flags = instance == null ? PendingIntent.FLAG_NO_CREATE : 0;
@@ -59,7 +58,7 @@ public final class AlarmNotifications {
             // Create an intent that can be used to show or edit details of the next alarm.
             PendingIntent viewIntent = PendingIntent.getActivity(context, instance.hashCode(),
                     createViewAlarmIntent(context, instance), PendingIntent.FLAG_UPDATE_CURRENT);
-
+            
             AlarmManager.AlarmClockInfo info =
                     new AlarmManager.AlarmClockInfo(alarmTime, viewIntent);
             alarmManager.setAlarmClock(info, operation);
@@ -212,7 +211,6 @@ public final class AlarmNotifications {
     public static void showAlarmNotification(Context context, AlarmInstance instance) {
         LogUtils.v("Displaying alarm notification for alarm instance: " + instance.mId);
         NotificationManagerCompat nm = NotificationManagerCompat.from(context);
-
         Resources resources = context.getResources();
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context)
                 .setContentTitle(instance.getLabelOrDefault(context))
@@ -279,7 +277,7 @@ public final class AlarmNotifications {
     }
 
     public static Intent createViewAlarmIntent(Context context, AlarmInstance instance) {
-        long alarmId = instance.mAlarmId == null ? Alarm.INVALID_ID : instance.mAlarmId;
+    	long alarmId = instance.mAlarmId == null ? Alarm.INVALID_ID : instance.mAlarmId;
         Intent viewAlarmIntent = Alarm.createIntent(context, DeskClock.class, alarmId);
         viewAlarmIntent.putExtra(DeskClock.SELECT_TAB_INTENT_EXTRA, DeskClock.ALARM_TAB_INDEX);
         viewAlarmIntent.putExtra(AlarmClockFragment.SCROLL_TO_ALARM_INTENT_EXTRA, alarmId);
@@ -333,4 +331,17 @@ public final class AlarmNotifications {
         nm.notify(instance.hashCode(), notification.build());
     }
     /// @}
+    
+    
+    /// add only for holster@{
+    public static void startAlarmActivity(Context context, AlarmInstance instance){
+    	if(HolsterUtil.queryHallState())
+    	{
+    		updateAlarmNotification(context, instance);
+        	Intent intent = AlarmInstance.createIntent(context, AlarmActivity.class, instance.mId);
+        	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+    	}
+    }
+    ///@}
 }

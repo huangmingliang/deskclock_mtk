@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -60,8 +61,10 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.ImageView;
 import android.widget.TextClock;
 import android.widget.TextView;
+
 import com.android.deskclock.AnimatorUtils;
 import com.android.deskclock.HolsterCircleView;
+import com.android.deskclock.HolsterUtil;
 import com.android.deskclock.LogUtils;
 import com.android.deskclock.R;
 import com.android.deskclock.SettingsActivity;
@@ -110,7 +113,7 @@ public class AlarmActivity extends AppCompatActivity implements
 				// Add for holster
 				case HOLSTER_ACTION:
 					LogUtils.d(LOGTAG, "HOLSTER_ACTION = " + intent.getAction());
-					if (isHallExists()) {
+					if (HolsterUtil.isHallExists()) {
 						int state = intent.getIntExtra(HOLSTER_ACTION_DATA_KEY,
 								0);
 						LogUtils.d(LOGTAG, "state = " + state);
@@ -240,7 +243,7 @@ public class AlarmActivity extends AppCompatActivity implements
 			mIsHolsterClosed = savedInstanceState
 					.getBoolean(HOLSTER_KEY, false);
 		} else {
-			mIsHolsterClosed = queryHallState();
+			mIsHolsterClosed = HolsterUtil.queryHallState();
 		}
 		if (mIsHolsterClosed) {
 			setContentView(R.layout.alarm_holster_activity);
@@ -859,42 +862,5 @@ public class AlarmActivity extends AppCompatActivity implements
 			mIsHolsterClosed = false;
 		}
 		return mIsHolsterClosed;
-	}
-
-	/**
-	 * Add:Read the hall state
-	 * 
-	 * @return false ( 0 means holster is leaved); true (1 means holster is
-	 *         close)
-	 */
-	private boolean queryHallState() {
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new FileReader(
-					"/sys/class/switch/hall/state"));
-			String line = br.readLine();
-			return (1 == Integer.parseInt(line.trim()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (null != br) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Add:To determine whether the hall sensor is exists.
-	 * 
-	 * @return true (support); false(not support)
-	 */
-	private boolean isHallExists() {
-		File file = new File("/sys/class/switch/hall/state");
-		return file.exists();
 	}
 }

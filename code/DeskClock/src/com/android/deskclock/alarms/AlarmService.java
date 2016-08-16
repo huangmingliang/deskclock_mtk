@@ -26,7 +26,6 @@ import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-
 import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
@@ -36,6 +35,7 @@ import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 
 import com.android.deskclock.AlarmAlertWakeLock;
+import com.android.deskclock.HolsterUtil;
 import com.android.deskclock.LogUtils;
 import com.android.deskclock.R;
 import com.android.deskclock.events.Events;
@@ -116,6 +116,10 @@ public class AlarmService extends Service {
     private static final String POWER_OFF_ALARM_DISMISS_ACITION = "com.android.deskclock.DISMISS_ALARM";
     public static final String POWER_OFF_ALARM_SNOOZE_ACITION = "com.android.deskclock.SNOOZE_ALARM";
     private static boolean  mStopPlayReceiverRegistered = false;
+    /// @}
+    
+    /// add only for holster @{
+    private static final String ALARM_NOTIF_CHANGE_TO_ACTIVITY = "com.android.systemui.clockuevent";
     /// @}
 
     private final BroadcastReceiver mStopPlayReceiver = new BroadcastReceiver() {
@@ -274,7 +278,7 @@ public class AlarmService extends Service {
                 mInstanceAlarm = mCurrentAlarm;
                 AlarmNotifications.updateAlarmNotification(this, mCurrentAlarm);
             } else {
-                AlarmNotifications.showAlarmNotification(this, mCurrentAlarm);
+            	AlarmNotifications.showAlarmNotification(this, mCurrentAlarm);
             }
         } /// @}
         /**
@@ -329,8 +333,10 @@ public class AlarmService extends Service {
                 LogUtils.i("AlarmActivity bound; AlarmService no-op");
                 return;
             }
-
             switch (action) {
+            case ALARM_NOTIF_CHANGE_TO_ACTIVITY:
+            	startNotiChangeAlarmActivity();
+            	break;
                 case ALARM_SNOOZE_ACTION:
                     // Set the alarm state to snoozed.
                     // If this broadcast receiver is handling the snooze intent then AlarmActivity
@@ -355,6 +361,7 @@ public class AlarmService extends Service {
         // Register the broadcast receiver
         final IntentFilter filter = new IntentFilter(ALARM_SNOOZE_ACTION);
         filter.addAction(ALARM_DISMISS_ACTION);
+        filter.addAction(ALARM_NOTIF_CHANGE_TO_ACTIVITY);
         registerReceiver(mActionsReceiver, filter);
         mIsRegistered = true;
 
@@ -402,7 +409,6 @@ public class AlarmService extends Service {
                 mInstance = AlarmInstance.getInstance(cr, instanceId);
             }
             LogUtils.v("AlarmService instance[%s]", mInstance);
-
             if (mInstance == null) {
                 LogUtils.e("No instance found to start alarm: " + instanceId);
                 if (mCurrentAlarm != null) {
@@ -516,5 +522,13 @@ public class AlarmService extends Service {
         }
     }
     */
+    
+    
+    
+    /// add only for holster @{
+    private void startNotiChangeAlarmActivity() {
+    	AlarmNotifications.startAlarmActivity(this, mCurrentAlarm);
+	}
+    /// @}
 }
 
