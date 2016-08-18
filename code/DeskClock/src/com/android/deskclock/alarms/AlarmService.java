@@ -278,7 +278,15 @@ public class AlarmService extends Service {
                 mInstanceAlarm = mCurrentAlarm;
                 AlarmNotifications.updateAlarmNotification(this, mCurrentAlarm);
             } else {
-            	AlarmNotifications.showAlarmNotification(this, mCurrentAlarm);
+            	// motify only for holster @{
+            	if(HolsterUtil.queryHallState())
+            	{
+            		startNotiChangeAlarmActivity();
+            	}else {
+            		AlarmNotifications.showAlarmNotification(this, mCurrentAlarm);
+				}
+            	// @}
+//            	AlarmNotifications.showAlarmNotification(this, mCurrentAlarm);
             }
         } /// @}
         /**
