@@ -15,7 +15,7 @@
         android:layout_height="@dimen/alarm_holster_bg_height"/>
     
     <LinearLayout
-        android:id="@+id/content"
+        android:id="@+id/holster_content"
         android:layout_width="@dimen/alarm_holster_bg_width"
         android:layout_height="@dimen/alarm_holster_bg_height"
         android:layout_marginTop="26dp"
@@ -25,7 +25,7 @@
         android:orientation="vertical" >
 
         <TextClock
-            android:id="@+id/digital_clock"
+            android:id="@+id/holster_digital_clock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -38,7 +38,7 @@
             android:textColor="@android:color/white" />
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/holster_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
