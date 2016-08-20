@@ -57,6 +57,13 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 	public static final String ACTION_ON_QUARTER_HOUR = "com.android.deskclock.ON_QUARTER_HOUR";
 
 	public static final String ACTION_APPWIDGET_ENABLED = "android.appwidget.action.APPWIDGET_ENABLED";
+	
+	public static final String ACTION_APP_SERVICE_UPDATE = "com.android.deskclock.SERVICE_UPDATE_WIDGET";
+	
+	/// Use the action because the time of widget used the bitmap to instance of the TextClock, need it to update the bitmap
+	private String ACTION_APP_WIDGET_UPDATE = "android.appwidget.action.APPWIDGET_UPDATE";
+	
+	private String ACTION_BOOT_COMPLETED = "android.intent.action.BOOT_COMPLETED";
 
 	// Lazily creating this intent to use with the AlarmManager
 	private PendingIntent mPendingIntent;
@@ -70,12 +77,14 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 	public void onEnabled(Context context) {
 		super.onEnabled(context);
 		startAlarmOnQuarterHour(context);
+		context.startService(new Intent(context, NewAppWidgetService.class));
 	}
 
 	@Override
 	public void onDisabled(Context context) {
 		super.onDisabled(context);
 		cancelAlarmOnQuarterHour(context);
+		context.stopService(new Intent(context, NewAppWidgetService.class));
 	}
 
 	@Override
@@ -86,11 +95,13 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		// }
 		// super.onReceive(context, intent);
 		if (ACTION_ON_QUARTER_HOUR.equals(action)
-				|| Intent.ACTION_DATE_CHANGED.equals(action)
-				|| Intent.ACTION_TIMEZONE_CHANGED.equals(action)
-				|| Intent.ACTION_TIME_CHANGED.equals(action)
-				|| Intent.ACTION_LOCALE_CHANGED.equals(action)
-				|| ACTION_APPWIDGET_ENABLED.equals(action)) {
+//				|| Intent.ACTION_DATE_CHANGED.equals(action)
+//				|| Intent.ACTION_TIMEZONE_CHANGED.equals(action)
+//				|| Intent.ACTION_TIME_CHANGED.equals(action)
+//				|| Intent.ACTION_LOCALE_CHANGED.equals(action)
+				|| ACTION_APP_WIDGET_UPDATE.equals(action)
+				|| ACTION_APPWIDGET_ENABLED.equals(action)
+				|| ACTION_APP_SERVICE_UPDATE.equals(action)) {
 			Log.i(TAG, "oncreate: ");
 			AppWidgetManager appWidgetManager = AppWidgetManager
 					.getInstance(context);
@@ -146,10 +157,8 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 							appWidgetId, R.id.digital_appwidget_listview);
 				}
 			}
-		}
-		else if(Intent.ACTION_USER_PRESENT.equals(action))
-		{
-			register(context);
+		}else if(ACTION_BOOT_COMPLETED.equals(action)){
+			context.startService(new Intent(context, NewAppWidgetService.class));
 		}
 		super.onReceive(context, intent);
 	}
@@ -165,7 +174,8 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 			updateClock(context, appWidgetManager, appWidgetId, ratio);
 		}
 		startAlarmOnQuarterHour(context);
-		register(context);
+		// modify to use service to receive the time tick broadcast
+		//register(context);
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 
@@ -246,7 +256,7 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		appWidgetManager.updateAppWidget(appWidgetId, widget);
 	}
 
-	protected void refreshAlarm(Context context, RemoteViews widget) {
+	protected synchronized void refreshAlarm(Context context, RemoteViews widget) {
 		// final String nextAlarm = Utils.getNextAlarm(context);
 		// if (!TextUtils.isEmpty(nextAlarm)) {
 		// widget.setTextViewText(R.id.nextAlarm, context.getString(
@@ -365,7 +375,7 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		Typeface tf = Typeface.createFromAsset(context.getAssets(),
 				"fonts/VisbyCF-Medium.ttf");
 		paint.setAntiAlias(true);
-		paint.setAlpha(255);// 取值范围为0~255，值越小越透明
+		paint.setAlpha(255);
 		paint.setSubpixelText(true);
 		paint.setTypeface(tf);
 		paint.setStyle(Paint.Style.FILL);

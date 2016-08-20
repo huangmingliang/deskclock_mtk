@@ -17,8 +17,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.deskclock"
-    android:versionCode="20160809"
-    android:versionName="1.0.160809" >
+    android:versionCode="20160820"
+    android:versionName="1.0.160820" >
 
     <original-package android:name="com.android.alarmclock" />
     <original-package android:name="com.android.deskclock" />
@@ -343,14 +343,16 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.android.deskclock.ON_QUARTER_HOUR" />
-                <action android:name="android.intent.action.DATE_CHANGED" />
-                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
-                <action android:name="android.intent.action.SCREEN_ON" />
-                <action android:name="android.intent.action.TIME_SET" />
-                <action android:name="android.intent.action.LOCALE_CHANGED" />
+<!--                 <action android:name="android.intent.action.DATE_CHANGED" /> -->
+<!--                 <action android:name="android.intent.action.TIMEZONE_CHANGED" /> -->
+<!--                 <action android:name="android.intent.action.SCREEN_ON" /> -->
+<!--                 <action android:name="android.intent.action.TIME_SET" /> -->
+<!--                 <action android:name="android.intent.action.LOCALE_CHANGED" /> -->
                 <action android:name="android.app.action.NEXT_ALARM_CLOCK_CHANGED" />
                 <action android:name="com.android.deskclock.worldclock.update" />
-                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.intent.action.ALARM_CHANGED"/>
+                <action android:name="com.android.deskclock.SERVICE_UPDATE_WIDGET"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
 
             <meta-data
@@ -458,6 +460,7 @@
                 <action android:name="share_stopwatch" />
             </intent-filter>
         </service>
+        <service android:name="com.android.alarmclock.NewAppWidgetService"/>
     </application>
 
 </manifest>
