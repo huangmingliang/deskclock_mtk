@@ -77,7 +77,6 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 	public void onEnabled(Context context) {
 		super.onEnabled(context);
 		startAlarmOnQuarterHour(context);
-		context.startService(new Intent(context, NewAppWidgetService.class));
 	}
 
 	@Override
@@ -166,6 +165,7 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
+		context.startService(new Intent(context, NewAppWidgetService.class));
 		// if (DigitalAppWidgetService.LOGGING) {
 		Log.i(TAG, "onUpdate");
 		// }
@@ -256,7 +256,7 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		appWidgetManager.updateAppWidget(appWidgetId, widget);
 	}
 
-	protected synchronized void refreshAlarm(Context context, RemoteViews widget) {
+	protected void refreshAlarm(Context context, RemoteViews widget) {
 		// final String nextAlarm = Utils.getNextAlarm(context);
 		// if (!TextUtils.isEmpty(nextAlarm)) {
 		// widget.setTextViewText(R.id.nextAlarm, context.getString(

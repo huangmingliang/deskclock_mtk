@@ -177,12 +177,14 @@
     </style>
 
     <style name="timer_setup_digit">
-        <item name="android:textSize">@dimen/timer_setup_font_size</item>
+<!--         <item name="android:textSize">@dimen/timer_setup_font_size</item> -->
+        <item name="android:textSize">48dp</item>
         <item name="android:fontFamily">sans-serif-thin</item>
     </style>
 
     <style name="timer_setup_label">
-        <item name="android:textSize">@dimen/timer_setup_label_size</item>
+<!--         <item name="android:textSize">@dimen/timer_setup_label_size</item> -->
+        <item name="android:textSize">16dp</item>
     </style>
 
     <style name="medium_light">

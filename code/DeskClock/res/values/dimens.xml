@@ -111,7 +111,7 @@
     <dimen name="timer_setup_font_size">56sp</dimen>
     <dimen name="timer_setup_button_size">24sp</dimen>
     <!--margin should be ~ half timer_setup_font_size -->
-    <dimen name="timer_setup_delete_start_margin">28sp</dimen>
+    <dimen name="timer_setup_delete_start_margin">28dp</dimen>
     <dimen name="timer_setup_delete_padding">12dip</dimen>
     <dimen name="timer_setup_label_size">18sp</dimen>
 
