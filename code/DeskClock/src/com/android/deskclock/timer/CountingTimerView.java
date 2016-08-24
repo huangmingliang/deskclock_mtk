@@ -388,7 +388,14 @@ public class CountingTimerView extends View {
 
         // Minutes are never empty and when hours are non-empty, must be two digits
         if (minutes >= 10 || hours > 0) {
-            format = (showNeg && hours == 0) ? NEG_TWO_DIGITS : TWO_DIGITS;
+            //format = (showNeg && hours == 0) ? NEG_TWO_DIGITS : TWO_DIGITS;
+        	/// add 20160824 modify bug1004 @{
+        	if(hours >0){
+        		format = (showNeg && hours == 0) ? NEG_TWO_DIGITS : ":"+TWO_DIGITS;
+        	}else {
+        		format = (showNeg && hours == 0) ? NEG_TWO_DIGITS : TWO_DIGITS;
+			}
+        	/// @}
             mMinutes = String.format(format, minutes);
         } else {
             format = (showNeg && hours == 0) ? NEG_ONE_DIGIT : ONE_DIGIT;
@@ -396,11 +403,17 @@ public class CountingTimerView extends View {
         }
 
         // Seconds are always two digits
-        mSeconds = String.format(TWO_DIGITS, seconds);
+        //mSeconds = String.format(TWO_DIGITS, seconds);
+        /// add 20160824 modify bug1004 @{
+        mSeconds = String.format(":" + TWO_DIGITS, seconds);
+        /// @}
 
         // Hundredths are optional and then two digits
         if (showHundredths) {
-            mHundredths = String.format(TWO_DIGITS, hundreds);
+//            mHundredths = String.format(TWO_DIGITS, hundreds);
+        	/// add 20160824 modify bug1004 @{
+            mHundredths = String.format(":" + TWO_DIGITS, hundreds);
+            /// @}
         } else {
             mHundredths = null;
         }
