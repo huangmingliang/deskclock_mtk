@@ -373,7 +373,7 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		Canvas myCanvas = new Canvas(myBitmap);
 		Paint paint = new Paint();
 		Typeface tf = Typeface.createFromAsset(context.getAssets(),
-				"fonts/VisbyCF-Medium.ttf");
+				"fonts/ItelNumber.ttf");
 		paint.setAntiAlias(true);
 		paint.setAlpha(255);
 		paint.setSubpixelText(true);
