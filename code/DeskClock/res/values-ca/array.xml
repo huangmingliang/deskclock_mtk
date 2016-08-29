@@ -333,5 +333,9 @@
         <item>Wellington</item>
         <item>Illa Chatham</item>
         <item>St. Paul (Amèrica)</item>
+        
+    <!-- Transsion add 20160829 @{ -->
+    <item>Yaounde</item>
+    <!-- Transsion end 20160829 @} -->
   </string-array>
 </resources>

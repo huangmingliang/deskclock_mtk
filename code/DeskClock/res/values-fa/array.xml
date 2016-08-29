@@ -332,5 +332,9 @@
         <item>ولینگتون</item>
         <item>جزیره چاتهام</item>
         <item>سینت‌پال (آمریکا)</item>
+        
+    <!-- Transsion add 20160829 @{ -->
+    <item>"<xliff:g id="SEPARATOR">=</xliff:g>یائونده"</item>
+    <!-- Transsion end 20160829 @} -->
   </string-array>
 </resources>

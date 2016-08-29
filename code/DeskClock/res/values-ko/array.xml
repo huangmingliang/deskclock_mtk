@@ -332,5 +332,9 @@
         <item>웰링턴</item>
         <item>채텀 섬</item>
         <item>세인트폴(미국)</item>
+        
+    <!-- Transsion add 20160829 @{ -->
+    <item>Yaounde</item>
+    <!-- Transsion end 20160829 @} -->
   </string-array>
 </resources>

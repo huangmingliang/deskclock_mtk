@@ -354,6 +354,10 @@
         <item>W<xliff:g id="separator">=</xliff:g>Wellington</item>
         <item>C<xliff:g id="separator">=</xliff:g>Chatham Island</item>
         <item>S<xliff:g id="separator">=</xliff:g>St.Paul(America)</item>
+        
+        <!-- Transsion add 20160829 @{ -->
+        <item>Y<xliff:g id="separator">=</xliff:g>Yaounde</item>
+        <!-- Transsion end 20160829 @} -->
     </string-array>
 
     <string-array name="cities_tz" translatable="false">
@@ -672,6 +676,10 @@
         <item>Pacific/Auckland</item>
         <item>Pacific/Chatham</item>
         <item>America/Chicago</item>
+        
+        <!-- Transsion add 20160829 @{ -->
+        <item>Europe/London</item>
+        <!-- Transsion end 20160829 @} -->
     </string-array>
 
     <string-array name="cities_id" translatable="false">
@@ -991,5 +999,8 @@
         <item>C312</item>
         <item>C313</item>
 
+        <!-- Transsion add 20160829 @{ -->
+        <item>C314</item>
+        <!-- Transsion end 20160829 @} -->
     </string-array>
 </resources>

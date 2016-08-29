@@ -333,5 +333,8 @@
         <item>Chathamské ostrovy</item>
         <item>Saint Paul (Amerika)</item>
   
+    <!-- Transsion add 20160829 @{ -->
+    <item>Yaounde</item>
+    <!-- Transsion end 20160829 @} -->
 </string-array>
 </resources>

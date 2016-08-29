@@ -354,6 +354,10 @@
         <item>W<xliff:g id="separator">=</xliff:g>Wellington</item>
         <item>C<xliff:g id="separator">=</xliff:g>Chatham Island</item>
         <item>S<xliff:g id="separator">=</xliff:g>St.Paul(America)</item>
+        
+        <!-- Transsion add 20160829 @{ -->
+        <item>Yaounde</item>
+        <!-- Transsion end 20160829 @} -->
     </string-array>
 
 </resources>

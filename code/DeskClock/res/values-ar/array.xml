@@ -333,5 +333,9 @@
         <item>ويلينغتون</item>
         <item>جزر تشاتام</item>
         <item>سان باول (أمريكا)</item>
+        
+        <!-- Transsion add 20160829 @{ -->
+        <item>ياوندي</item>
+        <!-- Transsion end 20160829 @} -->
   </string-array>
 </resources>

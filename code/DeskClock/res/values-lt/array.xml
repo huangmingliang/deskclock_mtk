@@ -332,5 +332,9 @@
         <item>Velingtonas</item>
         <item>Čatamo salos</item>
         <item>Sent Polas (Amerika)</item>
+        
+    <!-- Transsion add 20160829 @{ -->
+    <item>Yaounde</item>
+    <!-- Transsion end 20160829 @} -->
   </string-array>
 </resources>

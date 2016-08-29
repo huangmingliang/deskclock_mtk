@@ -333,5 +333,8 @@
         <item>ចាតាំ​អ៊ីស្លង់ដ៍</item>
         <item>សាំង​ប៉ូល (អាមេរិក)</item>
 
+    <!-- Transsion add 20160829 @{ -->
+    <item>Yaounde</item>
+    <!-- Transsion end 20160829 @} -->
   </string-array>
 </resources>

@@ -333,5 +333,9 @@
     <item>"惠灵顿"</item>
     <item>"查塔姆群岛"</item>
     <item>"圣保罗(美国)"</item>
+    
+    <!-- Transsion add 20160829 @{ -->
+    <item>雅温得</item>
+    <!-- Transsion end 20160829 @} -->
   </string-array>
 </resources>

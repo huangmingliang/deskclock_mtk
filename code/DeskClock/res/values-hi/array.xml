@@ -332,5 +332,9 @@
         <item>वेलिंगटन</item>
         <item>चैथम आइलैंड</item>
         <item>सैंट पॉल (अमेरिका)</item>
+        
+    <!-- Transsion add 20160829 @{ -->
+    <item>Yaounde</item>
+    <!-- Transsion end 20160829 @} -->
   </string-array>
 </resources>

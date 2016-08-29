@@ -332,5 +332,9 @@
         <item>Велингтон</item>
         <item>Острво Чатам</item>
         <item>Сент Пол (Америка)</item>
+        
+    <!-- Transsion add 20160829 @{ -->
+    <item>Yaounde</item>
+    <!-- Transsion end 20160829 @} -->
   </string-array>
 </resources>

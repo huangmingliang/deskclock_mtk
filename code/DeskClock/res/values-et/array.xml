@@ -298,5 +298,9 @@
     <item msgid="3567009426051313507">"Guangzhou"</item>
     <item msgid="2738289235744819761">"Hyderabad"</item>
     <item msgid="35629823970779893">"Reston"</item>
+    
+    <!-- Transsion add 20160829 @{ -->
+    <item>Yaounde</item>
+    <!-- Transsion end 20160829 @} -->
   </string-array>
 </resources>

@@ -333,5 +333,8 @@
         <item>査塔姆島</item>
         <item>聖保羅(美國)</item>
 
+    <!-- Transsion add 20160829 @{ -->
+    <item>雅溫得</item>
+    <!-- Transsion end 20160829 @} -->
   </string-array>
 </resources>

@@ -329,5 +329,9 @@
         <item>ওয়েলিংটন</item>
         <item>চথাম আইল্যান্ড</item>
         <item>সেন্ট পল (আমেরিকা)</item>
+        
+    <!-- Transsion add 20160829 @{ -->
+    <item>এওনডে</item>
+    <!-- Transsion end 20160829 @} -->
     </string-array>
 </resources>

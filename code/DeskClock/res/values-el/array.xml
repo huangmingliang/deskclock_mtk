@@ -332,5 +332,9 @@
         <item>Ουέλινγκτον</item>
         <item>Νησιά Τσάταμ</item>
         <item>Σαιντ Πωλ (Η.Π.Α.)</item>
+        
+    <!-- Transsion add 20160829 @{ -->
+    <item>Yaounde</item>
+    <!-- Transsion end 20160829 @} -->
   </string-array>
 </resources>
