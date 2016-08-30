@@ -532,25 +532,34 @@ public class AlarmActivity extends AppCompatActivity implements View.OnClickList
 		mAlarmHandled = true;
 		LogUtils.v(LOGTAG, "Snoozed: %s", mAlarmInstance);
 
-		final int accentColor = Utils.obtainStyledColor(this, R.attr.colorAccent, Color.RED);
-		setAnimatedFractions(1.0f /* snoozeFraction */, 0.0f /* dismissFraction */);
+		/// add for power off alarm 20160830 @{
+		if(PowerOffAlarm.bootFromPoweroffAlarm()){
+			sendBroadcast(new Intent(AlarmService.POWER_OFF_ALARM_SNOOZE_ACITION));
+			finish();
+		}
+		else
+		/// @}
+		{
+			final int accentColor = Utils.obtainStyledColor(this, R.attr.colorAccent, Color.RED);
+			setAnimatedFractions(1.0f /* snoozeFraction */, 0.0f /* dismissFraction */);
 
-		final int snoozeMinutes = AlarmStateManager.getSnoozedMinutes(this);
-		final String infoText = getResources().getQuantityString(R.plurals.alarm_alert_snooze_duration, snoozeMinutes,
-				snoozeMinutes);
-		final String accessibilityText = getResources().getQuantityString(R.plurals.alarm_alert_snooze_set,
-				snoozeMinutes, snoozeMinutes);
+			final int snoozeMinutes = AlarmStateManager.getSnoozedMinutes(this);
+			final String infoText = getResources().getQuantityString(R.plurals.alarm_alert_snooze_duration, snoozeMinutes,
+					snoozeMinutes);
+			final String accessibilityText = getResources().getQuantityString(R.plurals.alarm_alert_snooze_set,
+					snoozeMinutes, snoozeMinutes);
 
-		getAlertAnimator(mSnoozeButton, R.string.alarm_alert_snoozed_text, infoText, accessibilityText, accentColor,
-				accentColor).start();
+			getAlertAnimator(mSnoozeButton, R.string.alarm_alert_snoozed_text, infoText, accessibilityText, accentColor,
+					accentColor).start();
 
-		AlarmStateManager.setSnoozeState(this, mAlarmInstance, false /* showToast */);
+			AlarmStateManager.setSnoozeState(this, mAlarmInstance, false /* showToast */);
 
-		Events.sendAlarmEvent(R.string.action_dismiss, R.string.label_deskclock);
+			Events.sendAlarmEvent(R.string.action_dismiss, R.string.label_deskclock);
 
-		// Unbind here, otherwise alarm will keep ringing until activity
-		// finishes.
-		unbindAlarmService();
+			// Unbind here, otherwise alarm will keep ringing until activity
+			// finishes.
+			unbindAlarmService();
+		}
 	}
 
 	/**
@@ -560,21 +569,31 @@ public class AlarmActivity extends AppCompatActivity implements View.OnClickList
 		mAlarmHandled = true;
 		LogUtils.v(LOGTAG, "Dismissed: %s", mAlarmInstance);
 
-		if (mIsHolsterClosed) {
+		/// add for power off alarm 20160830 @{
+		if(PowerOffAlarm.bootFromPoweroffAlarm())
+		{
+			sendBroadcast(new Intent(AlarmService.POWER_OFF_ALARM_DISMISS_ACITION));
 			finish();
-		} else {
-			setAnimatedFractions(0.0f /* snoozeFraction */, 1.0f /* dismissFraction */);
-			getAlertAnimator(mDismissButton, R.string.alarm_alert_off_text, null /* infoText */,
-					getString(R.string.alarm_alert_off_text) /* accessibilityText */, Color.WHITE, mCurrentHourColor)
-							.start();
 		}
-		AlarmStateManager.setDismissState(this, mAlarmInstance);
+		else
+		/// @}
+		{
+			if (mIsHolsterClosed) {
+				finish();
+			} else {
+				setAnimatedFractions(0.0f /* snoozeFraction */, 1.0f /* dismissFraction */);
+				getAlertAnimator(mDismissButton, R.string.alarm_alert_off_text, null /* infoText */,
+						getString(R.string.alarm_alert_off_text) /* accessibilityText */, Color.WHITE, mCurrentHourColor)
+								.start();
+			}
+			AlarmStateManager.setDismissState(this, mAlarmInstance);
 
-		Events.sendAlarmEvent(R.string.action_dismiss, R.string.label_deskclock);
+			Events.sendAlarmEvent(R.string.action_dismiss, R.string.label_deskclock);
 
-		// Unbind here, otherwise alarm will keep ringing until activity
-		// finishes.
-		unbindAlarmService();
+			// Unbind here, otherwise alarm will keep ringing until activity
+			// finishes.
+			unbindAlarmService();		
+		}
 	}
 
 	/**

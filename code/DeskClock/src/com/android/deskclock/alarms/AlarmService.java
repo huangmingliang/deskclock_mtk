@@ -113,7 +113,7 @@ public class AlarmService extends Service {
 
     private static final String POWER_OFF_ALARM_START_ACITION = "com.android.deskclock.START_ALARM";
     private static final String POWER_OFF_ALARM_POWER_ON_ACITION = "com.android.deskclock.POWER_ON_ALARM";
-    private static final String POWER_OFF_ALARM_DISMISS_ACITION = "com.android.deskclock.DISMISS_ALARM";
+    public static final String POWER_OFF_ALARM_DISMISS_ACITION = "com.android.deskclock.DISMISS_ALARM";
     public static final String POWER_OFF_ALARM_SNOOZE_ACITION = "com.android.deskclock.SNOOZE_ALARM";
     private static boolean  mStopPlayReceiverRegistered = false;
     /// @}
@@ -278,7 +278,7 @@ public class AlarmService extends Service {
                 mInstanceAlarm = mCurrentAlarm;
                 AlarmNotifications.updateAlarmNotification(this, mCurrentAlarm);
             } else {
-            	// motify only for holster @{
+            	// modify only for holster @{
             	if(HolsterUtil.queryHallState())
             	{
             		startNotiChangeAlarmActivity();
@@ -289,6 +289,11 @@ public class AlarmService extends Service {
 //            	AlarmNotifications.showAlarmNotification(this, mCurrentAlarm);
             }
         } /// @}
+        /// add Transsion begin 20160830 to set Alarm alert of power off @{
+        else {
+        	startPoweroffAlarmActivity();
+		}
+        /// Transsion end   @}
         /**
          * M: Set alarmService foreground for the case that alarm's ringtone
          * stop because low memory to kill deskclock process @{
@@ -536,6 +541,12 @@ public class AlarmService extends Service {
     /// add only for holster @{
     private void startNotiChangeAlarmActivity() {
     	AlarmNotifications.startAlarmActivity(this, mCurrentAlarm);
+	}
+    /// @}
+    
+    /// add only for power off alarm holster 20160830@{
+    private void startPoweroffAlarmActivity() {
+    	AlarmNotifications.startAlarmActivityFromPowerOff(this, mCurrentAlarm);
 	}
     /// @}
 }

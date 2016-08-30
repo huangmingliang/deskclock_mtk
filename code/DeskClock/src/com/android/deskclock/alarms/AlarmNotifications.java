@@ -344,4 +344,12 @@ public final class AlarmNotifications {
     	}
     }
     ///@}
+    
+    /// add only for power off holster 20160830@{
+    public static void startAlarmActivityFromPowerOff(Context context, AlarmInstance instance){
+    	Intent intent = AlarmInstance.createIntent(context, AlarmActivity.class, instance.mId);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+    ///@}
 }
