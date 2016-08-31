@@ -339,7 +339,7 @@ public final class AlarmNotifications {
     	{
     		updateAlarmNotification(context, instance);
         	Intent intent = AlarmInstance.createIntent(context, AlarmActivity.class, instance.mId);
-        	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        	intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
     	}
     }
