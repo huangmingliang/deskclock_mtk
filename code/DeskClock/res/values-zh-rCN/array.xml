@@ -337,5 +337,25 @@
     <!-- Transsion add 20160829 @{ -->
     <item>雅温得</item>
     <!-- Transsion end 20160829 @} -->
+    
+    <!-- Transsion add 20160901 @{ -->
+    <item>马里</item>
+    <item>科特迪瓦</item>
+    <item>葡萄牙</item>
+    <item>摩洛哥</item>
+    <item>多哥</item>
+    <item>喀麦隆</item>
+    <item>乍得</item>
+    <item>安哥拉</item>
+    <item>赤道几内亚</item>
+    <item>中非</item>
+    <item>纳米比亚</item>
+    <item>刚果(金)</item>
+    <item>赞比亚</item>
+    <item>马拉维</item>
+    <item>布隆迪</item>
+    <item>马达加斯加</item>
+    <item>坦桑尼亚</item>
+    <!-- Transsion end 20160901 @} -->
   </string-array>
 </resources>

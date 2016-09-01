@@ -358,6 +358,26 @@
         <!-- Transsion add 20160829 @{ -->
         <item>Y<xliff:g id="separator">=</xliff:g>Yaounde</item>
         <!-- Transsion end 20160829 @} -->
+        
+        <!-- Transsion add 20160901 @{ -->
+        <item>M<xliff:g id="separator">=</xliff:g>Mali</item>
+        <item>Y<xliff:g id="separator">=</xliff:g>Yamoussoukro</item>
+        <item>P<xliff:g id="separator">=</xliff:g>Portugal</item>
+        <item>M<xliff:g id="separator">=</xliff:g>Morocco</item>
+        <item>T<xliff:g id="separator">=</xliff:g>Togo</item>
+        <item>D<xliff:g id="separator">=</xliff:g>Douala</item>
+        <item>N<xliff:g id="separator">=</xliff:g>N\'Djamena</item>
+        <item>L<xliff:g id="separator">=</xliff:g>Luanda</item>
+        <item>M<xliff:g id="separator">=</xliff:g>Malabo</item>
+        <item>B<xliff:g id="separator">=</xliff:g>Bangui</item>
+        <item>W<xliff:g id="separator">=</xliff:g>Windhoek</item>
+        <item>L<xliff:g id="separator">=</xliff:g>Lubumbashi</item>
+        <item>L<xliff:g id="separator">=</xliff:g>Lusaka</item>
+        <item>L<xliff:g id="separator">=</xliff:g>Lilongwe</item>
+        <item>B<xliff:g id="separator">=</xliff:g>Bujumbura</item>
+        <item>T<xliff:g id="separator">=</xliff:g>Tananarive</item>
+        <item>D<xliff:g id="separator">=</xliff:g>Dodoma</item>
+        <!-- Transsion end 20160901 @} -->
     </string-array>
 
     <string-array name="cities_tz" translatable="false">
@@ -678,8 +698,28 @@
         <item>America/Chicago</item>
         
         <!-- Transsion add 20160829 @{ -->
-        <item>Europe/London</item>
+        <item>Africa/Algiers</item><!-- timezone == +1 -->
         <!-- Transsion end 20160829 @} -->
+        
+        <!-- Transsion add 20160901  @{ -->
+        <item>Africa/Monrovia</item><!-- timezone == 0 -->
+        <item>Africa/Monrovia</item><!-- timezone == 0 -->
+        <item>Europe/London</item>  <!-- timezone == 0 summary +1-->
+        <item>Europe/London</item>  <!-- timezone == 0 summary +1-->
+        <item>Africa/Monrovia</item><!-- timezone == 0 -->
+        <item>Africa/Algiers</item><!-- timezone == +1 -->
+        <item>Africa/Algiers</item><!-- timezone == +1 -->
+        <item>Africa/Algiers</item><!-- timezone == +1 -->
+        <item>Africa/Algiers</item><!-- timezone == +1 -->
+        <item>Africa/Algiers</item><!-- timezone == +1 -->
+        <item>Europe/Paris</item>  <!-- timezone == +1 summary +2-->
+        <item>Africa/Harare</item> <!-- timezone == +2 -->
+        <item>Africa/Harare</item> <!-- timezone == +2 -->
+        <item>Africa/Harare</item> <!-- timezone == +2 -->
+        <item>Africa/Harare</item> <!-- timezone == +2 -->
+        <item>Africa/Mogadishu</item><!-- timezone == +3 -->
+        <item>Africa/Mogadishu</item><!-- timezone == +3 -->
+        <!-- Transsion end 20160901  @} -->
     </string-array>
 
     <string-array name="cities_id" translatable="false">
@@ -1002,5 +1042,25 @@
         <!-- Transsion add 20160829 @{ -->
         <item>C314</item>
         <!-- Transsion end 20160829 @} -->
+        
+        <!-- Transsion add 20160901 @{ -->
+        <item>C315</item>
+        <item>C316</item>
+        <item>C317</item>
+        <item>C318</item>
+        <item>C319</item>
+        <item>C320</item>
+        <item>C321</item>
+        <item>C322</item>
+        <item>C323</item>
+        <item>C324</item>
+        <item>C325</item>
+        <item>C326</item>
+        <item>C327</item>
+        <item>C328</item>
+        <item>C329</item>
+        <item>C330</item>
+        <item>C331</item>
+        <!-- Transsion end 20160901 @} -->
     </string-array>
 </resources>

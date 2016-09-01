@@ -336,5 +336,25 @@
     <!-- Transsion add 20160829 @{ -->
     <item>Yaounde</item>
     <!-- Transsion end 20160829 @} -->
+    
+    <!-- Transsion add 20160901 @{ -->
+    <item>Mali</item>
+    <item>Yamoussoukro</item>
+    <item>Portugal</item>
+    <item>Morocco</item>
+    <item>Togo</item>
+    <item>Douala</item>
+    <item>N\'Djamena</item>
+    <item>Luanda</item>
+    <item>Malabo</item>
+    <item>Bangui</item>
+    <item>Windhoek</item>
+    <item>Lubumbashi</item>
+    <item>Lusaka</item>
+    <item>Lilongwe</item>
+    <item>Bujumbura</item>
+    <item>Tananarive</item>
+    <item>Dodoma</item>
+    <!-- Transsion end 20160901 @} -->
   </string-array>
 </resources>
