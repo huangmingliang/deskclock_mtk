@@ -360,11 +360,11 @@
         <!-- Transsion end 20160829 @} -->
         
         <!-- Transsion add 20160901 @{ -->
-        <item>M<xliff:g id="separator">=</xliff:g>Mali</item>
+        <item>M<xliff:g id="separator">=</xliff:g>Bamako</item>
         <item>Y<xliff:g id="separator">=</xliff:g>Yamoussoukro</item>
-        <item>P<xliff:g id="separator">=</xliff:g>Portugal</item>
-        <item>M<xliff:g id="separator">=</xliff:g>Morocco</item>
-        <item>T<xliff:g id="separator">=</xliff:g>Togo</item>
+        <item>L<xliff:g id="separator">=</xliff:g>Lisbon</item>
+        <item>R<xliff:g id="separator">=</xliff:g>Rabat</item>
+        <item>T<xliff:g id="separator">=</xliff:g>Lome</item>
         <item>D<xliff:g id="separator">=</xliff:g>Douala</item>
         <item>N<xliff:g id="separator">=</xliff:g>N\'Djamena</item>
         <item>L<xliff:g id="separator">=</xliff:g>Luanda</item>
