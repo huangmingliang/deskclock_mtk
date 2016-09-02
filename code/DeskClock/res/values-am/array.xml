@@ -318,5 +318,42 @@
     <item msgid="1641840677391275004">"ፓ<xliff:g id="SEPARATOR">=</xliff:g>ፓራማሪቦ"</item>
     <item msgid="7317049454800260290">"ኲ<xliff:g id="SEPARATOR">=</xliff:g>ኲቶ"</item>
     <item msgid="4524380876433343244">"ል<xliff:g id="SEPARATOR">=</xliff:g>ልዩብልያና"</item>
+    
+    <!-- add more cities-->
+    <item>"Aklavik"</item>
+    <item>"በ Montgomery"</item>
+    <item>"የጄኔቫ"</item>
+    <item>"የኦዴሳ"</item>
+    <item>"ኤደን"</item>
+    <item>"አቡ ዳቢ"</item>
+    <item>"ታሽከንት"</item>
+    <item>"የቭላዲቮስቶክ (የቭላዲቮስቶክ)"</item>
+    <item>"ካምቻትካ"</item>
+    <item>"በሱቫ"</item>
+    <item>"ዌሊንግተን"</item>
+    <item>"ቻታም ደሴቶች"</item>
+    <item>"ቅዱስ ጳውሎስ (አሜሪካ)"</item>
+    
+    <!-- Add more cities transsion -->
+    <item>መድረሻና</item>
+    <!-- Transsion add 20160901 @{ -->
+    <item>ባማኮ</item>
+    <item>Yamoussoukro</item>
+    <item>ሊዝበን</item>
+    <item>Rabat</item>
+    <item>ሎሜ</item>
+    <item>ዱዋላ</item>
+    <item>N\'Djamena</item>
+    <item>ሉዋንዳ</item>
+    <item>ማላቦ</item>
+    <item>ባንግዊ</item>
+    <item>ዊንድሁክ</item>
+    <item>ሉቡምባሺ</item>
+    <item>ሉሳካ</item>
+    <item>ሊሎንግዌ</item>
+    <item>ቡጁምቡራ</item>
+    <item>Tananarive</item>
+    <item>Dodoma</item>
+    <!-- Transsion end 20160901 @} -->
   </string-array>
 </resources>

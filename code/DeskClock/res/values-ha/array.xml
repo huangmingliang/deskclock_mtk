@@ -12,10 +12,11 @@
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
-    limitations under the License
-  -->
+    limitations under the License
+-->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
     <!--
     The city names are presented to the user in an alphabetically-sorted list with section headers.
     The section header is the "index" of all the cities in the section. By default, the section
@@ -35,7 +36,7 @@
 
     This will NOT change the sort order of the cities list. It will solve issues where a city is
     mistakenly listed under its own index instead of being included in a section immediately
-    before or after its listing.
+    before or after its listing.
     -->
 
     <string-array name="cities_names">
@@ -340,7 +341,7 @@
         <item>Q<xliff:g id="separator">=</xliff:g>Quito</item>
         <item>L<xliff:g id="separator">=</xliff:g>Ljubljana</item>
 
-        <!-- M:add more cities-->
+        <!-- M:add more cities -->
         <item>A<xliff:g id="separator">=</xliff:g>Aklavik</item>
         <item>M<xliff:g id="separator">=</xliff:g>Montgomery</item>
         <item>G<xliff:g id="separator">=</xliff:g>Geneva</item>
@@ -354,10 +355,29 @@
         <item>W<xliff:g id="separator">=</xliff:g>Wellington</item>
         <item>C<xliff:g id="separator">=</xliff:g>Chatham Island</item>
         <item>S<xliff:g id="separator">=</xliff:g>St.Paul(America)</item>
-        
+
         <!-- Transsion add 20160829 @{ -->
         <item>Yaounde</item>
         <!-- Transsion end 20160829 @} -->
+        <!-- Transsion add 20160901 @{ -->
+        <item>Bamako</item>
+        <item>Yamoussoukro</item>
+        <item>Lisbon</item>
+        <item>Rabat</item>
+        <item>Lome</item>
+        <item>Douala</item>
+        <item>N\'Djamena</item>
+        <item>Luanda</item>
+        <item>Malabo</item>
+        <item>Bangui</item>
+        <item>Windhoek</item>
+        <item>Lubumbashi</item>
+        <item>Lusaka</item>
+        <item>Lilongwe</item>
+        <item>Bujumbura</item>
+        <item>Antananarivo</item>
+        <item>Dodoma</item>
+        <!-- Transsion end 20160901 @} -->
     </string-array>
 
 </resources>

@@ -339,23 +339,23 @@
     <!-- Transsion end 20160829 @} -->
     
     <!-- Transsion add 20160901 @{ -->
-    <item>马里</item>
-    <item>科特迪瓦</item>
-    <item>葡萄牙</item>
-    <item>摩洛哥</item>
-    <item>多哥</item>
-    <item>喀麦隆</item>
-    <item>乍得</item>
-    <item>安哥拉</item>
-    <item>赤道几内亚</item>
-    <item>中非</item>
-    <item>纳米比亚</item>
-    <item>刚果(金)</item>
-    <item>赞比亚</item>
-    <item>马拉维</item>
-    <item>布隆迪</item>
-    <item>马达加斯加</item>
-    <item>坦桑尼亚</item>
+    <item>巴马科</item>
+    <item>亚穆苏克罗</item>
+    <item>里斯本</item>
+    <item>拉巴特</item>
+    <item>洛美</item>
+    <item>杜阿拉</item>
+    <item>恩贾梅纳</item>
+    <item>罗安达</item>
+    <item>马拉博</item>
+    <item>班吉</item>
+    <item>温得和克</item>
+    <item>卢本巴希</item>
+    <item>卢萨卡</item>
+    <item>利隆圭</item>
+    <item>布琼布拉</item>
+    <item>塔那那利佛</item>
+    <item>多多马</item>
     <!-- Transsion end 20160901 @} -->
   </string-array>
 </resources>

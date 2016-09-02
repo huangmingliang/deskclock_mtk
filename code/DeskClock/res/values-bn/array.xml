@@ -333,5 +333,24 @@
     <!-- Transsion add 20160829 @{ -->
     <item>এওনডে</item>
     <!-- Transsion end 20160829 @} -->
+    <!-- Transsion add 20160901 @{ -->
+    <item>বামাকো</item>
+    <item>Yamoussoukro</item>
+    <item>লিসবন</item>
+    <item>রাবাত</item>
+    <item>লোম</item>
+    <item>ডুযলা</item>
+    <item>N\'Djamena</item>
+    <item>লুয়ান্ডা</item>
+    <item>কোয়াটার</item>
+    <item>বাঙ্গুই</item>
+    <item>উইন্ডহোক</item>
+    <item>লুবুম্বাশি</item>
+    <item>উত্তুরে</item>
+    <item>লাইল্গ</item>
+    <item>বুজুম্বুরা</item>
+    <item>Tananarive</item>
+    <item>Dodoma</item>
+    <!-- Transsion end 20160901 @} -->
     </string-array>
 </resources>
