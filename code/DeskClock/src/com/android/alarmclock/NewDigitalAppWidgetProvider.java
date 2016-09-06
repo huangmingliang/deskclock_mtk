@@ -28,6 +28,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -69,6 +70,8 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 	private PendingIntent mPendingIntent;
 	// Lazily creating this name to use with the AppWidgetManager
 	private ComponentName mComponentName;
+	
+	private TextClock mTextClock;
 
 	public NewDigitalAppWidgetProvider() {
 	}
@@ -94,14 +97,13 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		// }
 		// super.onReceive(context, intent);
 		if (ACTION_ON_QUARTER_HOUR.equals(action)
-//				|| Intent.ACTION_DATE_CHANGED.equals(action)
+				|| Intent.ACTION_DATE_CHANGED.equals(action)
 //				|| Intent.ACTION_TIMEZONE_CHANGED.equals(action)
 //				|| Intent.ACTION_TIME_CHANGED.equals(action)
-//				|| Intent.ACTION_LOCALE_CHANGED.equals(action)
+				|| Intent.ACTION_LOCALE_CHANGED.equals(action)
 				|| ACTION_APP_WIDGET_UPDATE.equals(action)
 				|| ACTION_APPWIDGET_ENABLED.equals(action)
 				|| ACTION_APP_SERVICE_UPDATE.equals(action)) {
-			Log.i(TAG, "oncreate: ");
 			AppWidgetManager appWidgetManager = AppWidgetManager
 					.getInstance(context);
 			if (appWidgetManager != null) {
@@ -272,14 +274,29 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		// Log.v(TAG, "DigitalWidget sets next alarm string to null");
 		// }
 		// }
+		if(null == mTextClock){
+			mTextClock = new TextClock(context);
+		}
 		if (null != widget) {
-			TextClock textClock = new TextClock(context);
-			textClock.setFormat12Hour(Utils
-					.get12ModeFormat(dip2px(context, 40f)));
-			textClock.setFormat24Hour(Utils.get24ModeFormat());
+//			TextClock textClock = new TextClock(context);
+//			textClock.setFormat12Hour(Utils
+//					.get12ModeFormat(dip2px(context, 40f)));
+//			textClock.setFormat24Hour(Utils.get24ModeFormat());
+//			widget.setImageViewBitmap(R.id.the_clock,
+//					buildUpdate(textClock.getText().toString() + "", context));
+//			textClock = null;
+			
+			/// modify am/pm font size 20160906 @{
+//			mTextClock.setFormat12Hour(Utils
+//					.get12ModeFormat(dip2px(context, 40f)));
+			mTextClock.setFormat12Hour("aa");
+			String ampm = mTextClock.getText().toString() + "";
+			mTextClock.setFormat12Hour("h:mm");
+			String time = mTextClock.getText().toString() + "";
+			mTextClock.setFormat24Hour(Utils.get24ModeFormat());
 			widget.setImageViewBitmap(R.id.the_clock,
-					buildUpdate(textClock.getText().toString() + "", context));
-			textClock = null;
+					buildUpdate(time, ampm, context));
+			/// modify am/pm font size 20160906 @}
 		}
 	}
 
@@ -365,7 +382,7 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		return (int) (dipValue * scale + 0.5f);
 	}
 
-	private static Bitmap buildUpdate(String time, Context context) {
+	private static Bitmap buildUpdate(String time, String ampm, Context context) {
 		int width = dip2px(context, 256f);
 		int height = dip2px(context, 52f);
 		Bitmap myBitmap = Bitmap.createBitmap(width, height,
@@ -380,10 +397,31 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		paint.setTypeface(tf);
 		paint.setStyle(Paint.Style.FILL);
 		paint.setColor(Color.WHITE);
-		paint.setTextSize(dip2px(context, 40f));
 		paint.setShadowLayer(4, 1, 1, 0x05000000);
-		myCanvas.drawText(time, dip2px(context, 10), dip2px(context, 40f),
-				paint);
+		
+		/// modify am/pm font size 20160906 @{
+		/// am/pm is on right
+		if(drawAmPmOnRight()){
+			paint.setTextSize(dip2px(context, 40f));
+			myCanvas.drawText(time, dip2px(context, 10), dip2px(context, 40f),
+					paint);
+			float x = paint.measureText(time);
+			paint.setTextSize(20f);
+			myCanvas.drawText(ampm, x+25, dip2px(context, 40f),
+					paint);
+		}
+		/// am/pm is on left
+		else
+		{
+			float x = paint.measureText(time);
+			paint.setTextSize(20f);
+			myCanvas.drawText(ampm, dip2px(context, 10), dip2px(context, 40f),
+					paint);
+			paint.setTextSize(dip2px(context, 40f));
+			myCanvas.drawText(time, x+25, dip2px(context, 40f),
+					paint);
+		}
+		/// modify am/pm font size 20160906 @}
 		return myBitmap;
 	}
 
@@ -418,4 +456,15 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 			}
 		}
 	};
+	
+	private static boolean drawAmPmOnRight(){
+		String county = Resources.getSystem().getConfiguration().locale.getCountry();
+		switch (county) {
+		case "CN":
+		case "TW":
+		return false;	
+		default:
+	    return true;
+		}
+	}
 }
