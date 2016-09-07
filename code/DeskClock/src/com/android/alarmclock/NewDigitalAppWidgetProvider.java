@@ -36,6 +36,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -289,11 +290,18 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 			/// modify am/pm font size 20160906 @{
 //			mTextClock.setFormat12Hour(Utils
 //					.get12ModeFormat(dip2px(context, 40f)));
-			mTextClock.setFormat12Hour("aa");
-			String ampm = mTextClock.getText().toString() + "";
-			mTextClock.setFormat12Hour("h:mm");
-			String time = mTextClock.getText().toString() + "";
-			mTextClock.setFormat24Hour(Utils.get24ModeFormat());
+			String ampm = "";
+			String time = "";
+			if(!mTextClock.is24HourModeEnabled())
+			{
+				mTextClock.setFormat12Hour("aa");
+				ampm = mTextClock.getText().toString() + "";
+				mTextClock.setFormat12Hour("h:mm");
+				time = mTextClock.getText().toString() + "";
+			}else {
+				mTextClock.setFormat24Hour(Utils.get24ModeFormat());
+				time = mTextClock.getText().toString() + "";
+			}
 			widget.setImageViewBitmap(R.id.the_clock,
 					buildUpdate(time, ampm, context));
 			/// modify am/pm font size 20160906 @}
@@ -418,7 +426,8 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 			myCanvas.drawText(ampm, dip2px(context, 10), dip2px(context, 40f),
 					paint);
 			paint.setTextSize(dip2px(context, 40f));
-			myCanvas.drawText(time, x+25, dip2px(context, 40f),
+			x = TextUtils.isEmpty(ampm) ? x : x+25;
+			myCanvas.drawText(time, x, dip2px(context, 40f),
 					paint);
 		}
 		/// modify am/pm font size 20160906 @}
