@@ -410,7 +410,7 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		/// modify am/pm font size 20160906 @{
 		/// am/pm is on right
 		if(drawAmPmOnRight()){
-			paint.setTextSize(dip2px(context, 40f));
+			paint.setTextSize(dip2px(context, 60f));
 			myCanvas.drawText(time, dip2px(context, 10), dip2px(context, 40f),
 					paint);
 			float x = paint.measureText(time);
@@ -425,7 +425,7 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 			paint.setTextSize(20f);
 			myCanvas.drawText(ampm, dip2px(context, 10), dip2px(context, 40f),
 					paint);
-			paint.setTextSize(dip2px(context, 40f));
+			paint.setTextSize(dip2px(context, 60f));
 			x = TextUtils.isEmpty(ampm) ? x : x+25;
 			myCanvas.drawText(time, x, dip2px(context, 40f),
 					paint);
