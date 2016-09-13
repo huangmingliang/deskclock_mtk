@@ -30,7 +30,6 @@ import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
-import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 
@@ -40,9 +39,6 @@ import com.android.deskclock.LogUtils;
 import com.android.deskclock.R;
 import com.android.deskclock.events.Events;
 import com.android.deskclock.provider.AlarmInstance;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This service is in charge of starting/stopping the alarm. It will bring up and manage the
@@ -121,6 +117,10 @@ public class AlarmService extends Service {
     /// add only for holster @{
     private static final String ALARM_NOTIF_CHANGE_TO_ACTIVITY = "com.android.systemui.clockuevent";
     /// @}
+    
+    /// add for boot 20160913 @{
+    public static final String NORMAL_BOOT_ACTION = "android.intent.action.normal.boot";
+    /// add for boot 20160913 @}
 
     private final BroadcastReceiver mStopPlayReceiver = new BroadcastReceiver() {
         @Override
@@ -135,7 +135,8 @@ public class AlarmService extends Service {
                 AlarmStateManager.setSnoozeState(context, mCurrentAlarm, false);
                 /// M: Now it is time to delete the unused backup ringtone
                 PowerOffAlarm.deleteRingtone(context, mCurrentAlarm);
-                shutDown(context);
+                // modify not shutdown 20160913
+                //shutDown(context);
             } else {
                 /// M: Power on action or pre_shutdown, so set dismiss state and don't shut down
                 AlarmStateManager.setDismissState(context, mCurrentAlarm);
@@ -143,7 +144,8 @@ public class AlarmService extends Service {
                 PowerOffAlarm.deleteRingtone(context, mCurrentAlarm);
                 /// M: Send by the PowerOffAlarm AlarmAlertFullScreen, set dismiss state and shut down
                 if (intent.getAction().equals(POWER_OFF_ALARM_DISMISS_ACITION)) {
-                    shutDown(context);
+                	// modify not shutdown 20160913
+                	//shutDown(context);
                 }
             }
         }
@@ -325,7 +327,7 @@ public class AlarmService extends Service {
         }
         mStateListeners.clear();
         */
-
+        
         sendBroadcast(new Intent(ALARM_DONE_ACTION));
 
         mCurrentAlarm = null;
@@ -348,7 +350,9 @@ public class AlarmService extends Service {
             }
             switch (action) {
             case ALARM_NOTIF_CHANGE_TO_ACTIVITY:
-            	startNotiChangeAlarmActivity();
+            	if(!PowerOffAlarm.bootFromPoweroffAlarm()){
+            		startNotiChangeAlarmActivity();
+            	}
             	break;
                 case ALARM_SNOOZE_ACTION:
                     // Set the alarm state to snoozed.

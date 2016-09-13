@@ -101,6 +101,14 @@ public class AlarmActivity extends AppCompatActivity implements View.OnClickList
 					dismiss();
 					break;
 				case AlarmService.ALARM_DONE_ACTION:
+					/// add lk for power off alarm timeout @{
+			        if(PowerOffAlarm.bootFromPoweroffAlarm())
+			        {
+					    mAlarmHandled = true;
+					    sendBroadcast(new Intent(AlarmService.ALARM_DONE_ACTION));
+					    sendBroadcast(new Intent(AlarmService.NORMAL_BOOT_ACTION));
+			        }
+			       /// add lk for power off alarm timeout @}
 					finish();
 					break;
 				// Add for holster
@@ -179,7 +187,7 @@ public class AlarmActivity extends AppCompatActivity implements View.OnClickList
 
 	private ViewGroup mHolsterContainer;
 	private View mHolsterView;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -534,7 +542,9 @@ public class AlarmActivity extends AppCompatActivity implements View.OnClickList
 
 		/// add for power off alarm 20160830 @{
 		if(PowerOffAlarm.bootFromPoweroffAlarm()){
-			sendBroadcast(new Intent(AlarmService.POWER_OFF_ALARM_SNOOZE_ACITION));
+			AlarmStateManager.setSnoozeState(this, mAlarmInstance, false);
+			Events.sendAlarmEvent(R.string.action_dismiss, R.string.label_deskclock);
+			sendBroadcast(new Intent(AlarmService.NORMAL_BOOT_ACTION));
 			finish();
 		}
 		else
@@ -572,7 +582,9 @@ public class AlarmActivity extends AppCompatActivity implements View.OnClickList
 		/// add for power off alarm 20160830 @{
 		if(PowerOffAlarm.bootFromPoweroffAlarm())
 		{
-			sendBroadcast(new Intent(AlarmService.POWER_OFF_ALARM_DISMISS_ACITION));
+			AlarmStateManager.setDismissState(this, mAlarmInstance);
+			Events.sendAlarmEvent(R.string.action_dismiss, R.string.label_deskclock);
+			sendBroadcast(new Intent(AlarmService.NORMAL_BOOT_ACTION));
 			finish();
 		}
 		else
