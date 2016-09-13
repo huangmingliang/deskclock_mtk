@@ -421,7 +421,7 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		/// am/pm is on left
 		else
 		{
-			float x = paint.measureText(time);
+			float x = paint.measureText(ampm);
 			paint.setTextSize(20f);
 			myCanvas.drawText(ampm, dip2px(context, 10), dip2px(context, 40f),
 					paint);
