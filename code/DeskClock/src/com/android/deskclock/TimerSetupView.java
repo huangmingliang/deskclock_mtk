@@ -94,6 +94,9 @@ public class TimerSetupView extends LinearLayout implements Button.OnClickListen
         mDelete = (ImageButton)findViewById(R.id.delete);
         mDelete.setOnClickListener(this);
         mDelete.setOnLongClickListener(this);
+        if(mInputPointer == -1){
+        	mDelete.setEnabled(false);
+        }
         mDivider = findViewById(R.id.divider);
 
         mNumbers[1] = (Button)v1.findViewById(R.id.key_left);
@@ -140,7 +143,8 @@ public class TimerSetupView extends LinearLayout implements Button.OnClickListen
     }
 
     public void updateDeleteButtonAndDivider() {
-        final boolean enabled = isInputHasValue();
+//        final boolean enabled = isInputHasValue();
+        final boolean enabled = mInputPointer != -1;
         if (mDelete != null) {
             mDelete.setEnabled(enabled);
             mDivider.setBackgroundColor(enabled ? mColorAccent : mColorHairline);
@@ -148,7 +152,9 @@ public class TimerSetupView extends LinearLayout implements Button.OnClickListen
     }
 
     private boolean isInputHasValue() {
-        return mInputPointer != -1;
+//        return mInputPointer != -1;
+    	boolean show = (mDelete.isEnabled() && mInputPointer == -1) ? true : mInputPointer != -1;
+    	return show;
     }
 
     private void setFabButtonVisibility(boolean show) {
