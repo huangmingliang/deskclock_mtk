@@ -350,7 +350,9 @@ public class AlarmService extends Service {
             }
             switch (action) {
             case ALARM_NOTIF_CHANGE_TO_ACTIVITY:
-			    startNotiChangeAlarmActivity();
+			    if(!PowerOffAlarm.bootFromPoweroffAlarm()){
+            		startNotiChangeAlarmActivity();
+            	}
             	break;
                 case ALARM_SNOOZE_ACTION:
                     // Set the alarm state to snoozed.
