@@ -405,12 +405,12 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 		paint.setTypeface(tf);
 		paint.setStyle(Paint.Style.FILL);
 		paint.setColor(Color.WHITE);
-		paint.setShadowLayer(4, 1, 1, 0x05000000);
+		paint.setShadowLayer(5, 2, 0, 0x12000000);
 		
 		/// modify am/pm font size 20160906 @{
 		/// am/pm is on right
 		if(drawAmPmOnRight()){
-			paint.setTextSize(dip2px(context, 60f));
+			paint.setTextSize(dip2px(context, 54f));
 			myCanvas.drawText(time, dip2px(context, 10), dip2px(context, 40f),
 					paint);
 			float x = paint.measureText(time);
@@ -425,7 +425,7 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 			paint.setTextSize(20f);
 			myCanvas.drawText(ampm, dip2px(context, 10), dip2px(context, 40f),
 					paint);
-			paint.setTextSize(dip2px(context, 60f));
+			paint.setTextSize(dip2px(context, 54f));
 			x = TextUtils.isEmpty(ampm) ? x : x+25;
 			myCanvas.drawText(time, x, dip2px(context, 40f),
 					paint);
