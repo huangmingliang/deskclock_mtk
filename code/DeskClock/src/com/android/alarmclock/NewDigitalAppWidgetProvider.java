@@ -80,6 +80,7 @@ public class NewDigitalAppWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onEnabled(Context context) {
 		super.onEnabled(context);
+        register(context);
 		startAlarmOnQuarterHour(context);
 	}
 
