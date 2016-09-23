@@ -22,14 +22,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 /**
  * Base activity class that changes with window's background color dynamically based on the
  * current hour.
  */
 public class BaseActivity extends AppCompatActivity {
+	
+	private String TAG=getClass().getSimpleName();
 
     /**
      * Key used to save/restore the current background color from the saved instance state.
@@ -54,11 +59,11 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final int currentColor = Utils.getCurrentHourColor();
+        /*final int currentColor = Utils.getCurrentHourColor();
         final int backgroundColor = savedInstanceState == null ? currentColor
                 : savedInstanceState.getInt(KEY_BACKGROUND_COLOR, currentColor);
-        setBackgroundColor(backgroundColor, false /* animate */);
+        setBackgroundColor(backgroundColor, false  animate );*/
+        setBackgroundColor();
     }
 
     @Override
@@ -66,7 +71,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onResume();
 
         // Register mOnTimeChangedReceiver to update current background color periodically.
-        if (mOnTimeChangedReceiver == null) {
+        /*if (mOnTimeChangedReceiver == null) {
             final IntentFilter filter = new IntentFilter();
             filter.addAction(Intent.ACTION_TIME_TICK);
             filter.addAction(Intent.ACTION_TIME_CHANGED);
@@ -74,13 +79,13 @@ public class BaseActivity extends AppCompatActivity {
             registerReceiver(mOnTimeChangedReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    setBackgroundColor(Utils.getCurrentHourColor(), true /* animate */);
+                    setBackgroundColor(Utils.getCurrentHourColor(), true  animate );
                 }
             }, filter);
         }
 
         // Ensure the background color is up-to-date.
-        setBackgroundColor(Utils.getCurrentHourColor(), true /* animate */);
+        setBackgroundColor(Utils.getCurrentHourColor(), true  animate );*/
     }
 
     @Override
@@ -88,10 +93,10 @@ public class BaseActivity extends AppCompatActivity {
         super.onPause();
 
         // Stop updating the background color when not active.
-        if (mOnTimeChangedReceiver != null) {
+        /*if (mOnTimeChangedReceiver != null) {
             unregisterReceiver(mOnTimeChangedReceiver);
             mOnTimeChangedReceiver = null;
-        }
+        }*/
     }
 
     @Override
@@ -99,9 +104,9 @@ public class BaseActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
 
         // Save the background color so we can animate the change when the activity is restored.
-        if (mBackground != null) {
-            outState.putInt(KEY_BACKGROUND_COLOR, mBackground.getColor());
-        }
+//        if (mBackground != null) {
+//            outState.putInt(KEY_BACKGROUND_COLOR, mBackground.getColor());
+//        }
     }
 
     /**
@@ -125,5 +130,11 @@ public class BaseActivity extends AppCompatActivity {
                 mBackground.setColor(color);
             }
         }
+    }
+    
+    protected void setBackgroundColor(){
+    	Log.d(TAG, "Setup window background color");
+    	Drawable drawable=ContextCompat.getDrawable(this, R.drawable.bg_app);
+    	getWindow().setBackgroundDrawable(drawable);
     }
 }

@@ -263,8 +263,9 @@ public class DeskClock extends BaseActivity
 
             // Set the background color to initially match the theme value so that we can
             // smoothly transition to the dynamic color.
-            setBackgroundColor(getResources().getColor(R.color.default_background),
-                    false /* animate */);
+           /* setBackgroundColor(getResources().getColor(R.color.default_background),
+                    false  animate );*/
+            setBackgroundColor();
         }
         // Timer receiver may ask the app to go to the timer fragment if a timer expired
         Intent i = getIntent();
