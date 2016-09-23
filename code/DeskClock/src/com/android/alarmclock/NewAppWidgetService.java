@@ -1,17 +1,45 @@
 package com.android.alarmclock;
 
 import com.android.deskclock.worldclock.Cities;
+import com.android.internal.content.NativeLibraryHelper.Handle;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Message;
+import android.util.Log;
 
 public class NewAppWidgetService extends Service {
 
+	private String TAG="NewAppWidgetService";
 	private String ACTION_TIME_SET = "android.intent.action.TIME_SET";
+	private int ACTION_APP_SERVICE_UPDATE=100;
+	private HandlerThread handlerThread;
+	private Context mContext;
+	private Handler handler;
+	
+	private void initHandler(){
+		handlerThread=new HandlerThread("receiver");
+		handlerThread.start();
+		handler=new Handler(handlerThread.getLooper()){
+
+			@Override
+			public void handleMessage(Message msg) {
+				// TODO Auto-generated method stub
+				super.handleMessage(msg);
+				if (msg.what==ACTION_APP_SERVICE_UPDATE) {
+					Log.i(TAG, "handler-->sendBroadcast");
+					mContext.sendBroadcast(new Intent(NewDigitalAppWidgetProvider.ACTION_APP_SERVICE_UPDATE));
+				}
+			}
+			
+		};
+	}
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -21,6 +49,7 @@ public class NewAppWidgetService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		initHandler();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_TIME_TICK);
 		filter.addAction(Intent.ACTION_TIME_CHANGED);
@@ -48,7 +77,11 @@ public class NewAppWidgetService extends Service {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			context.sendBroadcast(new Intent(NewDigitalAppWidgetProvider.ACTION_APP_SERVICE_UPDATE));
+			mContext=context;
+			handler.sendEmptyMessage(ACTION_APP_SERVICE_UPDATE);
+			//context.sendBroadcast(new Intent(NewDigitalAppWidgetProvider.ACTION_APP_SERVICE_UPDATE));
 		}
 	};
+	
+	
 }
