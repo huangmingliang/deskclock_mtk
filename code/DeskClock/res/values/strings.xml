@@ -22,7 +22,7 @@
 
     <!-- Title for AlarmClock activity -->
     <!-- Label for the Alarms activity displayed on-screen when that activity must be represented to the user. -->
-    <string name="alarm_list_title">Alarms</string>
+    <string name="alarm_list_title">Alarms,</string>
 
     <!-- Menu item on Alarm Clock screen: Add alarm -->
     <string name="add_alarm">Add alarm</string>
@@ -870,7 +870,7 @@
     <!-- Font size for AM/PM should match label_font_size -->
     <string name="world_clock_12_hours_format" translatable="false">h&#58;mm&#8202;<b><font size="14" face="sans-serif">a</font></b></string>
     <!-- Font size for AM/PM should match alarm_label_size -->
-    <string name="alarm_time_12_hours_format" translatable="false">h&#58;mm&#8202;<b><font size="24" face="sans-serif">a</font></b></string>
+    <string name="alarm_time_12_hours_format" translatable="false">h&#58;mm&#8202;<b><font size="12" face="sans-serif">a</font></b></string>
 
     <!-- String for no alarms -->
     <string name="no_alarms">No Alarms</string>
@@ -1142,5 +1142,10 @@
     
     <!-- Add for alarm clock hoslter -->
     <string name="alarm_hoslter_slide_right_stop">slide right stop</string>
+    
+    <!-- iteration 3 -->
+    <string name="alarm_time_bucket_am">AM</string>
+    <string name="alarm_time_bucket_pm">PM</string>
+    <string name="working_day">工作日</string>
 </resources>
 

@@ -23,7 +23,7 @@ import java.util.Calendar;
  * format specifiers. {@link android.widget.TextClock} Doesn't support a non ticking clock.
  */
 public class TextTime extends TextView {
-    public static final CharSequence DEFAULT_FORMAT_12_HOUR = "h:mm a";
+    public static final CharSequence DEFAULT_FORMAT_12_HOUR = "h:mm";
 
     public static final CharSequence DEFAULT_FORMAT_24_HOUR = "H:mm";
 

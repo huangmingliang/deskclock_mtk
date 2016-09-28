@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="lib" path="lib/framework.jar"/>
+	<classpathentry kind="lib" path="lib/framework.jar" sourcepath="D:/sdk/sdk/sources">
+		<attributes>
+			<attribute name="source_encoding" value="UTF-8"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/mediatek-common.jar"/>
 	<classpathentry kind="lib" path="lib/mediatek-framework.jar"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>

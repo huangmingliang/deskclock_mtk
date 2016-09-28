@@ -12,8 +12,7 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
--->
+  limitations under the License.-->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.deskclock"
@@ -24,7 +23,7 @@
     <original-package android:name="com.android.deskclock" />
 
     <uses-sdk
-        android:minSdkVersion="19"
+        android:minSdkVersion="23"
         android:targetSdkVersion="23" />
 
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />

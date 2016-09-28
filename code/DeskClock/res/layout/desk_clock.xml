@@ -55,8 +55,8 @@
             <ImageButton
                 android:id="@+id/fab"
                 style="@style/FabStyle"
-                android:layout_width="@dimen/footer_button_size"
-                android:layout_height="@dimen/footer_button_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/footer_button_layout_margin"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/floating_action_button"

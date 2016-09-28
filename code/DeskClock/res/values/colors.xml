@@ -36,7 +36,7 @@
     <color name="blackish_selected">#0cffffff</color>
     <color name="transparent">#00000000</color>
 
-    <color name="color_accent">#DA4336</color>
+    <color name="color_accent">#ffb310</color>
     <color name="hairline">#28ffffff</color>
     <color name="bright_foreground_light_disabled">#80000000</color>
 
@@ -55,5 +55,5 @@
     <color name="notification_icon_bg">#1C3742</color>
     <color name="notification_pressed">#333333</color>
     <color name="notification_divider">#272727</color>
-
+    <color name="list_divider">#19ffffff</color>
 </resources>

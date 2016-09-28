@@ -53,6 +53,7 @@ import android.text.format.DateUtils;
 import android.text.format.Time;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
+import android.text.style.SuperscriptSpan;
 import android.text.style.TypefaceSpan;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,11 +61,13 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextClock;
 import android.widget.TextView;
+
 import com.android.deskclock.provider.AlarmInstance;
 import com.android.deskclock.provider.DaysOfWeek;
 import com.android.deskclock.stopwatch.Stopwatches;
 import com.android.deskclock.timer.Timers;
 import com.android.deskclock.worldclock.CityObj;
+
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -645,8 +648,10 @@ public class Utils {
             return pattern;
         }
         Spannable sp = new SpannableString(pattern);
-        sp.setSpan(new StyleSpan(Typeface.NORMAL), amPmPos, amPmPos + 1,
-                Spannable.SPAN_POINT_MARK);
+        /*sp.setSpan(new StyleSpan(Typeface.NORMAL), amPmPos, amPmPos + 1,
+                Spannable.SPAN_POINT_MARK);*/
+        sp.setSpan(new SuperscriptSpan(), amPmPos, amPmPos+1, 
+        		Spannable.SPAN_POINT_MARK);
         sp.setSpan(new AbsoluteSizeSpan(amPmFontSize), amPmPos, amPmPos + 1,
                 Spannable.SPAN_POINT_MARK);
         sp.setSpan(new TypefaceSpan("sans-serif"), amPmPos, amPmPos + 1,
