@@ -55,6 +55,7 @@ import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.SuperscriptSpan;
 import android.text.style.TypefaceSpan;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -79,6 +80,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class Utils {
+	private static final String TAG="Utils";
     private static final String PARAM_LANGUAGE_CODE = "hl";
 
     /**
@@ -635,8 +637,12 @@ public class Utils {
         String pattern = isJBMR2OrLater()
                 ? DateFormat.getBestDateTimePattern(Locale.getDefault(), "hma")
                 : context.getString(R.string.time_format_12_mode);
-
+        Log.d(TAG, "pattern="+pattern);
         // Remove the am/pm
+        if (pattern.contains("ah:mm")) {
+			pattern="h:mm a";
+		}
+        Log.d(TAG, "pattern="+pattern);
         if (amPmFontSize <= 0) {
             pattern.replaceAll("a", "").trim();
         }

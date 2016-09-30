@@ -35,6 +35,7 @@ import android.os.Handler;
 import android.text.format.DateUtils;
 import android.text.format.Time;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews.RemoteView;
 
@@ -45,12 +46,15 @@ import java.util.TimeZone;
  * minutes.
  */
 public class AnalogClock extends View {
+	
+	private String TAG=getClass().getName();
     private Time mCalendar;
 
     private final Drawable mHourHand;
     private final Drawable mMinuteHand;
     private final Drawable mSecondHand;
     private final Drawable mDial;
+    private final Drawable mDialCenterDot;
 
     private final int mDialWidth;
     private final int mDialHeight;
@@ -64,7 +68,7 @@ public class AnalogClock extends View {
     private boolean mChanged;
     private final Context mContext;
     private String mTimeZoneId;
-    private boolean mNoSeconds = false;
+    private boolean mNoSeconds = true;
 
     private final float mDotRadius;
     private final float mDotOffset;
@@ -88,6 +92,7 @@ public class AnalogClock extends View {
         mHourHand = r.getDrawable(R.drawable.clock_analog_hour_mipmap);
         mMinuteHand = r.getDrawable(R.drawable.clock_analog_minute_mipmap);
         mSecondHand = r.getDrawable(R.drawable.clock_analog_second_mipmap);
+        mDialCenterDot=r.getDrawable(R.drawable.clock_analog_center_dot_mipmap);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AnalogClock);
         mDotRadius = a.getDimension(R.styleable.AnalogClock_jewelRadius, 0);
@@ -153,7 +158,6 @@ public class AnalogClock extends View {
 
         float hScale = 1.0f;
         float vScale = 1.0f;
-
         if (widthMode != MeasureSpec.UNSPECIFIED && widthSize < mDialWidth) {
             hScale = (float) widthSize / (float) mDialWidth;
         }
@@ -167,7 +171,7 @@ public class AnalogClock extends View {
         }
 
         float scale = Math.min(hScale, vScale);
-
+        Log.d(TAG,"widthSize="+widthSize);
         setMeasuredDimension(resolveSizeAndState((int) (mDialWidth * scale), widthMeasureSpec, 0),
                 resolveSizeAndState((int) (mDialHeight * scale), heightMeasureSpec, 0));
     }
@@ -189,14 +193,13 @@ public class AnalogClock extends View {
 
         int availableWidth = getWidth();
         int availableHeight = getHeight();
-
         int x = availableWidth / 2;
         int y = availableHeight / 2;
 
         final Drawable dial = mDial;
+        final Drawable dialCenter=mDialCenterDot;
         int w = dial.getIntrinsicWidth();
         int h = dial.getIntrinsicHeight();
-
         boolean scaled = false;
 
         if (availableWidth < w || availableHeight < h) {
@@ -209,15 +212,15 @@ public class AnalogClock extends View {
 
         if (changed) {
             dial.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y + (h / 2));
+            dialCenter.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y + (h / 2));
         }
         dial.draw(canvas);
-
+        dialCenter.draw(canvas);
         if (mDotRadius > 0f && mDotPaint != null) {
             canvas.drawCircle(x, y - (h / 2) + mDotOffset, mDotRadius, mDotPaint);
         }
-
-        drawHand(canvas, mHourHand, x, y, mHour / 12.0f * 360.0f, changed);
         drawHand(canvas, mMinuteHand, x, y, mMinutes / 60.0f * 360.0f, changed);
+        drawHand(canvas, mHourHand, x, y, mHour / 12.0f * 360.0f, changed);
         if (!mNoSeconds) {
             drawHand(canvas, mSecondHand, x, y, mSeconds / 60.0f * 360.0f, changed);
         }

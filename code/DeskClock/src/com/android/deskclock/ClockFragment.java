@@ -58,7 +58,7 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
     private final static String TAG = "ClockFragment";
 
     private boolean mButtonsHidden = false;
-    private View mDigitalClock, mAnalogClock, mClockFrame, mHairline;
+    private View mAnalogClock, mClockFrame, mHairline;
     private WorldClockAdapter mAdapter;
     private ListView mList;
     private SharedPreferences mPrefs;
@@ -75,7 +75,7 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
                     || action.equals(Intent.ACTION_TIMEZONE_CHANGED)
                     || action.equals(Intent.ACTION_LOCALE_CHANGED);
             if (changed) {
-                Utils.updateDate(mDateFormat, mDateFormatForAccessibility, mClockFrame);
+                //Utils.updateDate(mDateFormat, mDateFormatForAccessibility, mClockFrame);
                 if (mAdapter != null) {
                     // *CHANGED may modify the need for showing the Home City
                     if (mAdapter.hasHomeCity() != mAdapter.needHomeCity()) {
@@ -86,12 +86,12 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
                     // Locale change: update digital clock format and
                     // reload the cities list with new localized names
                     if (action.equals(Intent.ACTION_LOCALE_CHANGED)) {
-                        if (mDigitalClock != null) {
+                        /*if (mDigitalClock != null) {
                             Utils.setTimeFormat(context,
                                 (TextClock) mDigitalClock.findViewById(R.id.digital_clock),
                                 context.getResources().getDimensionPixelSize(
                                     R.dimen.main_ampm_font_size));
-                        }
+                        }*/
                         mAdapter.loadCitiesDb(context);
                         mAdapter.notifyDataSetChanged();
                     }
@@ -99,7 +99,7 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
                 Utils.setQuarterHourUpdater(mHandler, mQuarterHourUpdater);
             }
             if (changed || action.equals(AlarmManager.ACTION_NEXT_ALARM_CLOCK_CHANGED)) {
-                Utils.refreshAlarm(getActivity(), mClockFrame);
+                //Utils.refreshAlarm(getActivity(), mClockFrame);
             }
         }
     };
@@ -111,7 +111,7 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
             ? new ContentObserver(mHandler) {
                 @Override
                 public void onChange(boolean selfChange) {
-                    Utils.refreshAlarm(ClockFragment.this.getActivity(), mClockFrame);
+                    //Utils.refreshAlarm(ClockFragment.this.getActivity(), mClockFrame);
                 }
             }
             : null;
@@ -121,7 +121,7 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
         @Override
         public void run() {
             // Update the main and world clock dates
-            Utils.updateDate(mDateFormat, mDateFormatForAccessibility, mClockFrame);
+            //Utils.updateDate(mDateFormat, mDateFormatForAccessibility, mClockFrame);
             if (mAdapter != null) {
                 mAdapter.notifyDataSetChanged();
             }
@@ -141,14 +141,12 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
             mButtonsHidden = icicle.getBoolean(BUTTONS_HIDDEN_KEY, false);
         }
         mList = (ListView) v.findViewById(R.id.cities);
-        mList.setDivider(null);
+//        mList.setDivider(null);
 
         OnTouchListener longPressNightMode = new OnTouchListener() {
             private float mMaxMovementAllowed = -1;
             private int mLongPressTimeout = -1;
-            private float mLastTouchX
-                    ,
-                    mLastTouchY;
+            private float mLastTouchX,mLastTouchY;
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -206,11 +204,11 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
             setupFakeOverflowMenuButton(menuButton);
         }
 
-        mDigitalClock = mClockFrame.findViewById(R.id.digital_clock);
+//        mDigitalClock = mClockFrame.findViewById(R.id.digital_clock);
         mAnalogClock = mClockFrame.findViewById(R.id.analog_clock);
-        Utils.setTimeFormat(getActivity(),
+       /* Utils.setTimeFormat(getActivity(),
             (TextClock) mDigitalClock.findViewById(R.id.digital_clock),
-            getResources().getDimensionPixelSize(R.dimen.main_ampm_font_size));
+            getResources().getDimensionPixelSize(R.dimen.main_ampm_font_size));*/
         View footerView = inflater.inflate(R.layout.blank_footer_view, mList, false);
         mList.addFooterView(footerView, null, false);
         mAdapter = new WorldClockAdapter(getActivity());
@@ -254,11 +252,11 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
             mAdapter.reloadData(activity);
         }
         // Resume can invoked after changing the clock style.
-        View clockView = Utils.setClockStyle(activity, mDigitalClock, mAnalogClock,
+        /*View clockView = Utils.setClockStyle(activity, mDigitalClock, mAnalogClock,
                 SettingsActivity.KEY_CLOCK_STYLE);
         mClockStyle = (clockView == mDigitalClock ?
-                Utils.CLOCK_TYPE_DIGITAL : Utils.CLOCK_TYPE_ANALOG);
-
+                Utils.CLOCK_TYPE_DIGITAL : Utils.CLOCK_TYPE_ANALOG);*/
+        mClockStyle=Utils.CLOCK_TYPE_ANALOG;
         // Center the main clock frame if cities are empty.
         if (getView().findViewById(R.id.main_clock_left_pane) != null && mAdapter.getCount() == 0) {
             mList.setVisibility(View.GONE);
@@ -278,8 +276,8 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
         }
         mAdapter.notifyDataSetChanged();
 
-        Utils.updateDate(mDateFormat, mDateFormatForAccessibility, mClockFrame);
-        Utils.refreshAlarm(activity, mClockFrame);
+        //Utils.updateDate(mDateFormat, mDateFormatForAccessibility, mClockFrame);
+        //Utils.refreshAlarm(activity, mClockFrame);
         if (PRE_L_DEVICE) {
             activity.getContentResolver().registerContentObserver(
                 Settings.System.getUriFor(Settings.System.NEXT_ALARM_FORMATTED),
@@ -327,7 +325,7 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
             return;
         }
         mFab.setVisibility(View.VISIBLE);
-        mFab.setImageResource(R.drawable.ic_globe);
+        mFab.setImageResource(R.drawable.fab_world_clock);
         mFab.setContentDescription(getString(R.string.button_cities));
     }
 

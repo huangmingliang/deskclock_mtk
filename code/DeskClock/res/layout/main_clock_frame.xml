@@ -15,30 +15,18 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dc="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_clock_frame"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:paddingEnd="@dimen/clock_fragment_end_padding" >
+    android:gravity="center_horizontal">
     <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        <com.android.deskclock.AnalogClock
-            android:id="@+id/analog_clock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/circle_margin_top"
-            android:layout_marginLeft="@dimen/analog_clock_margin"
-            android:layout_marginStart="@dimen/analog_clock_margin"
-            android:layout_marginRight="@dimen/analog_clock_margin"
-            android:layout_marginEnd="@dimen/analog_clock_margin"
-            android:dial="@drawable/clock_analog_dial_mipmap"
-            android:hand_hour="@drawable/clock_analog_hour_mipmap"
-            android:hand_minute="@drawable/clock_analog_minute_mipmap"
-            android:layout_marginBottom="@dimen/bottom_text_spacing_analog" />
-        <TextClock
+        android:layout_width="match_parent"
+        android:layout_height="262dp"
+        android:layout_gravity="center"
+        android:paddingBottom="24dp">
+       <!--  <TextClock
             android:id="@+id/digital_clock"
             android:format12Hour="@string/main_clock_12_hours_format"
             android:format24Hour="@string/clock_24_hours_format"
@@ -47,33 +35,23 @@
             android:singleLine="true"
             android:ellipsize="none"
             style="@style/big_thin"
-            android:textColor="@color/clock_white" />
+            android:textColor="@color/clock_white" /> -->
+
+        <com.android.deskclock.AnalogClock
+            android:id="@+id/analog_clock"
+            android:layout_width="225dp"
+            android:layout_height="225dp"
+            android:layout_gravity="center_horizontal"
+            android:dial="@drawable/clock_analog_dial_mipmap"
+            android:hand_hour="@drawable/clock_analog_hour_mipmap"
+            android:hand_minute="@drawable/clock_analog_minute_mipmap" />
 
     </FrameLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
-        <TextView android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/PrimaryLabelTextAppearance" />
-        <TextView android:id="@+id/nextAlarm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dip"
-            android:layout_marginStart="8dip"
-            android:drawablePadding="2dip"
-            android:drawableLeft="@drawable/ic_alarm_small"
-            android:drawableStart="@drawable/ic_alarm_small"
-            android:textAppearance="@style/SecondaryLabelTextAppearance" />
-    </LinearLayout>
 
     <View
         android:id="@+id/hairline"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/hairline_height"
-        android:layout_marginTop="24dip"
-        android:background="@color/hairline" />
+        android:layout_width="266dp"
+        android:layout_height="0.5dp"
+        android:background="@color/list_divider" />
 </LinearLayout>
 

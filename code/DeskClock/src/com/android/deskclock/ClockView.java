@@ -15,7 +15,6 @@ import android.graphics.Paint.Style;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 public class ClockView extends View{
@@ -128,7 +127,6 @@ public class ClockView extends View{
 		minutePaint.setTextSize(dipToPx(53));
 		FontMetrics fontMetrics=minutePaint.getFontMetrics();
 		float textHeight=fontMetrics.bottom-fontMetrics.top;
-		Log.d(TAG, "textHeight="+textHeight);
 		float textWidth=minutePaint.measureText(minuteText);
 		float xText=xCenter-textWidth/2;
 		float yText=yCenter+textHeight/2+8;
@@ -163,7 +161,6 @@ public class ClockView extends View{
 		}
 		xCenter=getWidth()/2;
 		yCenter=getHeight()/2;
-		Log.d(TAG, "circle point:xCenter="+xCenter+" yCenter="+yCenter);
 	}
 	
 	@Override
@@ -205,7 +202,6 @@ public class ClockView extends View{
     
     private int alphaPercentToInt(int percent){
     	int value=(int) (percent/(100*1.0f)*255);
-    	Log.d(TAG, "alpha="+value);
     	return  value;
     }
     
@@ -213,9 +209,7 @@ public class ClockView extends View{
     	long OneMinute=60*1000;
     	double pi=Math.PI;
     	long currentSecond=calendar.get(Calendar.SECOND);
-    	Log.d(TAG, "current second="+currentSecond);
     	long currentMilliSecond=currentSecond*1000+calendar.get(Calendar.MILLISECOND);
-    	Log.d(TAG, "current currentMilliSecond="+currentMilliSecond);
     	double percent=currentMilliSecond/(OneMinute*1.0d);
     	double angle=-pi/2+percent*2*pi;
     	if (angle>=3*pi/2) {
@@ -223,7 +217,6 @@ public class ClockView extends View{
 		}
     	xSecondLoction=(int) (xCenter+smallCircleRaius*Math.cos(angle));
     	ySecondLoction=(int) (yCenter+smallCircleRaius*Math.sin(angle));
-    	Log.e(TAG, "xSecondLoction="+xSecondLoction+" ySecondLoction="+ySecondLoction);
     	invalidate();
     	
     }
@@ -231,10 +224,8 @@ public class ClockView extends View{
     private void refleshMinuteAndHour(){
     	long minute=calendar.get(Calendar.MINUTE);
     	long hour=calendar.get(Calendar.HOUR);
-    	Log.d(TAG, "minute="+minute+" hour="+hour);
     	if (minute<10) {
 			minuteText="0"+minute;
-			Log.e(TAG, "minuteText="+minuteText);
 		}else {
 			minuteText=minute+"";
 		}

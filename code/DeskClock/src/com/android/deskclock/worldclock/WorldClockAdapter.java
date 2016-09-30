@@ -18,20 +18,25 @@ package com.android.deskclock.worldclock;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.android.deskclock.AnalogClock;
 import com.android.deskclock.R;
+import com.android.deskclock.R.id;
 import com.android.deskclock.SettingsActivity;
 import com.android.deskclock.Utils;
 
 import java.text.Collator;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -41,6 +46,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class WorldClockAdapter extends BaseAdapter {
+	
+	private String TAG=getClass().getSimpleName();
     protected Object [] mCitiesList;
     private final LayoutInflater mInflater;
     private final Context mContext;
@@ -69,7 +76,7 @@ public class WorldClockAdapter extends BaseAdapter {
                 mContext.getResources().getString(R.string.default_clock_style));
         mCitiesList = Cities.readCitiesFromSharedPrefs(prefs).values().toArray();
         sortList();
-        mCitiesList = addHomeCity();
+        mCitiesList = addLocalTimeZone();
     }
 
     public void loadCitiesDb(Context context) {
@@ -105,6 +112,31 @@ public class WorldClockAdapter extends BaseAdapter {
         } else {
             return mCitiesList;
         }
+    }
+    
+    private Object[] addLocalTimeZone(){
+        Resources resources = mContext.getResources();
+        String[] ids = resources.getStringArray(R.array.timezone_values);
+        String[] labels = resources.getStringArray(R.array.timezone_labels);
+        String timeZone=TimeZone.getDefault().getID();
+        int index=-1;
+        String cityName=mContext.getResources().getString(R.string.home_label);
+        for(int i=0;i<ids.length;i++){
+        	if (ids[i].equals(timeZone)) {
+				index=i;
+				break;
+			}
+        }
+        if (index!=-1) {
+        	 cityName=labels[index];
+		}
+        CityObj c = new CityObj(cityName, timeZone, null, null);
+        Object[] temp = new Object[mCitiesList.length + 1];
+        temp[0] = c;
+        for (int i = 0; i < mCitiesList.length; i++) {
+            temp[i + 1] = mCitiesList[i];
+        }
+        return temp;
     }
 
     public void updateHomeLabel(Context context) {
@@ -211,33 +243,51 @@ public class WorldClockAdapter extends BaseAdapter {
         if (view == null) {
             view = mInflater.inflate(R.layout.world_clock_list_item, parent, false);
         }
-        updateView(view.findViewById(R.id.city_left), (CityObj)mCitiesList[index]);
+        updateView(view.findViewById(R.id.city_left), (CityObj)mCitiesList[index],position);
         return view;
     }
 
-    private void updateView(View clock, CityObj cityObj) {
+    private void updateView(View clock, CityObj cityObj,int position) {
         TextView name = (TextView)(clock.findViewById(R.id.city_name));
-        TextView dayOfWeek = (TextView)(clock.findViewById(R.id.city_day));
+//        TextView dayOfWeek = (TextView)(clock.findViewById(R.id.city_day));
         TextClock dclock = (TextClock)(clock.findViewById(R.id.digital_clock));
-        AnalogClock aclock = (AnalogClock)(clock.findViewById(R.id.analog_clock));
+        //AnalogClock aclock = (AnalogClock)(clock.findViewById(R.id.analog_clock));
+        TextView jetLag=(TextView)(clock.findViewById(R.id.jetLag));
+        TextClock date=(TextClock)(clock.findViewById(R.id.date));
+        FrameLayout jetLagLayout=(FrameLayout)(clock.findViewById(R.id.jetLagLayout));
 
-        if (mClockStyle.equals("analog")) {
+        /*if (mClockStyle.equals("analog")) {
             dclock.setVisibility(View.GONE);
             aclock.setVisibility(View.VISIBLE);
             aclock.setTimeZone(cityObj.mTimeZone);
-            aclock.enableSeconds(false);
-        } else {
+            aclock.enableSeconds(true);
+        } else {*/
+        if (position==0) {
+			jetLagLayout.setVisibility(View.GONE);
+		}else {
+			jetLagLayout.setVisibility(View.VISIBLE);
+		}
             dclock.setVisibility(View.VISIBLE);
-            aclock.setVisibility(View.GONE);
+//            aclock.setVisibility(View.GONE);
             dclock.setTimeZone(cityObj.mTimeZone);
+            date.setTimeZone(cityObj.mTimeZone);
             Utils.setTimeFormat(mContext, dclock,
                     mContext.getResources().getDimensionPixelSize(R.dimen.label_font_size));
-        }
+//        }
         CityObj cityInDb = mCitiesDb.get(cityObj.mCityId);
         // Home city or city not in DB , use data from the save selected cities list
         name.setText(Utils.getCityName(cityObj, cityInDb));
-
-        final Calendar now = Calendar.getInstance();
+        long i=getZonetimeDif(cityObj.mTimeZone);
+        Log.d(TAG, "timeZoneDif="+i);
+        String diffTime="";
+        if (i>0) {
+			diffTime=mContext.getString(R.string.timezone_diff,"Later "+i);
+		}else {
+			diffTime=mContext.getString(R.string.timezone_diff,"Almost "+-i);
+		}
+        jetLag.setText(diffTime);
+        //getJetLag(cityObj.mTimeZone);
+        /*final Calendar now = Calendar.getInstance();
         now.setTimeZone(TimeZone.getDefault());
         int myDayOfWeek = now.get(Calendar.DAY_OF_WEEK);
         // Get timezone from cities DB if available
@@ -250,6 +300,25 @@ public class WorldClockAdapter extends BaseAdapter {
             dayOfWeek.setVisibility(View.VISIBLE);
         } else {
             dayOfWeek.setVisibility(View.GONE);
-        }
+        }*/
     }
+    
+    public long getZonetimeDif(String timeZone) {
+        //旧的就是当前的，新的就是目标的
+        Calendar calendar=Calendar.getInstance();
+        TimeZone oldZone=TimeZone.getDefault();
+        TimeZone newZone=TimeZone.getTimeZone(timeZone);
+        int timeOffset = oldZone.getRawOffset()-newZone.getRawOffset();
+        int dstOffSet=calendar.get(Calendar.DST_OFFSET);
+        return milliSecondToHour(timeOffset)+milliSecondToHour(dstOffSet);
+    }
+    
+    private long milliSecondToHour(int milliSecond){
+         int hour=milliSecond/(60*60*1000);
+         int temp=milliSecond%(60*60*1000);
+         int minute=temp/(60*1000);
+         float lessHour=minute/(60*1.0f);
+         return (long) (hour+lessHour);
+    }
+
 }

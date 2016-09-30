@@ -22,8 +22,11 @@
         android:clickable="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="@dimen/clock_side_padding"
-        android:paddingEnd="@dimen/clock_side_padding_reduced" />
+        android:paddingStart="27sp"
+        android:paddingEnd="27sp"
+        android:divider="@drawable/divider"
+        android:scrollbars="none"
+        android:dividerHeight="0.5dip" />
     <FrameLayout
         android:layout_width="@dimen/footer_button_size"
         android:layout_height="@dimen/footer_button_size"

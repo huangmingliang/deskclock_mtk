@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="66dp"
+        android:orientation="vertical"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+        <FrameLayout android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="4">
+            <TextView 
+                android:id="@+id/city_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:text="北京"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:gravity="start|center_vertical"/>
+            
+        </FrameLayout>
+        
+         <FrameLayout
+            android:id="@+id/jetLagLayout" 
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+            
+             <TextView
+                android:id="@+id/jetLag" 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:text="时差"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:alpha="127"/>
+            
+            
+        </FrameLayout>
+        
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="66dp"
+        android:orientation="vertical"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:gravity="end|center_vertical">
+        <FrameLayout android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="4">
+           <TextClock
+            android:id="@+id/digital_clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:format12Hour="@string/world_clock_12_hours_format"
+            android:format24Hour="@string/clock_24_hours_format"
+            android:singleLine="true"
+            android:textSize="27sp"
+            android:textColor="@color/clock_white"/>
+            
+        </FrameLayout>
+        
+         <FrameLayout android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+            
+             <TextClock
+                android:id="@+id/date" 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:gravity="end"
+                android:format12Hour="@string/work_clock_date"  
+                android:format24Hour="@string/work_clock_date"  
+                android:text="当地时间"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:alpha="127"/>
+            
+            
+        </FrameLayout>
+        
+    </LinearLayout>
+
+</RelativeLayout>

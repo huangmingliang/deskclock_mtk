@@ -181,7 +181,7 @@
     <dimen name="collapse_expand_height">72dip</dimen>
 
     <!-- Divider height -->
-    <dimen name="hairline_height">1dip</dimen>
+    <dimen name="hairline_height">0.5dip</dimen>
 
     <!-- The minimum height/width of any touch target -->
     <dimen name="touch_target_min_size">48dip</dimen>

@@ -25,7 +25,7 @@
     android:paddingEnd="@dimen/clock_fragment_end_padding"
     android:orientation="horizontal">
 
-    <include layout="@layout/world_clock_item"
+    <include layout="@layout/world_clock_item_3"
         android:id="@+id/city_left"
         android:gravity="center"
         android:layout_width="0dip"

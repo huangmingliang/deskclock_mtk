@@ -1147,5 +1147,7 @@
     <string name="alarm_time_bucket_am">AM</string>
     <string name="alarm_time_bucket_pm">PM</string>
     <string name="working_day">工作日</string>
+    <string name="work_clock_date">MM&#8202;dd</string>
+    <string name="timezone_diff"><xliff:g id="diffTime">%s</xliff:g> hours</string>
 </resources>
 
