@@ -22,6 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.telecom.Log;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -40,6 +41,7 @@ import com.android.deskclock.Utils;
  * drawing digits (and optional label) of the time set in {@link #setTime(long, boolean, boolean)}
  */
 public class CountingTimerView extends View {
+	private String TAG=getClass().getSimpleName();
     private static final String TWO_DIGITS = "%02d";
     private static final String ONE_DIGIT = "%01d";
     private static final String NEG_TWO_DIGITS = "-%02d";
@@ -49,13 +51,16 @@ public class CountingTimerView extends View {
     // from the center.
     private static final float FONT_VERTICAL_OFFSET = 0.14f;
     // Ratio of the space trailing the Hours and Minutes
-    private static final float HOURS_MINUTES_SPACING = 0.4f;
+    private static final float HOURS_MINUTES_SPACING = 0.1f;
     // Ratio of the space leading the Hundredths
     private static final float HUNDREDTHS_SPACING = 0.5f;
     // Radial offset of the enclosing circle
     private final float mRadiusOffset;
 
-    private String mHours, mMinutes, mSeconds, mHundredths;
+    private String mHours="00:";
+    private String mMinutes="00:";
+    private String mSeconds="00";
+    private String mHundredths;
 
     private boolean mShowTimeStr = true;
     private final Paint mPaintBigThin = new Paint();
@@ -280,7 +285,7 @@ public class CountingTimerView extends View {
         /// M: Only create from asset at the first time @{
         if (sAndroidClockMonoThin == null) {
             sAndroidClockMonoThin = Typeface.
-                    createFromAsset(context.getAssets(), "fonts/AndroidClockMono-Thin.ttf");
+                    createFromAsset(context.getAssets(), "fonts/Akrobat-Regular.otf");
         }
         mPaintBigThin.setAntiAlias(true);
         mPaintBigThin.setStyle(Paint.Style.STROKE);
@@ -289,7 +294,7 @@ public class CountingTimerView extends View {
 
         if (sAndroidClockMonoLight == null) {
             sAndroidClockMonoLight = Typeface.
-                    createFromAsset(context.getAssets(), "fonts/AndroidClockMono-Light.ttf");
+                    createFromAsset(context.getAssets(), "fonts/Akrobat-Regular.otf");
         }
         mPaintMed.setAntiAlias(true);
         mPaintMed.setStyle(Paint.Style.STROKE);
@@ -341,6 +346,7 @@ public class CountingTimerView extends View {
         }
         long hundreds, seconds, minutes, hours;
         seconds = time / 1000;
+        Log.d(TAG,"second="+seconds);
         hundreds = (time - seconds * 1000) / 10;
         minutes = seconds / 60;
         seconds = seconds - minutes * 60;
@@ -380,10 +386,11 @@ public class CountingTimerView extends View {
             format = showNeg ? NEG_TWO_DIGITS : TWO_DIGITS;
             mHours = String.format(format, hours);
         } else if (hours > 0) {
-            format = showNeg ? NEG_ONE_DIGIT : ONE_DIGIT;
+            format = showNeg ? NEG_ONE_DIGIT : TWO_DIGITS;
             mHours = String.format(format, hours);
         } else {
-            mHours = null;
+        	format = showNeg ? NEG_ONE_DIGIT : TWO_DIGITS+":";
+        	mHours = String.format(format, 0);
         }
 
         // Minutes are never empty and when hours are non-empty, must be two digits
@@ -398,7 +405,7 @@ public class CountingTimerView extends View {
         	/// @}
             mMinutes = String.format(format, minutes);
         } else {
-            format = (showNeg && hours == 0) ? NEG_ONE_DIGIT : ONE_DIGIT;
+            format = (showNeg && hours == 0) ? NEG_ONE_DIGIT : TWO_DIGITS;
             mMinutes = String.format(format, minutes);
         }
 
@@ -645,13 +652,12 @@ public class CountingTimerView extends View {
         int yCenter = getHeight() / 2;
 
         float xTextStart = xCenter - mTotalTextWidth / 2;
-        float yTextStart = yCenter + mTextHeight/2 - (mTextHeight * FONT_VERTICAL_OFFSET);
+        float yTextStart = yCenter + mTextHeight/2;
 
         // Text color differs based on pressed state.
         final int textColor = mVirtualButtonPressedOn ? mPressedColor : mDefaultColor;
         mPaintBigThin.setColor(textColor);
         mPaintMed.setColor(textColor);
-
         if (mHours != null) {
             xTextStart = mBigHours.draw(canvas, mHours, xTextStart, yTextStart);
         }
@@ -665,6 +671,7 @@ public class CountingTimerView extends View {
             mMedHundredths.draw(canvas, mHundredths, xTextStart, yTextStart);
         }
     }
+    
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {

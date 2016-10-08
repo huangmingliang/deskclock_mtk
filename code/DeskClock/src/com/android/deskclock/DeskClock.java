@@ -49,6 +49,7 @@ import android.widget.TextView;
 import android.view.KeyEvent;
 import android.view.MenuInflater;
 import android.widget.PopupMenu;
+
 import com.android.deskclock.alarms.AlarmStateManager;
 import com.android.deskclock.events.Events;
 import com.android.deskclock.provider.Alarm;
@@ -56,8 +57,10 @@ import com.android.deskclock.stopwatch.StopwatchFragment;
 import com.android.deskclock.stopwatch.StopwatchService;
 import com.android.deskclock.stopwatch.Stopwatches;
 import com.android.deskclock.timer.TimerFragment;
+import com.android.deskclock.timer.TimerFragment3;
 import com.android.deskclock.timer.TimerObj;
 import com.android.deskclock.timer.Timers;
+
 import android.content.pm.PackageManager;
 import android.Manifest;
 
@@ -65,6 +68,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.TimeZone;
+
 import android.widget.Toast;
 
 /**
@@ -239,7 +243,7 @@ public class DeskClock extends BaseActivity
             final Tab timerTab = mActionBar.newTab();
             timerTab.setIcon(R.drawable.ic_tab_timer);
             timerTab.setContentDescription(R.string.menu_timer);
-            mTabsAdapter.addTab(timerTab, TimerFragment.class, TIMER_TAB_INDEX);
+            mTabsAdapter.addTab(timerTab, TimerFragment3.class, TIMER_TAB_INDEX);
 
             final Tab stopwatchTab = mActionBar.newTab();
             stopwatchTab.setIcon(R.drawable.ic_tab_stopwatch);
@@ -493,9 +497,9 @@ public class DeskClock extends BaseActivity
                 /// M: No need do the RTL position translate
                 TabInfo info = mTabs.get(position);
                 fragment = Fragment.instantiate(mContext, info.clss.getName(), info.args);
-                if (fragment instanceof TimerFragment) {
-                    ((TimerFragment) fragment).setFabAppearance();
-                    ((TimerFragment) fragment).setLeftRightButtonAppearance();
+                if (fragment instanceof TimerFragment3) {
+                    ((TimerFragment3) fragment).setFabAppearance();
+                    ((TimerFragment3) fragment).setLeftRightButtonAppearance();
                 }
             }
             return fragment;
@@ -639,8 +643,8 @@ public class DeskClock extends BaseActivity
     @Override
     public void onDialogLabelSet(TimerObj timer, String label, String tag) {
         Fragment frag = getFragmentManager().findFragmentByTag(tag);
-        if (frag instanceof TimerFragment) {
-            ((TimerFragment) frag).setLabel(timer, label);
+        if (frag instanceof TimerFragment3) {
+            ((TimerFragment3) frag).setLabel(timer, label);
         }
     }
 

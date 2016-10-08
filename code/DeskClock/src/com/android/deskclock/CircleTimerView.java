@@ -3,13 +3,19 @@ package com.android.deskclock;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
+import android.telecom.Log;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.MeasureSpec;
 
+import com.android.deskclock.R.id;
 import com.android.deskclock.stopwatch.Stopwatches;
 
 /**
@@ -18,8 +24,9 @@ import com.android.deskclock.stopwatch.Stopwatches;
  * Timer counts down. In this mode the animation is counter-clockwise and stops at 0.
  * Stopwatch counts up. In this mode the animation is clockwise and will run until stopped.
  */
-public class CircleTimerView extends View {
-
+public class CircleTimerView extends View{
+	
+    private String TAG=getClass().getSimpleName();
     private int mAccentColor;
     private int mWhiteColor;
     private long mIntervalTime = 0;
@@ -29,14 +36,29 @@ public class CircleTimerView extends View {
     private long mAccumulatedTime = 0;
     private boolean mPaused = false;
     private boolean mAnimate = false;
-    private static float mStrokeSize = 4;
-    private static float mDotRadius = 6;
-    private static float mMarkerStrokeSize = 2;
+    private float mStrokeSize =dipToPx(4.5f);
+    private float mDotRadius = 6;
+    private float mMarkerStrokeSize = 2;
     private final Paint mPaint = new Paint();
     private final Paint mFill = new Paint();
     private final RectF mArcRect = new RectF();
     private float mRadiusOffset;   // amount to remove from radius to account for markers on circle
     private float mScreenDensity;
+    private int defViewWidth=dipToPx(208);
+	private int defViewHeight=dipToPx(208);
+	private int xCenter=defViewWidth/2;
+	private int yCenter=defViewHeight/2;
+	private float radius=dipToPx(94);
+	private int bigCircleAlpha=alphaPercentToInt(20);
+	private Drawable cursorImage;
+	private float cursorImageAngle=0;
+	private long ONE_MINUTE_IN_MILLISECOND=60*1000;
+	private boolean isLessOneMinute=true;
+	private int timeLeftColor=0xff27B25F;
+	private int cursorWidth;
+	private int cursorHeight;
+	float xDown,yDown;
+	float cursorLeft,cursorTop,cursorRight,cursorBottom;
 
     // Stopwatch mode is the default.
     private boolean mTimerMode = false;
@@ -48,6 +70,9 @@ public class CircleTimerView extends View {
 
     public CircleTimerView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        TypedArray array=context.obtainStyledAttributes(attrs,R.styleable.CircleView);
+        mTimerMode=array.getBoolean(R.styleable.CircleView_timer_modle,false);
+        array.recycle();
         init(context);
     }
 
@@ -107,6 +132,28 @@ public class CircleTimerView extends View {
         }
         postInvalidate();
     }
+    
+    
+    private void caculateCursorAngle(){
+    	float angle=0;
+    	float percent=0;
+    	long timeLeft=mIntervalTime-mCurrentIntervalTime;
+    	if (timeLeft>ONE_MINUTE_IN_MILLISECOND) {
+			isLessOneMinute=false;
+			percent=(timeLeft%ONE_MINUTE_IN_MILLISECOND)/(ONE_MINUTE_IN_MILLISECOND*1.0f);
+		    angle=percent*360;
+		}else if (timeLeft<ONE_MINUTE_IN_MILLISECOND&&timeLeft>0) {
+			isLessOneMinute=true;
+			percent=timeLeft/(ONE_MINUTE_IN_MILLISECOND*1.0f);
+			angle=percent*360;
+		}else if(timeLeft<=0){
+			isLessOneMinute=true;
+			stopIntervalAnimation();
+			angle=0;
+		}
+    	cursorImageAngle=angle;
+
+    }
 
 
 
@@ -127,26 +174,56 @@ public class CircleTimerView extends View {
         mFill.setStyle(Paint.Style.FILL);
         mFill.setColor(mAccentColor);
         mDotRadius = dotDiameter / 2f;
+        
+        cursorImage=resources.getDrawable(R.drawable.timer_cursor);
     }
 
     public void setTimerMode(boolean mode) {
         mTimerMode = mode;
     }
+    
+    @Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		// TODO Auto-generated method stub
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		int mode=MeasureSpec.getMode(widthMeasureSpec);
+		int width=MeasureSpec.getSize(widthMeasureSpec);
+		int height=MeasureSpec.getSize(heightMeasureSpec);
+		if (mode==MeasureSpec.EXACTLY) {
+			setMeasuredDimension(width, height);
+		}else {
+			setMeasuredDimension(defViewWidth, defViewHeight);
+		}
+		xCenter=getWidth()/2;
+		yCenter=getHeight()/2;
+	}
+	
 
     @Override
     public void onDraw(Canvas canvas) {
-        int xCenter = getWidth() / 2 + 1;
-        int yCenter = getHeight() / 2;
-
         mPaint.setStrokeWidth(mStrokeSize);
-        float radius = Math.min(xCenter, yCenter) - mRadiusOffset;
-
+        Log.d(TAG, "mIntervalStartTime="+mIntervalStartTime);
         if (mIntervalStartTime == -1) {
             // just draw a complete white circle, no red arc needed
             mPaint.setColor(mWhiteColor);
+            mPaint.setAlpha(bigCircleAlpha);
             canvas.drawCircle (xCenter, yCenter, radius, mPaint);
             if (mTimerMode) {
-                drawRedDot(canvas, 0f, xCenter, yCenter, radius);
+                //drawRedDot(canvas, 0f, xCenter, yCenter, radius);
+            	 mArcRect.top = yCenter - radius;
+                 mArcRect.bottom = yCenter + radius;
+                 mArcRect.left =  xCenter - radius;
+                 mArcRect.right = xCenter + radius;
+            	caculateCursorAngle();
+            	if (isLessOneMinute) {
+            		//canvas.drawArc (mArcRect, 270, -(360-cursorImageAngle) , false, mPaint);
+            		mPaint.setColor(timeLeftColor);
+            		canvas.drawArc(mArcRect, 270, cursorImageAngle, false, mPaint);
+				}else {
+					mPaint.setColor(timeLeftColor);
+					canvas.drawCircle (xCenter, yCenter, radius, mPaint);
+				}
+                drawCursorImage(canvas, cursorImage, xCenter, yCenter);
             }
         } else {
             if (mAnimate) {
@@ -165,16 +242,29 @@ public class CircleTimerView extends View {
             // draw red arc here
             mPaint.setColor(mAccentColor);
             if (mTimerMode){
-                canvas.drawArc (mArcRect, 270, - redPercent * 360 , false, mPaint);
+                //canvas.drawArc (mArcRect, 270, - redPercent * 360 , false, mPaint);
+            	caculateCursorAngle();
+            	if (isLessOneMinute) {
+            		mPaint.setColor(mWhiteColor);
+                	mPaint.setAlpha(bigCircleAlpha);
+            		canvas.drawArc (mArcRect, 270, -(360-cursorImageAngle) , false, mPaint);
+				}else {
+					mPaint.setColor(timeLeftColor);
+					canvas.drawCircle (xCenter, yCenter, radius, mPaint);
+				}
             } else {
                 canvas.drawArc (mArcRect, 270, + redPercent * 360 , false, mPaint);
             }
 
             // draw white arc here
             mPaint.setStrokeWidth(mStrokeSize);
-            mPaint.setColor(mWhiteColor);
+            mPaint.setColor(timeLeftColor);
             if (mTimerMode) {
-                canvas.drawArc(mArcRect, 270, + whitePercent * 360, false, mPaint);
+                //canvas.drawArc(mArcRect, 270, + whitePercent * 360, false, mPaint);
+            	if (isLessOneMinute) {
+					canvas.drawArc(mArcRect, 270, cursorImageAngle, false, mPaint);
+				}
+            	drawCursorImage(canvas, cursorImage, xCenter, yCenter);
             } else {
                 canvas.drawArc(mArcRect, 270 + (1 - whitePercent) * 360,
                         whitePercent * 360, false, mPaint);
@@ -190,7 +280,7 @@ public class CircleTimerView extends View {
                 canvas.drawArc (mArcRect, 270 + angle, mScreenDensity *
                         (float) (360 / (radius * Math.PI)) , false, mPaint);
             }
-            drawRedDot(canvas, redPercent, xCenter, yCenter, radius);
+            //drawRedDot(canvas, redPercent, xCenter, yCenter, radius);
         }
         if (mAnimate) {
             invalidate();
@@ -199,9 +289,10 @@ public class CircleTimerView extends View {
 
     protected void drawRedDot(
             Canvas canvas, float degrees, int xCenter, int yCenter, float radius) {
-        mPaint.setColor(mAccentColor);
+        mPaint.setColor(0x27B25F);
         float dotPercent;
         if (mTimerMode) {
+        	mPaint.setColor(0x27B25F);
             dotPercent = 270 - degrees * 360;
         } else {
             dotPercent = 270 + degrees * 360;
@@ -210,6 +301,22 @@ public class CircleTimerView extends View {
         final double dotRadians = Math.toRadians(dotPercent);
         canvas.drawCircle(xCenter + (float) (radius * Math.cos(dotRadians)),
                 yCenter + (float) (radius * Math.sin(dotRadians)), mDotRadius, mFill);
+    }
+    
+    
+    protected void drawCursorImage(Canvas canvas, Drawable cursorImage, int x, int y){
+    	cursorWidth=cursorImage.getIntrinsicWidth();
+    	cursorHeight=cursorImage.getIntrinsicHeight();
+    	int cursorLeft=(int) (xCenter-cursorWidth/2);
+    	int cursorTop=(int) (yCenter-radius-cursorHeight/2);
+    	int cursorRight=(int) (xCenter+cursorWidth/2);
+    	int cursorBottom=(int) (yCenter-radius+cursorHeight/2);
+    	canvas.save();
+        canvas.rotate(cursorImageAngle, x, y);
+        cursorImage.setBounds(cursorLeft,cursorTop, cursorRight, cursorBottom);
+        cursorImage.draw(canvas);
+        canvas.restore();
+    	
     }
 
     public static final String PREF_CTV_PAUSED  = "_ctv_paused";
@@ -258,4 +365,95 @@ public class CircleTimerView extends View {
         editor.remove (key + PREF_CTV_TIMER_MODE);
         editor.apply();
     }
+    
+    /**
+     * dip 转换成px
+     * @param dip
+     * @return
+     */
+    private int dipToPx(float dip) {
+        float density = getContext().getResources().getDisplayMetrics().density;
+        return (int)(dip * density + 0.5f * (dip >= 0 ? 1 : -1));
+    }
+    
+    private int alphaPercentToInt(int percent){
+    	int value=(int) (percent/(100*1.0f)*255);
+    	return  value;
+    }
+    
+    private boolean isTouchCursorImage(){
+    	//Log.d(TAG, "cursorLeft="+cursorLeft+" cursorTop="+cursorTop+" cursorRight="+cursorRight+" cursorBottom="+cursorBottom);
+    	boolean condition1=xDown-cursorLeft>=0?true:false;
+    	boolean condition2=yDown-cursorTop>=0?true:false;
+    	boolean condition3=xDown-cursorRight<=0?true:false;
+    	boolean condition4=yDown-cursorBottom<=0?true:false;
+    	return condition1&&condition2&&condition3&&condition4;
+    }
+    
+    private boolean isMoveOnCircle(float xTouch,float yTouch){
+    	Log.d(TAG, "(int)Math.pow(xTouch-xCenter,2)="+(int)Math.pow(xTouch-xCenter,2));
+    	Log.d(TAG, "(int)Math.pow(yTouch-yCenter,2)="+(int)Math.pow(yTouch-yCenter,2));
+    	Log.d(TAG, "(int)Math.pow(radius-cursorWidth/2,2)="+(int)Math.pow(radius-cursorWidth/2,2));
+    	Log.d(TAG, "(int)Math.pow(radius+cursorWidth/2,2)="+(int)Math.pow(radius+cursorWidth/2,2));
+    	boolean outOfSmallVirtualCircle=(int)Math.sqrt(xTouch-xCenter)+(int)Math.pow(yTouch-yCenter,2)>=(int)Math.pow(radius-cursorWidth/2,2);
+    	boolean inOfBigVirtualCircle=(int)Math.sqrt(xTouch-xCenter)+(int)Math.pow(yTouch-yCenter,2)<=(int)Math.pow(radius+cursorWidth/2,2);
+    	return outOfSmallVirtualCircle&inOfBigVirtualCircle;
+    }
+    
+    private void caculateAngle(float xTouch,float yTouch){
+    	Log.d(TAG,"caculateAngle");
+    	double radian=0;
+    	if (xTouch>xCenter&yTouch<=yCenter) {
+    		Log.d(TAG, "yCenter-yTouch="+(yCenter-yTouch));
+			radian=Math.acos((yCenter-yTouch)/(radius+cursorWidth/2));
+			Log.d(TAG, "radian="+radian);
+			cursorImageAngle=(float) Math.toDegrees(radian);
+		}else if (xTouch>xCenter&yTouch>=yCenter) {
+			radian=Math.acos((yTouch-yCenter)/(radius+cursorWidth/2));
+			cursorImageAngle=180-(float) Math.toDegrees(radian);
+		}else if (xTouch<xCenter&yTouch>yCenter) {
+			radian=Math.acos((yTouch-yCenter)/(radius+cursorWidth/2));
+			cursorImageAngle=180+(float) Math.toDegrees(radian);
+		}else if(xTouch<xCenter&yTouch<yCenter){
+			radian=Math.acos((yCenter-yTouch)/(radius+cursorWidth/2));
+			cursorImageAngle=360-(float) Math.toDegrees(radian);
+		}
+    	Log.d(TAG,"cursorImageAngle="+cursorImageAngle);
+    }
+
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent arg0) {
+		// TODO Auto-generated method stub
+		Log.d(TAG,"xCenter="+xCenter+" yCenter="+yCenter);
+		cursorLeft=(float) (xCenter+radius*Math.sin(cursorImageAngle)-cursorWidth/2);
+		cursorTop=(float) (yCenter-radius*Math.cos(cursorImageAngle)-cursorHeight/2);
+		cursorRight=(float) (xCenter+radius*Math.sin(cursorImageAngle)+cursorWidth/2);
+		cursorBottom=(float) (yCenter+radius*Math.cos(cursorImageAngle)+cursorHeight/2);
+		if (mTimerMode&&!isAnimating()) {
+			switch (arg0.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				xDown=arg0.getX();
+				yDown=arg0.getY();
+				Log.d(TAG, "xDown="+xDown+" yDown="+yDown);
+				break;
+			case MotionEvent.ACTION_MOVE:
+				float x=arg0.getX();
+				float y=arg0.getY();
+				boolean isTouchCursor=isTouchCursorImage();
+				boolean isMoveOnCircle=isMoveOnCircle(x, y);
+				Log.d(TAG, "isTouchCursor="+isTouchCursor+" isMoveOnCircle="+isMoveOnCircle);
+				if (isMoveOnCircle&isMoveOnCircle) {
+					caculateAngle(arg0.getX(), arg0.getY());
+					invalidate();
+				}
+				
+				break;
+
+			default:
+				break;
+			}
+		}
+		return true;
+	}
 }

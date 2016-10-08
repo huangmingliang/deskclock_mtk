@@ -60,7 +60,7 @@
     <dimen name="alarm_min_distance">2dp</dimen>
     <dimen name="alarm_undo_bar_horizontal_margin">8dp</dimen>
     <dimen name="circletimer_dot_size">12dip</dimen>
-    <dimen name="circletimer_circle_size">4dip</dimen>
+    <dimen name="circletimer_circle_size">4.5dip</dimen>
     <dimen name="circletimer_marker_size">16dip</dimen>
 
     <dimen name="alarm_lockscreen_alarm_horizontal_padding">16dp</dimen>
@@ -68,7 +68,7 @@
     <dimen name="alarm_lockscreen_pulse_radius">128dp</dimen>
     <dimen name="alarm_lockscreen_bottom_margin">40dp</dimen>
 
-    <dimen name="big_font_size">60sp</dimen>
+    <dimen name="big_font_size">40sp</dimen>
     <dimen name="medium_font_size">56sp</dimen>
     <dimen name="small_font_size">32sp</dimen>
     <dimen name="label_font_size">16sp</dimen>

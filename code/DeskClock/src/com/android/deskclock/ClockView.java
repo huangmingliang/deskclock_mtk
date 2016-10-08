@@ -21,15 +21,15 @@ public class ClockView extends View{
 	
 	private String TAG=getClass().getSimpleName();
 	private Context context;
-	private int defViewWidth=dipToPx(192);
-	private int defViewHeight=dipToPx(192);
+	private int defViewWidth=dipToPx(193);
+	private int defViewHeight=dipToPx(193);
 	private int xCenter=defViewWidth/2;
 	private int yCenter=defViewHeight/2;
 	private int bigCircleRadius=dipToPx(94);
 	private int smallCircleRaius=dipToPx(83);
 	private int bigCircleAlpha=alphaPercentToInt(20);
 	private int smallCircleAlpha=alphaPercentToInt(10);
-	private int bigCircleWidth=dipToPx(4);
+	private int bigCircleWidth=dipToPx(4.3f);
 	private int smallCircleWidth=dipToPx(1);
 	private int defCircleColor=Color.WHITE;
 	private int secondDotColor=0xffffb310;

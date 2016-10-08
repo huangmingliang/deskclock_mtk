@@ -272,11 +272,12 @@ public class TimerFragment extends DeskClockFragment implements OnSharedPreferen
                 goToSetUpView = mAdapter.getCount() == 0;
             }
         }
-        if (goToSetUpView) {
+        /*if (goToSetUpView) {
             goToSetUpView();
         } else {
             goToPagerView();
-        }
+        }*/
+        goToPagerView();
         /**
          * M: Delay to refresh UI to avoid more timer items overlay in the case
          * that: edit a timer's lable then timer up, then pause the timer.@{

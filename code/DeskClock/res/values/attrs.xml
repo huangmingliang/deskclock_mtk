@@ -46,6 +46,7 @@
         <attr name="centerY" format="dimension" />
         <!-- The radius of the circle. -->
         <attr name="radius" format="dimension" />
+        <attr name="timer_modle" format="boolean"/>
     </declare-styleable>
 
 </resources>
