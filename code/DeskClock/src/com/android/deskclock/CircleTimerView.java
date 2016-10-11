@@ -1,5 +1,6 @@
 package com.android.deskclock;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -50,15 +51,22 @@ public class CircleTimerView extends View{
 	private int yCenter=defViewHeight/2;
 	private float radius=dipToPx(94);
 	private int bigCircleAlpha=alphaPercentToInt(20);
-	private Drawable cursorImage;
+	private Drawable cursorImage,cursorImage2;
 	private float cursorImageAngle=0;
 	private long ONE_MINUTE_IN_MILLISECOND=60*1000;
 	private boolean isLessOneMinute=true;
 	private int timeLeftColor=0xff27B25F;
 	private int cursorWidth;
 	private int cursorHeight;
-	float xDown,yDown;
-	float cursorLeft,cursorTop,cursorRight,cursorBottom;
+	private float xDown,yDown;
+	private float cursorLeft,cursorTop,cursorRight,cursorBottom;
+	private boolean isMovingCursor;
+	private DeskClock deskClock;
+	private int lastArea;
+	private int newArea;
+	private int minutes;
+	private CursorMoveListener cursorMoveListener;
+	
 
     // Stopwatch mode is the default.
     private boolean mTimerMode = false;
@@ -176,6 +184,7 @@ public class CircleTimerView extends View{
         mDotRadius = dotDiameter / 2f;
         
         cursorImage=resources.getDrawable(R.drawable.timer_cursor);
+        cursorImage2=resources.getDrawable(R.drawable.timer_cursor2);
     }
 
     public void setTimerMode(boolean mode) {
@@ -214,7 +223,15 @@ public class CircleTimerView extends View{
                  mArcRect.bottom = yCenter + radius;
                  mArcRect.left =  xCenter - radius;
                  mArcRect.right = xCenter + radius;
-            	caculateCursorAngle();
+                if (!isMovingCursor) {
+                	caculateCursorAngle();
+				}else {
+					if (minutes>0) {
+						isLessOneMinute=false;
+					}else {
+						isLessOneMinute=true;
+					}
+				}
             	if (isLessOneMinute) {
             		//canvas.drawArc (mArcRect, 270, -(360-cursorImageAngle) , false, mPaint);
             		mPaint.setColor(timeLeftColor);
@@ -264,7 +281,7 @@ public class CircleTimerView extends View{
             	if (isLessOneMinute) {
 					canvas.drawArc(mArcRect, 270, cursorImageAngle, false, mPaint);
 				}
-            	drawCursorImage(canvas, cursorImage, xCenter, yCenter);
+            	drawCursorImage(canvas, cursorImage2, xCenter, yCenter);
             } else {
                 canvas.drawArc(mArcRect, 270 + (1 - whitePercent) * 360,
                         whitePercent * 360, false, mPaint);
@@ -381,51 +398,77 @@ public class CircleTimerView extends View{
     	return  value;
     }
     
-    private boolean isTouchCursorImage(){
-    	//Log.d(TAG, "cursorLeft="+cursorLeft+" cursorTop="+cursorTop+" cursorRight="+cursorRight+" cursorBottom="+cursorBottom);
-    	boolean condition1=xDown-cursorLeft>=0?true:false;
-    	boolean condition2=yDown-cursorTop>=0?true:false;
-    	boolean condition3=xDown-cursorRight<=0?true:false;
-    	boolean condition4=yDown-cursorBottom<=0?true:false;
-    	return condition1&&condition2&&condition3&&condition4;
-    }
-    
-    private boolean isMoveOnCircle(float xTouch,float yTouch){
-    	Log.d(TAG, "(int)Math.pow(xTouch-xCenter,2)="+(int)Math.pow(xTouch-xCenter,2));
-    	Log.d(TAG, "(int)Math.pow(yTouch-yCenter,2)="+(int)Math.pow(yTouch-yCenter,2));
-    	Log.d(TAG, "(int)Math.pow(radius-cursorWidth/2,2)="+(int)Math.pow(radius-cursorWidth/2,2));
-    	Log.d(TAG, "(int)Math.pow(radius+cursorWidth/2,2)="+(int)Math.pow(radius+cursorWidth/2,2));
-    	boolean outOfSmallVirtualCircle=(int)Math.sqrt(xTouch-xCenter)+(int)Math.pow(yTouch-yCenter,2)>=(int)Math.pow(radius-cursorWidth/2,2);
-    	boolean inOfBigVirtualCircle=(int)Math.sqrt(xTouch-xCenter)+(int)Math.pow(yTouch-yCenter,2)<=(int)Math.pow(radius+cursorWidth/2,2);
-    	return outOfSmallVirtualCircle&inOfBigVirtualCircle;
-    }
     
     private void caculateAngle(float xTouch,float yTouch){
-    	Log.d(TAG,"caculateAngle");
+    	//Log.d(TAG,"caculateAngle");
+    	double value=0;
     	double radian=0;
-    	if (xTouch>xCenter&yTouch<=yCenter) {
-    		Log.d(TAG, "yCenter-yTouch="+(yCenter-yTouch));
-			radian=Math.acos((yCenter-yTouch)/(radius+cursorWidth/2));
-			Log.d(TAG, "radian="+radian);
-			cursorImageAngle=(float) Math.toDegrees(radian);
+    	float degrees=0;
+    	if (xTouch>=xCenter&yTouch<yCenter) {
+    		Log.d(TAG, "第一像限");
+    		value=(yCenter-yTouch)/(radius)>1?1d:(yCenter-yTouch)/(radius);
+			radian=Math.acos(value);
+			degrees=(float) Math.toDegrees(radian);
+			newArea=0;
 		}else if (xTouch>xCenter&yTouch>=yCenter) {
-			radian=Math.acos((yTouch-yCenter)/(radius+cursorWidth/2));
-			cursorImageAngle=180-(float) Math.toDegrees(radian);
-		}else if (xTouch<xCenter&yTouch>yCenter) {
-			radian=Math.acos((yTouch-yCenter)/(radius+cursorWidth/2));
-			cursorImageAngle=180+(float) Math.toDegrees(radian);
-		}else if(xTouch<xCenter&yTouch<yCenter){
-			radian=Math.acos((yCenter-yTouch)/(radius+cursorWidth/2));
-			cursorImageAngle=360-(float) Math.toDegrees(radian);
+			Log.d(TAG, "第二像限");
+			value=(yTouch-yCenter)/(radius)>1?1d:(yTouch-yCenter)/(radius);
+			radian=Math.acos(value);
+			degrees=180-(float) Math.toDegrees(radian);
+			newArea=1;
+		}else if (xTouch<=xCenter&yTouch>yCenter) {
+			Log.d(TAG, "第三像限");
+			value=(yTouch-yCenter)/(radius)>1?1d:(yTouch-yCenter)/(radius);
+			radian=Math.acos((yTouch-yCenter)/(radius));
+			degrees=180+(float) Math.toDegrees(radian);
+			newArea=2;
+		}else if(xTouch<xCenter&yTouch<=yCenter){
+			Log.d(TAG, "第四像限");
+			value=(yCenter-yTouch)/(radius)>1?1d:(yCenter-yTouch)/(radius);
+			radian=Math.acos(value);
+			degrees=360-(float) Math.toDegrees(radian);
+			newArea=3;
 		}
+    	int span=newArea-lastArea;
+    	Log.d(TAG,"span="+span);
+    	switch (span) {
+		case 3:
+			if (minutes>0) {
+				minutes--;
+				lastArea=3;
+			}else if(minutes==0){
+				cursorImageAngle=0;
+				lastArea=0;
+			}
+			break;
+		case -3:
+			minutes++;
+			lastArea=0;
+			break;
+		default:
+			int abs=Math.abs(span);
+			if (abs==0||abs==1) {
+				cursorImageAngle=degrees;
+				lastArea=newArea;
+			}
+			break;
+		}
+    	Log.d(TAG,"minutes="+minutes);
     	Log.d(TAG,"cursorImageAngle="+cursorImageAngle);
     }
+    
+    private void caculateSetupTimeInMillion() {
+		// TODO Auto-generated method stub
+    	long time=(long) ((minutes+cursorImageAngle/360)*ONE_MINUTE_IN_MILLISECOND);
+    	isMovingCursor=false;
+    	cursorMoveListener.onCursorMove(time);
+	}
 
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent arg0) {
 		// TODO Auto-generated method stub
-		Log.d(TAG,"xCenter="+xCenter+" yCenter="+yCenter);
+		//Log.d(TAG,"xCenter="+xCenter+" yCenter="+yCenter);
 		cursorLeft=(float) (xCenter+radius*Math.sin(cursorImageAngle)-cursorWidth/2);
 		cursorTop=(float) (yCenter-radius*Math.cos(cursorImageAngle)-cursorHeight/2);
 		cursorRight=(float) (xCenter+radius*Math.sin(cursorImageAngle)+cursorWidth/2);
@@ -433,27 +476,45 @@ public class CircleTimerView extends View{
 		if (mTimerMode&&!isAnimating()) {
 			switch (arg0.getAction()) {
 			case MotionEvent.ACTION_DOWN:
+				Log.d(TAG,"ACTION_DOWN");
+				deskClock.mViewPager.requestDisallowInterceptTouchEvent(true);
 				xDown=arg0.getX();
 				yDown=arg0.getY();
 				Log.d(TAG, "xDown="+xDown+" yDown="+yDown);
 				break;
 			case MotionEvent.ACTION_MOVE:
+				Log.d(TAG,"ACTION_MOVE");
 				float x=arg0.getX();
 				float y=arg0.getY();
-				boolean isTouchCursor=isTouchCursorImage();
-				boolean isMoveOnCircle=isMoveOnCircle(x, y);
-				Log.d(TAG, "isTouchCursor="+isTouchCursor+" isMoveOnCircle="+isMoveOnCircle);
-				if (isMoveOnCircle&isMoveOnCircle) {
+				Log.d(TAG,"x="+x+" y="+y);
+				if (xDown!=x&yDown!=y) {
 					caculateAngle(arg0.getX(), arg0.getY());
-					invalidate();
+				    isMovingCursor=true;
+				    caculateSetupTimeInMillion();
+					//invalidate();
 				}
-				
 				break;
-
+			case MotionEvent.ACTION_UP:
+				Log.d(TAG,"ACTION_UP");
+				deskClock.mViewPager.requestDisallowInterceptTouchEvent(false);
+				isMovingCursor=false;
+				break;
 			default:
 				break;
 			}
 		}
 		return true;
+	}
+	
+	public void diliveryActivityObj(Activity activity){
+		deskClock=(DeskClock) activity;
+	}
+	
+	public void setCircleTimeViewListener(CursorMoveListener cursorMoveListener){
+		this.cursorMoveListener=cursorMoveListener;
+	}
+	
+	public interface CursorMoveListener{
+		abstract public void onCursorMove(long setupTime);
 	}
 }

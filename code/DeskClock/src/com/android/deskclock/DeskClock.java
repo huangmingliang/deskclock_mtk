@@ -107,7 +107,7 @@ public class DeskClock extends BaseActivity
 
     private ActionBar mActionBar;
     private Menu mMenu;
-    private ViewPager mViewPager;
+    public ViewPager mViewPager;
     private ImageButton mFab;
     private ImageButton mLeftButton;
     private ImageButton mRightButton;

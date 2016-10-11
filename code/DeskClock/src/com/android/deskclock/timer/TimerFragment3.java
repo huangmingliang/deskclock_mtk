@@ -36,6 +36,7 @@ import android.widget.RelativeLayout;
 
 import com.android.deskclock.AnimatorUtils;
 import com.android.deskclock.CircleTimerView;
+import com.android.deskclock.CircleTimerView.CursorMoveListener;
 import com.android.deskclock.DeskClock;
 import com.android.deskclock.DeskClockFragment;
 import com.android.deskclock.LogUtils;
@@ -45,7 +46,7 @@ import com.android.deskclock.Utils;
 import com.android.deskclock.VerticalViewPager;
 import com.android.deskclock.events.Events;
 
-public class TimerFragment3 extends DeskClockFragment implements OnSharedPreferenceChangeListener,OnClickListener{
+public class TimerFragment3 extends DeskClockFragment implements OnSharedPreferenceChangeListener,OnClickListener,CursorMoveListener{
 
 	private String TAG=getClass().getSimpleName();
     public static final long ANIMATION_TIME_MILLIS = DateUtils.SECOND_IN_MILLIS / 3;
@@ -115,6 +116,7 @@ public class TimerFragment3 extends DeskClockFragment implements OnSharedPrefere
         timerReset=(ImageView)view.findViewById(R.id.timer_reset);
         timerPause=(ImageView)view.findViewById(R.id.timer_pause);
         timerLabel=(Button)view.findViewById(R.id.timer_label);
+        mCircleView.setCircleTimeViewListener(this);
         timer30m.setOnClickListener(this);
         timer15m.setOnClickListener(this);
         timer10m.setOnClickListener(this);
@@ -130,6 +132,7 @@ public class TimerFragment3 extends DeskClockFragment implements OnSharedPrefere
         super.onActivityCreated(savedInstanceState);
         Log.d(TAG,"onActivityCreated");
         context = getActivity();
+        mCircleView.diliveryActivityObj(getActivity());
         mViewState=savedInstanceState;
         Log.d(TAG, "mViewState="+mViewState);
         mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -372,5 +375,11 @@ public class TimerFragment3 extends DeskClockFragment implements OnSharedPrefere
 		}
 		  disableTimerSetup(!isFragmentReset);
 	  }
+
+	@Override
+	public void onCursorMove(long setupTime) {
+		// TODO Auto-generated method stub
+		quickSetup(setupTime);
+	}
 
 }

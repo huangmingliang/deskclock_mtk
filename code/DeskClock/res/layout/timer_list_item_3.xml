@@ -16,7 +16,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             timer:timer_modle="true"
-            android:background="@color/red"
             android:layout_marginTop="14dip"
             android:layout_marginBottom="40dip"/>
 
