@@ -18,11 +18,11 @@ package com.android.deskclock.timer;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.telecom.Log;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -51,9 +51,9 @@ public class CountingTimerView extends View {
     // from the center.
     private static final float FONT_VERTICAL_OFFSET = 0.14f;
     // Ratio of the space trailing the Hours and Minutes
-    private static final float HOURS_MINUTES_SPACING = 0.1f;
+    private static final float HOURS_MINUTES_SPACING = 0f;
     // Ratio of the space leading the Hundredths
-    private static final float HUNDREDTHS_SPACING = 0.5f;
+    private static final float HUNDREDTHS_SPACING = 0f;
     // Radial offset of the enclosing circle
     private final float mRadiusOffset;
 
@@ -88,6 +88,8 @@ public class CountingTimerView extends View {
     /// M: Make font type single instance to avoid potential leak
     private static Typeface sAndroidClockMonoThin;  // NOPMD
     private static Typeface sAndroidClockMonoLight;  // NOPMD
+    
+    private boolean mStopWatchModle=false;
 
     Runnable mBlinkThread = new Runnable() {
         private boolean mVisible = true;
@@ -279,8 +281,15 @@ public class CountingTimerView extends View {
         mDefaultColor = mWhiteColor = r.getColor(R.color.clock_white);
         mPressedColor = mAccentColor = Utils.obtainStyledColor(
                 context, R.attr.colorAccent, Color.RED);
+
+        TypedArray array = context.obtainStyledAttributes(attrs,
+				R.styleable.CountingTimeView);
+		mStopWatchModle = array
+				.getBoolean(R.styleable.CountingTimeView_stopwatch_modle, false);
+		array.recycle();
+        
         mBigFontSize = r.getDimension(R.dimen.big_font_size);
-        mSmallFontSize = r.getDimension(R.dimen.small_font_size);
+        mSmallFontSize = r.getDimension(R.dimen.big_font_size);
 
         /// M: Only create from asset at the first time @{
         if (sAndroidClockMonoThin == null) {
@@ -346,7 +355,6 @@ public class CountingTimerView extends View {
         }
         long hundreds, seconds, minutes, hours;
         seconds = time / 1000;
-        Log.d(TAG,"second="+seconds);
         hundreds = (time - seconds * 1000) / 10;
         minutes = seconds / 60;
         seconds = seconds - minutes * 60;
@@ -382,6 +390,7 @@ public class CountingTimerView extends View {
         }
 
         // Hours may be empty
+        
         if (hours >= 10) {
             format = showNeg ? NEG_TWO_DIGITS : TWO_DIGITS;
             mHours = String.format(format, hours);
@@ -389,8 +398,13 @@ public class CountingTimerView extends View {
             format = showNeg ? NEG_ONE_DIGIT : TWO_DIGITS;
             mHours = String.format(format, hours);
         } else {
-        	format = showNeg ? NEG_ONE_DIGIT : TWO_DIGITS+":";
-        	mHours = String.format(format, 0);
+        	if (!mStopWatchModle) {
+        		format = showNeg ? NEG_ONE_DIGIT : TWO_DIGITS+":";
+            	mHours = String.format(format, 0);
+			}else {
+				mHours=null;
+			}
+        	
         }
 
         // Minutes are never empty and when hours are non-empty, must be two digits
@@ -419,7 +433,7 @@ public class CountingTimerView extends View {
         if (showHundredths) {
 //            mHundredths = String.format(TWO_DIGITS, hundreds);
         	/// add 20160824 modify bug1004 @{
-            mHundredths = String.format(":" + TWO_DIGITS, hundreds);
+            mHundredths = String.format("." + TWO_DIGITS, hundreds);
             /// @}
         } else {
             mHundredths = null;

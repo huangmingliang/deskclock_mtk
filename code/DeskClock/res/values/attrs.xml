@@ -48,5 +48,9 @@
         <attr name="radius" format="dimension" />
         <attr name="timer_modle" format="boolean"/>
     </declare-styleable>
+    
+    <declare-styleable name="CountingTimeView">
+        <attr name="stopwatch_modle" format="boolean"/>
+    </declare-styleable>
 
 </resources>

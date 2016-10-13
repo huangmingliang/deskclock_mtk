@@ -74,5 +74,32 @@
             android:layout_weight="0.5"
             android:layout_width="0dip"
             android:layout_height="match_parent"/>
+    
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/sw_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="6dp"
+                android:layout_marginStart="80dp"
+                android:src="@drawable/sw_record"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/sw_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="6dp"
+                android:layout_marginEnd="80dp"
+                android:src="@drawable/sw_start" 
+                android:visibility="gone"/>
+        </RelativeLayout>
 
 </LinearLayout>
