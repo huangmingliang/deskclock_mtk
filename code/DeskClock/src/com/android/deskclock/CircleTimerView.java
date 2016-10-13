@@ -55,6 +55,7 @@ public class CircleTimerView extends View {
 	private Drawable cursorImage, cursorImage2, dotBlue, dotBlue2, dotGray;
 	private float cursorImageAngle = 0;
 	private long ONE_MINUTE_IN_MILLISECOND = 60 * 1000;
+	private long ONE_SECOND_IN_MILLISECOND=1000;
 	private boolean isLessOneMinute = true;
 	private int timeLeftColor = 0xff27B25F;
 	private int cursorWidth, cursorHeight, dotSmallWidth, dotSmallHeight,
@@ -235,10 +236,8 @@ public class CircleTimerView extends View {
 	@Override
 	public void onDraw(Canvas canvas) {
 		mPaint.setStrokeWidth(mStrokeSize);
-		Log.d(TAG, "mIntervalStartTime == "+mIntervalStartTime);
 		if (mIntervalStartTime == -1) {
 			// just draw a complete white circle, no red arc needed
-			Log.d(TAG, "mIntervalStartTime == -1");
 			mPaint.setColor(mWhiteColor);
 			mPaint.setAlpha(bigCircleAlpha);
 			if (mTimerMode) {
@@ -340,9 +339,8 @@ public class CircleTimerView extends View {
 	}
 
 	public void setStopWatchAngle(long totalTime) {
-		Log.d(TAG, "setStopWatchAngle");
-		float minutes = totalTime / (ONE_MINUTE_IN_MILLISECOND * 1.0f);
-		mStopWatchAngle = minutes * 360;
+		float second = totalTime / (ONE_SECOND_IN_MILLISECOND * 1.0f);
+		mStopWatchAngle = second * 360;
 	}
 
 	protected void drawRedDot(Canvas canvas, float degrees, int xCenter,
@@ -412,7 +410,6 @@ public class CircleTimerView extends View {
 								dotRightSmall, dotBottomSmall);
 					}
 				} else {
-					Log.d(TAG, "i="+i);
 					drawDot(canvas, dotGray, i, dotLeftSmall, dotTopSmall,
 							dotRightSmall, dotBottomSmall);
 				}

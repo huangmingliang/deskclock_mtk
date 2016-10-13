@@ -409,7 +409,7 @@ public class StopwatchService extends Service {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
                     getApplicationContext());
             long intervalStartTime = prefs.getLong(
-                    Stopwatches.KEY + CircleTimerView.PREF_CTV_INTERVAL_START, -1);
+                    Stopwatches.KEY + CircleTimerView.PREF_CTV_INTERVAL_START, 0);
             if (intervalStartTime != -1) {
                 intervalStartTime = time;
                 SharedPreferences.Editor editor = prefs.edit();
