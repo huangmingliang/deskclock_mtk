@@ -183,7 +183,7 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
 
         // On tablet landscape, the clock frame will be a distinct view. Otherwise, it'll be added
         // on as a header to the main listview.
-        mClockFrame = v.findViewById(R.id.main_clock_left_pane);
+        /*mClockFrame = v.findViewById(R.id.main_clock_left_pane);
         mHairline = v.findViewById(R.id.hairline);
         if (mClockFrame == null) {
             mClockFrame = inflater.inflate(R.layout.main_clock_frame, mList, false);
@@ -202,10 +202,10 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
         View menuButton = v.findViewById(R.id.menu_button);
         if (menuButton != null) {
             setupFakeOverflowMenuButton(menuButton);
-        }
+        }*/
 
 //        mDigitalClock = mClockFrame.findViewById(R.id.digital_clock);
-        mAnalogClock = mClockFrame.findViewById(R.id.analog_clock);
+        mAnalogClock = v.findViewById(R.id.analog_clock);
        /* Utils.setTimeFormat(getActivity(),
             (TextClock) mDigitalClock.findViewById(R.id.digital_clock),
             getResources().getDimensionPixelSize(R.dimen.main_ampm_font_size));*/
@@ -266,12 +266,12 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
              * M: Reset the mHairline's visibility. The condition of hairline's
              * state is visible. @{
              */
-            if (mAdapter.getCount() > 0
+           /* if (mAdapter.getCount() > 0
                     && getView().findViewById(R.id.main_clock_left_pane) == null) {
                 mHairline.setVisibility(View.VISIBLE);
             } else {
                 mHairline.setVisibility(View.GONE);
-            }
+            }*/
             /** @} */
         }
         mAdapter.notifyDataSetChanged();

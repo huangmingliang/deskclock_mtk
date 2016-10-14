@@ -456,7 +456,7 @@ public class StopwatchService extends Service {
             long accumulatedTime = prefs.getLong(
                     Stopwatches.KEY + CircleTimerView.PREF_CTV_ACCUM_TIME, 0);
             long intervalStartTime = prefs.getLong(
-                    Stopwatches.KEY + CircleTimerView.PREF_CTV_INTERVAL_START, -1);
+                    Stopwatches.KEY + CircleTimerView.PREF_CTV_INTERVAL_START, 0);
             accumulatedTime += time - intervalStartTime;
             SharedPreferences.Editor editor = prefs.edit();
             editor.putLong(Stopwatches.KEY + CircleTimerView.PREF_CTV_ACCUM_TIME, accumulatedTime);

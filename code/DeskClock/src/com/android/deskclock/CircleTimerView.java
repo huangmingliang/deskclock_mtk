@@ -388,17 +388,19 @@ public class CircleTimerView extends View {
 		int count = (int) (angle / mDotIntervalAngle);
 		if (angle < 360) {
 			for (int i = 0; i <= count; i++) {
-				drawDot(canvas, dotBlue, i, dotLeftSmall, dotTopSmall,
+				drawDot(canvas, dotGray, i, dotLeftSmall, dotTopSmall,
 						dotRightSmall, dotBottomSmall);
 			}
-			drawDot(canvas, dotBlue2, count, dotLeftBig, dotTopBig,
-					dotRightBig, dotBottomBig);
+			if (angle>0) {
+				drawDot(canvas, dotBlue2, count, dotLeftBig, dotTopBig,
+						dotRightBig, dotBottomBig);
+			}
 			for (int j = count + 1; j < 72; j++) {
 				drawDot(canvas, dotGray, j, dotLeftSmall, dotTopSmall,
 						dotRightSmall, dotBottomSmall);
 			}
 		} else {
-			for (int i = 0; i <=72; i++) {
+			for (int i = 0; i <72; i++) {
 				if (isTiming) {
 					int angel2 = (int) angle % 360;
 					int dotBlueCount2 = (int) (angel2 / mDotIntervalAngle);
@@ -406,7 +408,7 @@ public class CircleTimerView extends View {
 						drawDot(canvas, dotBlue2, dotBlueCount2, dotLeftBig,
 								dotTopBig, dotRightBig, dotBottomBig);
 					} else {
-						drawDot(canvas, dotBlue, i, dotLeftSmall, dotTopSmall,
+						drawDot(canvas, dotGray, i, dotLeftSmall, dotTopSmall,
 								dotRightSmall, dotBottomSmall);
 					}
 				} else {
@@ -454,7 +456,7 @@ public class CircleTimerView extends View {
 	public void readFromSharedPref(SharedPreferences prefs, String key) {
 		mPaused = prefs.getBoolean(key + PREF_CTV_PAUSED, false);
 		mIntervalTime = prefs.getLong(key + PREF_CTV_INTERVAL, 0);
-		mIntervalStartTime = prefs.getLong(key + PREF_CTV_INTERVAL_START, -1);
+		mIntervalStartTime = prefs.getLong(key + PREF_CTV_INTERVAL_START, 0);
 		mCurrentIntervalTime = prefs
 				.getLong(key + PREF_CTV_CURRENT_INTERVAL, 0);
 		mAccumulatedTime = prefs.getLong(key + PREF_CTV_ACCUM_TIME, 0);

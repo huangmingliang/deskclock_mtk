@@ -13,6 +13,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
@@ -43,6 +44,9 @@ public class ClockView extends View{
  	private Handler handle=new Handler();
  	private String minuteText="00";
  	private String hourText="00";
+ 	private float mSecondSweepAngle=0;
+ 	private Drawable mSecond;
+ 	private int mSecondWidth,mSecondHeight;
  	
  	 private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
          @Override
@@ -74,6 +78,9 @@ public class ClockView extends View{
 	}
 	
 	private void init(Context context){
+		mSecond=context.getResources().getDrawable(R.drawable.alarm_second);
+		mSecondWidth=mSecond.getIntrinsicWidth();
+		mSecondHeight=mSecond.getIntrinsicHeight();
 	}
 	
 	private void drawBigCircle(Canvas canvas){
@@ -98,11 +105,11 @@ public class ClockView extends View{
 	}
 	
 	private void drawSecondDot(Canvas canvas){
-		Paint paint=new Paint();
-		paint.setAntiAlias(true);
-		paint.setColor(secondDotColor);
-		paint.setStrokeWidth(secondRadius);
-		canvas.drawCircle(xSecondLoction, ySecondLoction, secondRadius, paint);
+	    canvas.save();
+		mSecond.setBounds(xCenter-mSecondWidth/2, yCenter-smallCircleRaius-mSecondHeight/2,xCenter+mSecondWidth/2 , yCenter-smallCircleRaius+mSecondHeight/2);
+		canvas.rotate(mSecondSweepAngle, xCenter, yCenter);
+		mSecond.draw(canvas);
+		canvas.restore();
 	}
 	
 	private void drawHourText(Canvas canvas){
@@ -207,16 +214,16 @@ public class ClockView extends View{
     
     private void refleshSecond(){
     	long OneMinute=60*1000;
-    	double pi=Math.PI;
     	long currentSecond=calendar.get(Calendar.SECOND);
     	long currentMilliSecond=currentSecond*1000+calendar.get(Calendar.MILLISECOND);
-    	double percent=currentMilliSecond/(OneMinute*1.0d);
-    	double angle=-pi/2+percent*2*pi;
+    	float percent=currentMilliSecond/(OneMinute*1.0f);
+    	/*double angle=-pi/2+percent*2*pi;
     	if (angle>=3*pi/2) {
 			angle=pi/2;
 		}
     	xSecondLoction=(int) (xCenter+smallCircleRaius*Math.cos(angle));
-    	ySecondLoction=(int) (yCenter+smallCircleRaius*Math.sin(angle));
+    	ySecondLoction=(int) (yCenter+smallCircleRaius*Math.sin(angle));*/
+    	mSecondSweepAngle=percent*360;
     	invalidate();
     	
     }

@@ -54,8 +54,7 @@
                 android:clipToPadding="false"
                 android:descendantFocusability="beforeDescendants"
                 android:divider="@drawable/divider"
-                android:dividerHeight="0.5dip"
-                android:paddingBottom="@dimen/button_footer_height" />
+                android:dividerHeight="0.5dip"/>
 
             <TextView
                 android:id="@+id/alarms_empty_view"

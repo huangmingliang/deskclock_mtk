@@ -192,7 +192,7 @@ public class StopwatchFragment extends DeskClockFragment implements
 			TextView lapTime = (TextView) lapInfo.findViewById(R.id.lap_time);
 			TextView totalTime = (TextView) lapInfo
 					.findViewById(R.id.lap_total);
-			lapTime.setText(Stopwatches.formatTimeText(lap.mLapTime,
+			lapTime.setText("+"+Stopwatches.formatTimeText(lap.mLapTime,
 					mFormats[mLapIndex]));
 			totalTime.setText(Stopwatches.formatTimeText(lap.mTotalTime,
 					mFormats[mTotalIndex]));
@@ -353,7 +353,6 @@ public class StopwatchFragment extends DeskClockFragment implements
 		mLapsList = (ListView) v.findViewById(R.id.laps_list);
 		mStopWatchRecord = (ImageView) v.findViewById(R.id.sw_record);
 		mStopWatchPause = (ImageView) v.findViewById(R.id.sw_pause);
-		mLapsList.setDividerHeight(0);
 		mLapsAdapter = new LapsListAdapter(getActivity());
 		mLapsList.setAdapter(mLapsAdapter);
 

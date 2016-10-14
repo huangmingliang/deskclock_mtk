@@ -13,32 +13,68 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ListView
-        android:id="@+id/cities"
-        android:clickable="false"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="27sp"
-        android:paddingEnd="27sp"
-        android:divider="@drawable/divider"
-        android:scrollbars="none"
-        android:dividerHeight="0.5dip" />
-    <FrameLayout
-        android:layout_width="@dimen/footer_button_size"
-        android:layout_height="@dimen/footer_button_size"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="@dimen/footer_button_layout_margin" >
-        <ImageButton
-            android:id="@+id/menu_button"
-            style="?attr/actionOverflowButtonStyle"
-            android:layout_gravity="end|center_vertical"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:accessibilityTraversalAfter="@+id/fab"
-            android:contentDescription="@string/button_menu" />
-    </FrameLayout>
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="26dp">
+
+            <com.android.deskclock.AnalogClock
+                android:id="@+id/analog_clock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:dial="@drawable/clock_analog_dial_mipmap"
+                android:hand_hour="@drawable/clock_analog_hour_mipmap"
+                android:hand_minute="@drawable/clock_analog_minute_mipmap" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="266dp"
+            android:layout_height="0.5dp"
+            android:background="@color/list_divider" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ListView
+                android:id="@+id/cities"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="false"
+                android:divider="@drawable/divider"
+                android:dividerHeight="0.5dip"
+                android:paddingEnd="27sp"
+                android:paddingStart="27sp"
+                android:scrollbars="none" />
+
+            <FrameLayout
+                android:layout_width="@dimen/footer_button_size"
+                android:layout_height="@dimen/footer_button_size"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="@dimen/footer_button_layout_margin" >
+
+                <ImageButton
+                    android:id="@+id/menu_button"
+                    style="?attr/actionOverflowButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:accessibilityTraversalAfter="@+id/fab"
+                    android:contentDescription="@string/button_menu" />
+            </FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
+
 </FrameLayout>
