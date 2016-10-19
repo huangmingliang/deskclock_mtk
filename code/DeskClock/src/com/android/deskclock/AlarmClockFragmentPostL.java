@@ -14,7 +14,7 @@ public class AlarmClockFragmentPostL extends AlarmClockFragment implements
     // Callback used by TimePickerDialog
     @Override
     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
-        processTimeSet(hourOfDay, minute);
+        //processTimeSet(hourOfDay, minute);
     }
 
     @Override

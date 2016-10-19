@@ -50,7 +50,7 @@ public class SettingsActivity extends BaseActivity {
     public static final String KEY_ALARM_SNOOZE = "snooze_duration";
     public static final String KEY_ALARM_VOLUME = "volume_setting";
     public static final String KEY_VOLUME_BEHAVIOR = "volume_button_setting";
-    public static final String KEY_AUTO_SILENCE = "auto_silence";
+    public static final String KEY_AUTO_SILENCE = "auto_silence_";
     public static final String KEY_CLOCK_STYLE = "clock_style";
     public static final String KEY_HOME_TZ = "home_time_zone";
     public static final String KEY_AUTO_HOME_CLOCK = "automatic_home_clock";

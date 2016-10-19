@@ -14,7 +14,7 @@ public class AlarmClockFragmentPreL extends AlarmClockFragment implements
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-        processTimeSet(hourOfDay, minute);
+        //processTimeSet(hourOfDay, minute);
     }
 
     @Override

@@ -21,6 +21,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -63,6 +64,7 @@ public class BaseActivity extends AppCompatActivity {
         final int backgroundColor = savedInstanceState == null ? currentColor
                 : savedInstanceState.getInt(KEY_BACKGROUND_COLOR, currentColor);
         setBackgroundColor(backgroundColor, false  animate );*/
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setBackgroundColor();
     }
 

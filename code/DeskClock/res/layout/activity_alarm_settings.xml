@@ -1,0 +1,324 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.android.deskclock.AlarmSettingsActivity" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#f5f5f5"
+        android:gravity="center_vertical" >
+
+        <ImageButton
+            android:id="@+id/alarm_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp"
+            android:background="@null"
+            android:src="@drawable/alarm_cancel" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/add_alarm"
+            android:textColor="#343434"
+            android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/alarm_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:background="@null"
+            android:src="@drawable/alarm_save" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="173dp"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TimePicker
+                android:id="@+id/timePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginEnd="27dp"
+            android:layout_marginStart="27dp"
+            android:background="#e5e5e5" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp" >
+
+            <TextView
+                android:id="@+id/alarm_repeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="27dp"
+                android:layout_marginStart="27dp"
+                android:layout_marginTop="6.5dp"
+                android:text="@string/alarm_repeat"
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:id="@+id/dayBtns"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/alarm_repeat"
+                android:layout_marginEnd="14dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <!-- <CheckBox
+                    android:id="@+id/dayBtn1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_day_week"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:textColor="#8d8d8d"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/dayBtn2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_day_week"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:textColor="#8d8d8d"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/dayBtn3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_day_week"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:textColor="#8d8d8d"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/dayBtn4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_day_week"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:textColor="#8d8d8d"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/dayBtn5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_day_week"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:textColor="#8d8d8d"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/dayBtn6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_day_week"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:textColor="#8d8d8d"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/dayBtn7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_day_week"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:textColor="#8d8d8d"
+                    android:textSize="16sp" /> -->
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginEnd="27dp"
+            android:layout_marginStart="27dp"
+            android:background="#e5e5e5" />
+
+        <RelativeLayout
+            android:id="@+id/ringtong_rl"
+            android:layout_width="match_parent"
+            android:layout_height="64dp" >
+
+            <TextView
+                android:id="@+id/alarm_ring"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="27dp"
+                android:layout_marginStart="27dp"
+                android:layout_marginTop="6.5dp"
+                android:text="@string/ringtone"
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/alarm_ring"
+                android:layout_marginEnd="27dp"
+                android:layout_marginStart="27dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/choose_ringtone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#8d8d8d"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginEnd="27dp"
+            android:layout_marginStart="27dp"
+            android:background="#e5e5e5" />
+
+        <RelativeLayout
+            android:id="@+id/label_rl"
+            android:layout_width="match_parent"
+            android:layout_height="64dp" >
+
+            <TextView
+                android:id="@+id/alarm_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="27dp"
+                android:layout_marginStart="27dp"
+                android:layout_marginTop="6.5dp"
+                android:text="@string/label"
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/alarm_label"
+                android:layout_marginEnd="27dp"
+                android:layout_marginStart="27dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_label"
+                    android:textColor="#8d8d8d"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginEnd="27dp"
+            android:layout_marginStart="27dp"
+            android:background="#e5e5e5" />
+
+        <RelativeLayout
+            android:id="@+id/silent_rl"
+            android:layout_width="match_parent"
+            android:layout_height="64dp" >
+
+            <TextView
+                android:id="@+id/silent_after_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="27dp"
+                android:layout_marginStart="27dp"
+                android:layout_marginTop="6.5dp"
+                android:text="@string/auto_silence_title"
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/silent_after_title"
+                android:layout_marginEnd="27dp"
+                android:layout_marginStart="27dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/silent_after"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#8d8d8d"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginEnd="27dp"
+            android:layout_marginStart="27dp"
+            android:background="#e5e5e5" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp" >
+
+            <TextView
+                android:id="@+id/delete_alarm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="27dp"
+                android:layout_marginStart="27dp"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/delete_alarm"
+                android:textColor="#3966ee"
+                android:textSize="16sp"
+                android:visibility="invisible" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -58,7 +58,7 @@ class ClockDatabaseHelper extends SQLiteOpenHelper {
     private static final int VERSION_7 = 7;
 
     // This creates a default alarm at 8:30 for every Mon,Tue,Wed,Thu,Fri
-    private static final String DEFAULT_ALARM_1 = "(8, 30, 31, 0, 0, '', NULL, 0);";
+    private static final String DEFAULT_ALARM_1 = "(6, 00, 31, 0, 0, '', NULL, 0);";
 
     // This creates a default alarm at 9:30 for every Sat,Sun
     private static final String DEFAULT_ALARM_2 = "(9, 00, 96, 0, 0, '', NULL, 0);";
