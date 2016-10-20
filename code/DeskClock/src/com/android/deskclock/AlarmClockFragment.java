@@ -1058,6 +1058,7 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 		editor.putString(KEY_AUTO_SILENCE + id, time);
 		editor.apply();
 	}
+	
 
 	/**
 	 * M: Set the internal used default Ringtones

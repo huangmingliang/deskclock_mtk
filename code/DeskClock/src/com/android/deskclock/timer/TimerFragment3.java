@@ -74,7 +74,7 @@ public class TimerFragment3 extends DeskClockFragment implements OnSharedPrefere
     private Context context;
     private TimerObj3 timerObj3;
     
-    private Runnable mClockTick=new Runnable() {
+    final private Runnable mClockTick=new Runnable() {
 		
 		@Override
 		public void run() {

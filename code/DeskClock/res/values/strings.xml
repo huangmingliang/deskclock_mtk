@@ -1236,6 +1236,7 @@
     <string name="title_activity_alarm_settings">AlarmSettingsActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="alarm_later">Later on</string>
     
     <!-- 迭代3 闹钟界面 -->
 
