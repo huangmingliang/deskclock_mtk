@@ -16,11 +16,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
-import android.telecom.Log;
 import android.text.format.DateUtils;
 import android.transition.AutoTransition;
 import android.transition.Transition;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,17 +72,16 @@ public class TimerFragment3 extends DeskClockFragment implements OnSharedPrefere
     private ImageView timerPause;
     private boolean isFragmentReset=true;
     private Context context;
-    private TimerObj3 timerObj3;
+    private TimerObj timerObj;
     
     final private Runnable mClockTick=new Runnable() {
 		
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			Log.d(TAG, "ticking...");
 			long timeLeft=0;
-			if (timerObj3.mState==TimerObj.STATE_RUNNING) {
-				 timeLeft = timerObj3.updateTimeLeft(false);
+			if (timerObj.mState==TimerObj.STATE_RUNNING) {
+				 timeLeft = timerObj.updateTimeLeft(false);
 				 mCountingView.setTime(timeLeft, false, false);
 				 mCircleView.setTimerMode(true);
 			}
@@ -90,7 +89,7 @@ public class TimerFragment3 extends DeskClockFragment implements OnSharedPrefere
 				mTimerView.postDelayed(mClockTick, 20);
 			}else {
 				mTicking=false;
-				timerObj3.mState=TimerObj.STATE_STOPPED;
+				timerObj.mState=TimerObj.STATE_STOPPED;
 				resetClock();
 			}
 			
@@ -171,7 +170,7 @@ public class TimerFragment3 extends DeskClockFragment implements OnSharedPrefere
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d(TAG,"onSaveInstanceState");
-        outState.putParcelable(TIME_OBJ, timerObj3);
+        outState.putParcelable(TIME_OBJ, timerObj);
     }
 
     @Override
@@ -196,6 +195,7 @@ public class TimerFragment3 extends DeskClockFragment implements OnSharedPrefere
      *               only for label changes.
      */
     private void updateTimerState(TimerObj t, String action, boolean update) {
+    	Log.d(TAG,"updateTimerState action:"+action+" TimerObj id:"+t.mTimerId);
         t.writeToSharedPref(mPrefs);
         final Intent i = new Intent();
         i.setAction(action);
@@ -231,7 +231,6 @@ public class TimerFragment3 extends DeskClockFragment implements OnSharedPrefere
         mFab.setVisibility(View.VISIBLE);
         return;
     }
-    Log.d(TAG,"isFragmentReset="+isFragmentReset);
     if (isFragmentReset) {
     	mFab.setVisibility(View.VISIBLE);
     	mFab.setImageResource(R.drawable.start_green);
@@ -296,43 +295,45 @@ public class TimerFragment3 extends DeskClockFragment implements OnSharedPrefere
 	}
 	
 	private void quickSetup(long timeLength){
-		timerObj3=new TimerObj3(timeLength, context);
-		mCountingView.setTime(timerObj3.mTimeLeft, false, true);
-		set(timerObj3.mOriginalLength, timerObj3.mTimeLeft, false);
+		timerObj=new TimerObj(timeLength, context);
+		mCountingView.setTime(timerObj.mTimeLeft, false, true);
+		set(timerObj.mOriginalLength, timerObj.mTimeLeft, false);
 		setFabAppearance();
 	}
 	
 	private void restoreTimerClock(){
 		if (mViewState==null) {
-			Log.d(TAG,"mViewState==null||timerObj3==null");
+			Log.d(TAG,"mViewState==null||timerObj==null");
 			return;
 		}
-		timerObj3=(TimerObj3) mViewState.get(TIME_OBJ);
+		timerObj=(TimerObj) mViewState.get(TIME_OBJ);
 		Log.d(TAG, "isFragmentReset="+isFragmentReset);
-		if (timerObj3==null) {
+		if (timerObj==null) {
 			setFabAppearance();
 			return;
 		}
 		isFragmentReset=false;
-		mCountingView.setTime(timerObj3.mTimeLeft, false, true);
-		if (timerObj3.mState==TimerObj3.STATE_RUNNING) {
+		mCountingView.setTime(timerObj.mTimeLeft, false, true);
+		if (timerObj.mState==TimerObj.STATE_RUNNING) {
 			startClockTicks();
-		}else if (timerObj3.mState==TimerObj3.STATE_STOPPED) {
-			set(timerObj3.mOriginalLength, timerObj3.mTimeLeft, false);
+		}else if (timerObj.mState==TimerObj.STATE_STOPPED) {
+			set(timerObj.mOriginalLength, timerObj.mTimeLeft, false);
 			setFabAppearance();
 		}else {
 			isFragmentReset=true;
-			set(timerObj3.mOriginalLength, timerObj3.mTimeLeft, false);
+			set(timerObj.mOriginalLength, timerObj.mTimeLeft, false);
 			setFabAppearance();
 		}
 	}
 	 private void startClockTicks() {
-		 if (timerObj3==null||timerObj3.mTimeLeft<=0) {
+		 if (timerObj==null||timerObj.mTimeLeft<=0) {
 			return;
 		}
-		    set(timerObj3.mOriginalLength, timerObj3.mTimeLeft, false);
-		    timerObj3=new TimerObj3(timerObj3.mTimeLeft, context);
-		    timerObj3.setState(TimerObj3.STATE_RUNNING);
+		    set(timerObj.mOriginalLength, timerObj.mTimeLeft, false);
+		    timerObj=new TimerObj(timerObj.mTimeLeft, context);
+		    timerObj.setState(TimerObj.STATE_RUNNING);
+		    timerObj.mDeleteAfterUse=true;
+		    updateTimerState(timerObj, Timers.START_TIMER);
 	        mTimerView.postDelayed(mClockTick, 20);
 	        mCircleView.startIntervalAnimation();
 	        mTicking = true;
@@ -345,12 +346,13 @@ public class TimerFragment3 extends DeskClockFragment implements OnSharedPrefere
 	   private void stopOrRestartClockTicks() {
 	        if (mTicking) {
 	            mTimerView.removeCallbacks(mClockTick);
+	            updateTimerState(timerObj, Timers.STOP_TIMER);
 	            mTicking = false;
-	            timerObj3.mState=TimerObj3.STATE_STOPPED;
+	            timerObj.mState=TimerObj.STATE_STOPPED;
 	            timerPause.setImageResource(R.drawable.start_green);
 	            mCircleView.pauseIntervalAnimation();
 	        }else {
-	        	timerObj3.refleshTimeLeft(timerObj3.mTimeLeft);
+	        	timerObj.refleshTimeLeft(timerObj.mTimeLeft);
 				startClockTicks();
 			}
 	    }
@@ -365,7 +367,7 @@ public class TimerFragment3 extends DeskClockFragment implements OnSharedPrefere
 	    
 	  private void resetClock(){
 		  if (!mTicking) {
-			timerObj3=new TimerObj3(0, context);
+			timerObj=new TimerObj(0, context);
 			mTimerView.removeCallbacks(mClockTick);
 			mCountingView.setTime(0, false, true);
 			set(0, 0, false);

@@ -1237,7 +1237,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="alarm_later">Later on</string>
-    
+    <string name="add_one_minute">+1 minute</string>
     <!-- 迭代3 闹钟界面 -->
 
 </resources>

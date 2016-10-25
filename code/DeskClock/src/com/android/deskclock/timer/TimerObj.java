@@ -181,6 +181,8 @@ public class TimerObj implements Parcelable {
       init(timerLength, timerId);
     }
 
+    
+    
     public TimerObj(long timerLength, Context context) {
         init(timerLength, getNextTimerId(context));
     }
@@ -211,7 +213,8 @@ public class TimerObj implements Parcelable {
              */
             nextTimerId = prefs.getInt(KEY_NEXT_TIMER_ID, (int) Utils.getTimeNow());
             /** @} */
-            prefs.edit().putInt(KEY_NEXT_TIMER_ID, nextTimerId + 1).apply();
+            //prefs.edit().putInt(KEY_NEXT_TIMER_ID, nextTimerId + 1).apply();
+            prefs.edit().putInt(KEY_NEXT_TIMER_ID, nextTimerId).apply();
         }
         return nextTimerId;
     }
@@ -320,5 +323,10 @@ public class TimerObj implements Parcelable {
     private static Set<String> getTimerIds(SharedPreferences prefs) {
         // return a defensive copy that is safe to mutate; see doc for getStringSet() for details
         return new HashSet<>(prefs.getStringSet(PREF_TIMERS_LIST, Collections.<String>emptySet()));
+    }
+    
+    public void refleshTimeLeft(long timeLeft){
+    	mStartTime=Utils.getTimeNow();
+    	mTimeLeft=timeLeft;
     }
 }

@@ -227,6 +227,7 @@ public class TimerReceiver extends BroadcastReceiver {
         }
         if (intent.getBooleanExtra(Timers.UPDATE_NEXT_TIMESUP, true)) {
             // Update the next "Times up" alarm unless explicitly told not to.
+        	Log.d(TAG, "onReceiver:timer_update_next_timesup");
             updateNextTimesup(context);
         }
     }
@@ -246,6 +247,7 @@ public class TimerReceiver extends BroadcastReceiver {
     // If no timer exists, clear "time's up" message.
     private void updateNextTimesup(Context context) {
         TimerObj t = getNextRunningTimer(mTimers, false, Utils.getTimeNow());
+        Log.d(TAG, "updateNextTimesup TimerObj id="+t);
         long nextTimesup = (t == null) ? -1 : t.getTimesupTime();
         int timerId = (t == null) ? -1 : t.mTimerId;
 
@@ -264,6 +266,7 @@ public class TimerReceiver extends BroadcastReceiver {
             if (Utils.isKitKatOrLater()) {
                 mngr.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, nextTimesup, p);
             } else {
+            	Log.d(TAG, "isKitKatOrLater nextTimesup:"+nextTimesup);
                 mngr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, nextTimesup, p);
             }
             if (Timers.LOGGING) {
@@ -424,11 +427,12 @@ public class TimerReceiver extends BroadcastReceiver {
 
     private TimerObj getNextRunningTimer(
             ArrayList<TimerObj> timers, boolean requireNextUpdate, long now) {
-        long nextTimesup = Long.MAX_VALUE;
+    	Log.d(TAG, "getNextRunningTimer timers size="+timers.size());
+//        long nextTimesup = Long.MAX_VALUE;
         boolean nextTimerFound = false;
-        Iterator<TimerObj> i = timers.iterator();
+//        Iterator<TimerObj> i = timers.iterator();
         TimerObj t = null;
-        while(i.hasNext()) {
+        /*while(i.hasNext()) {
             TimerObj tmp = i.next();
             if (tmp.mState == TimerObj.STATE_RUNNING) {
                 long timesupTime = tmp.getTimesupTime();
@@ -439,7 +443,11 @@ public class TimerReceiver extends BroadcastReceiver {
                     t = tmp;
                 }
             }
-        }
+        }*/
+        if (timers!=null&&timers.size()>0) {
+			t=timers.get(0);
+			nextTimerFound = true;
+		}
         if (nextTimerFound) {
             return t;
         } else {
