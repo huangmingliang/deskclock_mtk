@@ -451,42 +451,6 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 		}
 	}
 	
-	private void insertTwoDefaultAlarm(Cursor cursor){
-		boolean isExistDefaultAlarm_1=false;
-		boolean isExistDefaultAlarm_2=false;
-		if (cursor==null) {
-			return;
-		}
-        while (cursor.moveToNext()) {
-			int hour=cursor.getInt(HOUR_INDEX);
-			int minute=cursor.getInt(MINUTES_INDEX);
-			if (hour==6&&minute==0) {
-				isExistDefaultAlarm_1=true;
-			}
-			if (hour==9&&minute==0) {
-				isExistDefaultAlarm_2=true;
-			}
-		}
-        if (!isExistDefaultAlarm_1) {
-        	Alarm alarm=new Alarm();
-        	alarm.hour=6;
-        	alarm.minutes=0;
-        	alarm.label=mContext.getResources().getString(R.string.default_label);
-        	alarm.daysOfWeek.setBitSet(31);
-			asyncAddAlarm(alarm, KEY_DEFAULT_SILENT_AFTER);
-		}
-        
-        if (!isExistDefaultAlarm_2) {
-        	Alarm alarm=new Alarm();
-        	alarm.hour=9;
-        	alarm.minutes=0;
-        	alarm.daysOfWeek.setBitSet(96);
-        	alarm.label=mContext.getResources().getString(R.string.default_label);
-			asyncAddAlarm(alarm, KEY_DEFAULT_SILENT_AFTER);
-		}
-        mAdapter.notifyDataSetChanged();
-	}
-
 	/**
 	 * Scroll to alarm with given alarm id.
 	 *
