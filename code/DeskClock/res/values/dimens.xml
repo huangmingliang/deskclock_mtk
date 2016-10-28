@@ -187,5 +187,9 @@
     <dimen name="alarm_holster_font_size">58sp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    
+    <!-- Alarm -->
+    <dimen name="alarm_list_item_height">66dp</dimen>
+    <dimen name="alarm_item_time_size">27sp</dimen>
 
 </resources>

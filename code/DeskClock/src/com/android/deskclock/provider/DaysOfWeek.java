@@ -17,6 +17,7 @@
 package com.android.deskclock.provider;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.deskclock.R;
 
@@ -44,6 +45,12 @@ public final class DaysOfWeek {
 
     // Value when no days are set
     public static final int NO_DAYS_SET = 0;
+    
+    //Value when the working day are set
+    public static final int WORKDAY_SET=0x1f;
+    
+    //Value when the weekend day are set
+    public static final int WEEKEND_SET=0x60;
 
     /**
      * Need to have monday start at index 0 to be backwards compatible. This converts
@@ -78,12 +85,18 @@ public final class DaysOfWeek {
 
     private String toString(Context context, int firstDay, boolean forAccessibility) {
         StringBuilder ret = new StringBuilder();
-
         // no days
         if (mBitSet == NO_DAYS_SET) {
             return "";
         }
 
+        if (mBitSet==WORKDAY_SET) {
+        	 return context.getText(R.string.work_day).toString();
+		}
+        
+        if (mBitSet==WEEKEND_SET) {
+			return context.getText(R.string.weekend).toString();
+		}
         // every day
         if (mBitSet == ALL_DAYS_SET) {
             return context.getText(R.string.every_day).toString();

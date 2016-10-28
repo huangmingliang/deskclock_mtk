@@ -49,6 +49,10 @@ public class DeskClockFragment extends Fragment {
             mRightButton = deskClockActivity.getRightButton();
         }
     }
+    
+    public void showBottomWindow(){
+    	
+    }
 
     public void setFabAppearance() {
         // Do nothing here , only in derived classes

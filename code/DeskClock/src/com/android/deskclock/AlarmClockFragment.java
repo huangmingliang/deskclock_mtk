@@ -52,6 +52,7 @@ import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -66,7 +67,9 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CompoundButton;
 import android.widget.CursorAdapter;
 import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -147,13 +150,11 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 	private ListView mAlarmsList;
 	private AlarmItemAdapter mAdapter;
 	private View mEmptyView;
-	private View mFooterView;
+	private FrameLayout frameLayout;
+	private PopupWindow mDeleteAlarmWindow;
 
 	private Bundle mRingtoneTitleCache; // Key: ringtone uri, value: ringtone
 										// title
-	private ActionableToastBar mUndoBar;
-	private View mUndoFrame;
-
 	protected Alarm mSelectedAlarm;
 	protected long mScrollToAlarmId = INVALID_ID;
 
@@ -272,10 +273,7 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 		mEmptyView = v.findViewById(R.id.alarms_empty_view);
 		mMainLayout = (FrameLayout) v.findViewById(R.id.main);
 		mAlarmsList = (ListView) v.findViewById(R.id.alarms_list);
-
-		mUndoBar = (ActionableToastBar) v.findViewById(R.id.undo_bar);
-		mUndoFrame = v.findViewById(R.id.undo_frame);
-		mUndoFrame.setOnTouchListener(this);
+		frameLayout=(FrameLayout)v.findViewById(R.id.main);
 
 		mAdapter = new AlarmItemAdapter(getActivity(), expandedId,
 				repeatCheckedIds, selectedAlarms, previousDayMap, mAlarmsList);
@@ -361,19 +359,6 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 		setTimePickerListener();
 	}
 
-	private void hideUndoBar(boolean animate, MotionEvent event) {
-		if (mUndoBar != null) {
-			mUndoFrame.setVisibility(View.GONE);
-			if (event != null && mUndoBar.isEventInToastBar(event)) {
-				// Avoid touches inside the undo bar.
-				return;
-			}
-			mUndoBar.hide(animate);
-		}
-		mDeletedAlarm = null;
-		mUndoShowing = false;
-	}
-
 	private void enterAlarmSetup(Context context, Alarm alarm) {
 		mSelectedAlarm = alarm;
 		Intent intent = new Intent(context, AlarmSettingsActivity.class);
@@ -399,17 +384,13 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		disMissDeleteAlarmWindow();
 		ToastMaster.cancelToast();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		// When the user places the app in the background by pressing "home",
-		// dismiss the toast bar. However, since there is no way to determine if
-		// home was pressed, just dismiss any existing toast bar when restarting
-		// the app.
-		hideUndoBar(false, null);
 	}
 
 	private void showLabelDialog(final Alarm alarm) {
@@ -726,7 +707,8 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 								toast.show();
 								return true;
 							}*/
-							asyncDeleteAlarm(alarm);
+							//asyncDeleteAlarm(alarm);
+							showDeleteAlarmWindow(alarm);
 							return true;
 						}
 					});
@@ -767,25 +749,31 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 			// Set the repeat text or leave it blank if it does not repeat.
 			final String daysOfWeekStr = alarm.daysOfWeek.toString(context,
 					Utils.getFirstDayOfWeek(context));
+			String divide="";
 			if (daysOfWeekStr != null && daysOfWeekStr.length() != 0) {
 				itemHolder.daysOfWeek.setText(daysOfWeekStr);
 				itemHolder.daysOfWeek.setContentDescription(alarm.daysOfWeek
 						.toAccessibilityString(context,
 								Utils.getFirstDayOfWeek(context)));
 				itemHolder.daysOfWeek.setVisibility(View.VISIBLE);
-
+                divide=", ";
 			} else {
 				itemHolder.daysOfWeek.setVisibility(View.GONE);
 			}
 			
 			if (alarm.label != null && alarm.label.length() != 0) {
-                itemHolder.label.setText(alarm.label + "  ");
+                itemHolder.label.setText(alarm.label + divide);
                 itemHolder.label.setVisibility(View.VISIBLE);
                 itemHolder.label.setContentDescription(
                         mContext.getResources().getString(R.string.label_description) + " "
                         + alarm.label);
             } else {
-                itemHolder.label.setVisibility(View.GONE);
+                //itemHolder.label.setVisibility(View.GONE);
+            	itemHolder.label.setText(R.string.default_label);
+                itemHolder.label.setVisibility(View.VISIBLE);
+                itemHolder.label.setContentDescription(
+                        mContext.getResources().getString(R.string.label_description) + " "
+                        +R.string.default_label+divide);
             }
 		}
 
@@ -957,13 +945,14 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		hideUndoBar(true, event);
+		disMissDeleteAlarmWindow();
 		return false;
 	}
+	
+	
 
 	@Override
 	public void onFabClick(View view) {
-		hideUndoBar(true, null);
 		// startCreatingAlarm();
 		enterAlarmSetup(mContext, null);
 	}
@@ -1089,5 +1078,36 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 			}
 		}
 	}
+	
+	
+	private void showDeleteAlarmWindow(final Alarm alarm){
+		View view=LayoutInflater.from(mContext).inflate(R.layout.alarm_delete_window, null);
+		mDeleteAlarmWindow=new PopupWindow(view,LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT);
+		mDeleteAlarmWindow.setTouchable(true);
+		mDeleteAlarmWindow.setOutsideTouchable(true);
+		Log.d(TAG, "showDeleteAlarmWindow");
+        mDeleteAlarmWindow.getContentView().setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mDeleteAlarmWindow.dismiss();
+				asyncDeleteAlarm(alarm);
+			}
+		});
+		if (!mDeleteAlarmWindow.isShowing()) {
+			mDeleteAlarmWindow.showAtLocation(frameLayout, Gravity.BOTTOM, 0, 0);
+		}
+		
+		
+	}
+	
+	private void disMissDeleteAlarmWindow(){
+		if (mDeleteAlarmWindow!=null) {
+			mDeleteAlarmWindow.dismiss();
+		}
+	}
+	
 
 }

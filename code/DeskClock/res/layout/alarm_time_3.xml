@@ -1,57 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/alarm_item"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dc="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/alarm_item"
     android:layout_width="match_parent"
-    android:layout_height="66dp">
+    android:layout_height="@dimen/alarm_list_item_height" >
+
     <com.android.deskclock.widget.TextTime
-            android:id="@+id/digital_clock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:textSize="27sp"
-            dc:format12Hour="@string/alarm_time_12_hours_format"
-            dc:format24Hour="@string/clock_24_hours_format" />
-    <!-- <TextView
-        android:id="@+id/timeBucket"
+        android:id="@+id/digital_clock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/digital_clock"
-        android:layout_marginStart="5dp"
-        android:text="@string/alarm_time_bucket_am"
-        android:textSize="12sp"
-        android:textColor="#7FFFFFFF"/> -->
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:textSize="27sp"
+        dc:format12Hour="@string/alarm_time_12_hours_format"
+        dc:format24Hour="@string/clock_24_hours_format" />
+   
     <TextView
-        android:id="@+id/alarmListTitle" 
+        android:id="@+id/alarmListTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/digital_clock"
         android:text="@string/alarm_list_title"
-        android:textSize="12sp"
-        android:textColor="#7FFFFFFF"/>
+        android:textColor="#7FFFFFFF"
+        android:textSize="12sp" />
+
     <TextView
         android:id="@+id/daysOfWeek"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/digital_clock"
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/alarmListTitle"
-        android:layout_below="@+id/digital_clock"
+        android:text="@string/working_day"
         android:textColor="#7FFFFFFF"
-        android:textSize="12sp"
-        android:text="@string/working_day"/>
-    
-     <android.support.v7.widget.SwitchCompat
-            android:id="@+id/onoff"
-            android:theme="@style/ControlAccentThemeOverlay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"/>
-    
-    
-    
+        android:textSize="12sp" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/onoff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:theme="@style/ControlAccentThemeOverlay" />
 
 </RelativeLayout>

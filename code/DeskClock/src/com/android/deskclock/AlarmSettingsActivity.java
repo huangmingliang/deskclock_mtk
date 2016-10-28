@@ -147,13 +147,6 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if ((mAlarm.hour==6&&mAlarm.minutes==0)||(mAlarm.hour==9&&mAlarm.minutes==0)) {
-					Toast toast = Toast.makeText(mContext, "默认闹钟无法删除",
-							Toast.LENGTH_LONG);
-					ToastMaster.setToast(toast);
-					toast.show();
-					return;
-				}
 				asyncDeleteAlarm(mAlarm);
 			}
 		});

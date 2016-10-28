@@ -49,12 +49,7 @@
 
     <style name="ControlAccentThemeOverlay" >
         <!-- Attributes from support.v7.appcompat -->
-     <item name="switchStyle">@style/abc</item>
-     <item name="colorControlActivated">#3D6DEF</item>
-    </style>
-    
-    <style name="abc" parent="Base.Widget.AppCompat.CompoundButton.Switch">
-        <item name="android:thumb">@drawable/switch_thumb</item>
+     <item name="colorControlActivated">?attr/colorAccent</item>
     </style>
 
     <style name="TimeLabelTextAppearance" parent="TextAppearance.AppCompat">

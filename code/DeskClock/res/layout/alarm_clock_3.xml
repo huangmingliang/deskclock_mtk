@@ -41,7 +41,7 @@
             android:background="@color/list_divider"/>
       
 
-        <FrameLayout
+       <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingStart="27dp"
@@ -69,44 +69,10 @@
                 android:text="@string/no_alarms"
                 android:textColor="#4cffffff" />
 
-            <FrameLayout
-                android:id="@+id/undo_frame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" >
-
-                <com.android.deskclock.widget.ActionableToastBar
-                    android:id="@+id/undo_bar"
-                    style="@style/ToastBarStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dip"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="96dp"
-                    android:layout_marginEnd="@dimen/alarm_undo_bar_horizontal_margin"
-                    android:layout_marginLeft="@dimen/alarm_undo_bar_horizontal_margin"
-                    android:layout_marginRight="@dimen/alarm_undo_bar_horizontal_margin"
-                    android:layout_marginStart="@dimen/alarm_undo_bar_horizontal_margin" />
-            </FrameLayout>
+           
         </FrameLayout>
         
       
     </LinearLayout>
-
-    <!-- <FrameLayout
-        android:id="@+id/alarms_footer_view"
-        android:layout_width="@dimen/footer_button_size"
-        android:layout_height="@dimen/footer_button_size"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="@dimen/footer_button_layout_margin" >
-
-        <ImageButton
-            android:id="@+id/menu_button"
-            style="?attr/actionOverflowButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center_vertical"
-            android:accessibilityTraversalAfter="@+id/fab"
-            android:contentDescription="@string/button_menu" />
-    </FrameLayout> -->
 
 </FrameLayout>
