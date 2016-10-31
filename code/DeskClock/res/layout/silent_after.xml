@@ -2,65 +2,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    
-    <TextView 
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:gravity="center_vertical"
         android:layout_gravity="center_vertical"
+        android:layout_marginStart="24dp"
+        android:gravity="center_vertical"
+        android:text="@string/auto_silence_title"
         android:textColor="#343434"
-        android:textSize="18sp"
-        android:text="@string/auto_silence_title"/>
-    
+        android:textSize="18sp" />
+
+    <View
+        android:layout_width="266dp"
+        android:layout_height="0.5dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#EFEFEF" />
+
     <ListView
         android:id="@+id/silent_after_list"
         android:layout_width="wrap_content"
         android:layout_height="277dp"
-        android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
-        android:divider="@color/list_divider"
+        android:layout_marginEnd="24dp"
+        android:choiceMode="singleChoice"
+        android:divider="#EFEFEF"
         android:dividerHeight="0.5dp"
-        android:headerDividersEnabled="true" >
-
+        android:scrollbars="none" >
     </ListView>
-    
-    <View 
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#e5e5e5"/>
-    
-    <LinearLayout 
+
+    <View
+        android:layout_width="266dp"
+        android:layout_height="0.5dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#e5e5e5" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal" >
+
         <TextView
-            android:id="@+id/btn_cancel" 
+            android:id="@+id/btn_cancel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/time_picker_cancel"
             android:textColor="#3966ee"
-            android:textSize="14sp"/>
-        <View 
-            android:layout_width="0.5dp"
-            android:layout_height="match_parent"
-            android:background="#e5e5e5"/>
-        
-         <TextView
-            android:id="@+id/btn_ok" 
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:text="@string/time_picker_set"
-            android:textColor="#3966ee"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
     </LinearLayout>
 
 </LinearLayout>

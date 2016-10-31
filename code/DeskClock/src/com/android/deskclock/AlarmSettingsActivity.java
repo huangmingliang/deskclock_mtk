@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.HashSet;
 
 import com.android.deskclock.LabelDialogFragment3.LabelDialogListener;
-import com.android.deskclock.SilentAfterDialogFragment.SilentDialogListener;
 import com.android.deskclock.alarms.AlarmStateManager;
 import com.android.deskclock.alarms.PowerOffAlarm;
 import com.android.deskclock.events.Events;
@@ -18,6 +17,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -30,6 +30,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,19 +38,27 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.TimePicker.OnTimeChangedListener;
 
 public class AlarmSettingsActivity extends Activity implements OnClickListener,
-		SilentDialogListener,LabelDialogListener{
+		OnItemClickListener, LabelDialogListener {
 
 	public static final String SYSTEM_SETTINGS_ALARM_ALERT = "content://settings/system/alarm_alert";
 	private static final int REQUEST_CODE_RINGTONE = 1;
@@ -60,20 +69,27 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 	private Alarm mAlarm;
 	private CompoundButton[] dayButtons = new CompoundButton[7];
 	private int[] mDayOrder;
+	private LinearLayout content;
 	private TimePicker mTimePicker;
 	private LinearLayout mDayButtons;
 	private TextView mRingtong;
 	private TextView mSilentAfter;
-	private TextView label;
-	private RelativeLayout mSilentRL, mRingtongRL,mLabelRL;
+	private TextView mLabel;
+	private RelativeLayout mSilentRL, mRingtongRL, mLabelRL;
 	private ImageButton cancel, save;
 	private TextView delete;
+	private String[] values;
+	private String[] entries;
 	private String value;
 	private String entry;
-	private String labelStr;
 	private boolean isAdd = false;
+	private ListView mSilentList;
+	private TextView mCancelBtn;
+	private PopupWindow window;
+	private View mWindowView;
+	private int mChosedSilentPosition = -1;
 	private SilentAfterDialogFragment dialog = new SilentAfterDialogFragment();
-	private LabelDialogFragment3 mLabelDialog=new LabelDialogFragment3();
+	private LabelDialogFragment3 mLabelDialog = new LabelDialogFragment3();
 	private final int[] DAY_ORDER = new int[] { Calendar.SUNDAY,
 			Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY,
 			Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, };
@@ -84,11 +100,12 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_alarm_settings);
 		mContext = this;
-		entry = mContext.getResources().getStringArray(
-				R.array.auto_silence_entries)[0];
-		value = mContext.getResources().getStringArray(
-				R.array.auto_silence_values)[0];
-		dialog.setSilentDialogListener(this);
+		entries = mContext.getResources().getStringArray(
+				R.array.auto_silence_entries);
+		values = mContext.getResources().getStringArray(
+				R.array.auto_silence_values);
+		entry = entries[0];
+		value = values[0];
 		mLabelDialog.setLabelDialogListener(this);
 		Intent intent = getIntent();
 		mAlarm = intent.getParcelableExtra("alarm");
@@ -118,17 +135,19 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 		initSilentAfter(mAlarm);
 		initDeleteButton(mAlarm);
 		initLabel(mAlarm);
+		initWindowView();
 	}
 
 	private void initView() {
+		content = (LinearLayout) findViewById(R.id.main);
 		mTimePicker = (TimePicker) findViewById(R.id.timePicker);
 		mDayButtons = (LinearLayout) findViewById(R.id.dayBtns);
 		mRingtong = (TextView) findViewById(R.id.choose_ringtone);
 		mRingtongRL = (RelativeLayout) findViewById(R.id.ringtong_rl);
 		mSilentRL = (RelativeLayout) findViewById(R.id.silent_rl);
-		mLabelRL=(RelativeLayout)findViewById(R.id.label_rl);
+		mLabelRL = (RelativeLayout) findViewById(R.id.label_rl);
 		mSilentAfter = (TextView) findViewById(R.id.silent_after);
-		label=(TextView)findViewById(R.id.label);
+		mLabel = (TextView) findViewById(R.id.label);
 		cancel = (ImageButton) findViewById(R.id.alarm_cancel);
 		save = (ImageButton) findViewById(R.id.alarm_ok);
 		delete = (TextView) findViewById(R.id.delete_alarm);
@@ -189,31 +208,35 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 	}
 
 	private void initSilentAfter(final Alarm alarm) {
-		if (entry != null) {
+		if (alarm == null) {
 			mSilentAfter.setText(entry);
+		} else {
+			Log.d(TAG, "entry=" + getAlarmSilentAfterEntry(alarm));
+			mSilentAfter.setText(getAlarmSilentAfterEntry(alarm));
 		}
 		mSilentRL.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				dialog.show(getFragmentManager(), "SilentAfter");
+				// dialog.show(getFragmentManager(), "SilentAfter");
+				createSilentAfterWindow();
 			}
 		});
 	}
-	
-	private void initLabel(final Alarm alarm){
+
+	private void initLabel(final Alarm alarm) {
 		if (alarm.label != null && alarm.label.length() != 0) {
-            label.setText(alarm.label + "  ");
-            label.setVisibility(View.VISIBLE);
-            label.setContentDescription(
-                    mContext.getResources().getString(R.string.label_description) + " "
-                    + alarm.label);
-        } else {
-            label.setVisibility(View.GONE);
-        }
+			mLabel.setText(alarm.label + "  ");
+			mLabel.setVisibility(View.VISIBLE);
+			mLabel.setContentDescription(mContext.getResources().getString(
+					R.string.label_description)
+					+ " " + alarm.label);
+		} else {
+			mLabel.setVisibility(View.GONE);
+		}
 		mLabelRL.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -415,14 +438,13 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 		case R.id.alarm_ok:
 			saveAndReture();
 			break;
-		case R.id.delete_alarm:
-
+		case R.id.btn_cancel:
+			dismissWindow();
 			break;
 		default:
 			break;
 		}
 	}
-
 
 	private void saveAndReture() {
 		Intent intent = new Intent();
@@ -430,6 +452,28 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 		intent.putExtra("silent_after", value);
 		setResult(Activity.RESULT_OK, intent);
 		finish();
+	}
+
+	private String getAlarmSilentAfterEntry(Alarm alarm) {
+		if (alarm == null) {
+			return "";
+		}
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(mContext);
+		String value = prefs.getString(AlarmClockFragment.KEY_AUTO_SILENCE
+				+ alarm.id, "10");
+		String[] values = mContext.getResources().getStringArray(
+				R.array.auto_silence_values);
+		String[] entries = mContext.getResources().getStringArray(
+				R.array.auto_silence_entries);
+		int index = 0;
+		for (int i = 0; i < values.length; i++) {
+			if (values[i].equals(value)) {
+				index = i;
+				break;
+			}
+		}
+		return entries[index];
 	}
 
 	private void asyncDeleteAlarm(final Alarm alarm) {
@@ -454,7 +498,7 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 			protected void onPostExecute(Void result) {
 				// TODO Auto-generated method stub
 				super.onPostExecute(result);
-				Toast toast = Toast.makeText(mContext, "闹钟已删除",
+				Toast toast = Toast.makeText(mContext, R.string.alarm_deleted,
 						Toast.LENGTH_LONG);
 				ToastMaster.setToast(toast);
 				toast.show();
@@ -466,21 +510,91 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 		deleteTask.execute();
 	}
 
+	private void refleshSilentAfter(String entry) {
+		mSilentAfter.setText(entry);
+	}
+
+	private void refleshLabel(String label) {
+		mLabel.setText(label);
+	}
+
 	@Override
 	public void onLabelChange(String label) {
 		// TODO Auto-generated method stub
-		labelStr=label;
-		mAlarm.label=label;
-		onResume();
+		mAlarm.label = label;
+		refleshLabel(label);
 	}
 	
+	private void initWindowView(){
+		mWindowView = LayoutInflater.from(mContext).inflate(
+				R.layout.silent_after, null);
+		mSilentList = (ListView) mWindowView.findViewById(R.id.silent_after_list);
+		mCancelBtn = (TextView) mWindowView.findViewById(R.id.btn_cancel);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
+				R.layout.silent_after_item, R.id.silent_time, entries);
+		mSilentList.setAdapter(adapter);
+		mCancelBtn.setOnClickListener(this);
+		mSilentList.setOnItemClickListener(this);
+	}
+
+	private void createSilentAfterWindow() {
+		
+		window = new PopupWindow(mWindowView, LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT);
+		window.setTouchable(true);
+		window.setOutsideTouchable(false);
+		//window.setFocusable(true);
+		ColorDrawable dw = new ColorDrawable(0x00000000);
+	        //设置SelectPicPopupWindow弹出窗体的背景
+	    window.setBackgroundDrawable(dw);
+	    backgroundAlpha(0.5f);//0.0-1.0
+		window.showAtLocation(content, Gravity.BOTTOM, 0, 0);
+		window.setOnDismissListener(new OnDismissListener() {
+			
+			@Override
+			public void onDismiss() {
+				// TODO Auto-generated method stub
+				 backgroundAlpha(1f);
+			}
+		});
+	}
+	
+	private void dismissWindow(){
+		if (window==null) {
+			return;
+		}
+		if (window.isShowing()) {
+			window.dismiss();
+		}
+	}
+
 	@Override
-	public void onSilentAferChange(String entry, String value) {
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
 		// TODO Auto-generated method stub
-		Log.d(TAG, "entry=" + entry + " value=" + value);
-		this.value = value;
-		this.entry = entry;
-		onResume();
+		mChosedSilentPosition =mSilentList.getCheckedItemPosition();
+		if (mChosedSilentPosition!=-1) {
+			this.value = values[mChosedSilentPosition];
+			this.entry = entries[mChosedSilentPosition];
+			refleshSilentAfter(entry);
+			window.dismiss();
+		}
+	}
+	
+	public void backgroundAlpha(float bgAlpha)
+    {
+        WindowManager.LayoutParams lp = this.getWindow().getAttributes();
+        lp.alpha = bgAlpha;
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        this.getWindow().setAttributes(lp);
+    }
+
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		dismissWindow();
 	}
 
 }
