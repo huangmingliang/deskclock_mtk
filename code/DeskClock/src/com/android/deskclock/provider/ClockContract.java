@@ -83,6 +83,15 @@ public final class ClockContract {
          * <p>Type: STRING</p>
          */
         public static final String RINGTONE = "ringtone";
+        
+        
+        /*
+         * ƒ÷÷”œÏ¡Â ±≥§
+         * 
+         * */
+        
+        public static final String SILENT_AFTER="silent_afer";
+        
     }
 
     /**

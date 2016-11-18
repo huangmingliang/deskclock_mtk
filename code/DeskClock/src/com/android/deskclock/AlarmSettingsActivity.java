@@ -63,6 +63,7 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 	public static final String SYSTEM_SETTINGS_ALARM_ALERT = "content://settings/system/alarm_alert";
 	private static final int REQUEST_CODE_RINGTONE = 1;
 	private static final int REQUEST_CODE_PERMISSIONS = 2;
+	private static final int DEFAUTL_SILENT_TIME=10;
 
 	private String TAG = getClass().getSimpleName();
 	private Context mContext;
@@ -78,17 +79,16 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 	private RelativeLayout mSilentRL, mRingtongRL, mLabelRL;
 	private ImageButton cancel, save;
 	private TextView delete;
-	private String[] values;
-	private String[] entries;
-	private String value;
-	private String entry;
+	private String[] mValues;
+	private String[] mEntries;
+	private String mValue;
+	private String mEntry;
 	private boolean isAdd = false;
 	private ListView mSilentList;
 	private TextView mCancelBtn;
 	private PopupWindow window;
 	private View mWindowView;
 	private int mChosedSilentPosition = -1;
-	private SilentAfterDialogFragment dialog = new SilentAfterDialogFragment();
 	private LabelDialogFragment3 mLabelDialog = new LabelDialogFragment3();
 	private final int[] DAY_ORDER = new int[] { Calendar.SUNDAY,
 			Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY,
@@ -100,12 +100,12 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_alarm_settings);
 		mContext = this;
-		entries = mContext.getResources().getStringArray(
+		mEntries = mContext.getResources().getStringArray(
 				R.array.auto_silence_entries);
-		values = mContext.getResources().getStringArray(
+		mValues = mContext.getResources().getStringArray(
 				R.array.auto_silence_values);
-		entry = entries[0];
-		value = values[0];
+		mEntry = mEntries[0];
+		mValue = mValues[0];
 		mLabelDialog.setLabelDialogListener(this);
 		Intent intent = getIntent();
 		mAlarm = intent.getParcelableExtra("alarm");
@@ -209,10 +209,11 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 
 	private void initSilentAfter(final Alarm alarm) {
 		if (alarm == null) {
-			mSilentAfter.setText(entry);
+			mSilentAfter.setText(mEntry);
 		} else {
-			Log.d(TAG, "entry=" + getAlarmSilentAfterEntry(alarm));
-			mSilentAfter.setText(getAlarmSilentAfterEntry(alarm));
+			initAlarmSilentAfter(alarm);
+			Log.d(TAG, "entry=" + mEntry);
+			mSilentAfter.setText(mEntry);
 		}
 		mSilentRL.setOnClickListener(new OnClickListener() {
 
@@ -449,31 +450,22 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 	private void saveAndReture() {
 		Intent intent = new Intent();
 		intent.putExtra("alarm", mAlarm);
-		intent.putExtra("silent_after", value);
 		setResult(Activity.RESULT_OK, intent);
 		finish();
 	}
 
-	private String getAlarmSilentAfterEntry(Alarm alarm) {
-		if (alarm == null) {
-			return "";
-		}
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(mContext);
-		String value = prefs.getString(AlarmClockFragment.KEY_AUTO_SILENCE
-				+ alarm.id, "10");
-		String[] values = mContext.getResources().getStringArray(
-				R.array.auto_silence_values);
-		String[] entries = mContext.getResources().getStringArray(
-				R.array.auto_silence_entries);
-		int index = 0;
-		for (int i = 0; i < values.length; i++) {
-			if (values[i].equals(value)) {
+	private void initAlarmSilentAfter(Alarm alarm) {
+		mValue=alarm.silentAfter+"";
+		int index = -1;
+		for (int i = 0; i < mValues.length; i++) {
+			if (mValues[i].equals(mValue)) {
 				index = i;
 				break;
 			}
 		}
-		return entries[index];
+		if (index!=-1) {
+			mEntry=mEntries[index];
+		}
 	}
 
 	private void asyncDeleteAlarm(final Alarm alarm) {
@@ -515,6 +507,7 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 	}
 
 	private void refleshLabel(String label) {
+		mLabel.setVisibility(View.VISIBLE);
 		mLabel.setText(label);
 	}
 
@@ -531,7 +524,7 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 		mSilentList = (ListView) mWindowView.findViewById(R.id.silent_after_list);
 		mCancelBtn = (TextView) mWindowView.findViewById(R.id.btn_cancel);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
-				R.layout.silent_after_item, R.id.silent_time, entries);
+				R.layout.silent_after_item, R.id.silent_time, mEntries);
 		mSilentList.setAdapter(adapter);
 		mCancelBtn.setOnClickListener(this);
 		mSilentList.setOnItemClickListener(this);
@@ -574,9 +567,10 @@ public class AlarmSettingsActivity extends Activity implements OnClickListener,
 		// TODO Auto-generated method stub
 		mChosedSilentPosition =mSilentList.getCheckedItemPosition();
 		if (mChosedSilentPosition!=-1) {
-			this.value = values[mChosedSilentPosition];
-			this.entry = entries[mChosedSilentPosition];
-			refleshSilentAfter(entry);
+			this.mValue = mValues[mChosedSilentPosition];
+			this.mEntry = mEntries[mChosedSilentPosition];
+			mAlarm.silentAfter=Integer.parseInt(mValue);
+			refleshSilentAfter(mEntry);
 			window.dismiss();
 		}
 	}

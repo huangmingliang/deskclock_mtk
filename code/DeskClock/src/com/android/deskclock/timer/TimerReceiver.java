@@ -46,22 +46,25 @@ import java.util.Iterator;
 
 public class TimerReceiver extends BroadcastReceiver {
     private static final String TAG = "TimerReceiver";
-
+    private String jyyTAG = "jyyTag--->";
     // Make this a large number to avoid the alarm ID's which seem to be 1, 2, ...
     // Must also be different than StopwatchService.NOTIFICATION_ID
     private static final int IN_USE_NOTIFICATION_ID = Integer.MAX_VALUE - 2;
 
     ArrayList<TimerObj> mTimers;
+    private Intent intent;
+
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
         if (Timers.LOGGING) {
-            Log.v(TAG, "Received intent " + intent.toString());
+            LogUtils.d(TAG, "Received intent " + intent.toString());
         }
         String actionType = intent.getAction();
         // This action does not need the timers data
         if (Timers.NOTIF_IN_USE_CANCEL.equals(actionType)) {
-            cancelInUseNotification(context);
+//            cancelInUseNotification(context);
+            LogUtils.d(TAG, "NOTIF_IN_USE_CANCEL,return!!!");
             return;
         }
 
@@ -79,17 +82,21 @@ public class TimerReceiver extends BroadcastReceiver {
                 timerRing.mState = TimerObj.STATE_STOPPED;
                 stopRingtoneIfNoTimesup(context);
             }
+            LogUtils.d(TAG, "PRE_SHUTDOWN_ACTION,return!!!");
             return;
         }
 
         // These actions do not provide a timer ID, but do use the timers data
         if (Timers.NOTIF_IN_USE_SHOW.equals(actionType)) {
-            showInUseNotification(context);
+//            showInUseNotification(context);
+            LogUtils.d(TAG, "NOTIF_IN_USE_SHOW,return!!!");
             return;
         } else if (Timers.NOTIF_TIMES_UP_SHOW.equals(actionType)) {
+            LogUtils.d(TAG,"NOTIF_TIMES_UP_SHOW,showNotification!!!");
             showTimesUpNotification(context);
             return;
         } else if (Timers.NOTIF_TIMES_UP_CANCEL.equals(actionType)) {
+            LogUtils.d(TAG,"NOTIF_TIMES_UP_CANCEL,cancelNotification!!!");
             cancelTimesUpNotification(context);
             return;
         }
@@ -108,6 +115,12 @@ public class TimerReceiver extends BroadcastReceiver {
         }
 
         TimerObj t = Timers.findTimer(mTimers, timerId);
+
+        if (Timers.STOP_TIMER.equals(actionType) || Timers.RESTART_TIMER.equals(actionType)) {
+            LogUtils.d(TAG, "STOP_TIMER or RESET_TIMER");
+            cancelAlarm(context);
+            return;
+        }
 
         if (Timers.TIMES_UP.equals(actionType)) {
             // Find the timer (if it doesn't exists, it was probably deleted).
@@ -129,8 +142,10 @@ public class TimerReceiver extends BroadcastReceiver {
             // Update the in-use notification
             if (getNextRunningTimer(mTimers, false, Utils.getTimeNow()) == null) {
                 // Found no running timers.
+                LogUtils.d(TAG, "cancelInUseNotification,nextRunningTimer is null");
                 cancelInUseNotification(context);
             } else {
+                LogUtils.d(TAG, "showInUseNotification,nextRunningTimer is not null");
                 showInUseNotification(context);
             }
 
@@ -147,14 +162,18 @@ public class TimerReceiver extends BroadcastReceiver {
             timersAlert.setFlags(
                     Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_USER_ACTION);
             context.startActivity(timersAlert);
-        } else if (Timers.RESET_TIMER.equals(actionType)
-                || Timers.DELETE_TIMER.equals(actionType)
+            LogUtils.d(TAG,"startActivity-->>TimerAlertFullScreen!!!");
+        } else if (Timers.DELETE_TIMER.equals(actionType)
+                || Timers.RESET_TIMER.equals(actionType)
                 || Timers.TIMER_DONE.equals(actionType)) {
             // Stop Ringtone if all timers are not in times-up status
             stopRingtoneIfNoTimesup(context);
-
+            Log.d(jyyTAG, jyyTAG + "acionType:" + actionType);
             if (t != null) {
-                cancelTimesUpNotification(context, t);
+//                cancelTimesUpNotification(context, t);
+                Log.d(jyyTAG, jyyTAG + "timeObj,cancelTimesUpNotification");
+            } else {
+                Log.d(jyyTAG, jyyTAG + "timeObj is null:");
             }
         } else if (Timers.NOTIF_TIMES_UP_STOP.equals(actionType)) {
             // Find the timer (if it doesn't exists, it was probably deleted).
@@ -180,9 +199,14 @@ public class TimerReceiver extends BroadcastReceiver {
             if (t.getDeleteAfterUse()) {
                 t.deleteFromSharedPref(prefs);
             }
-
+            //此时数据库里面已经没有这个timer数据了
+            LogUtils.d(TAG, "startActivity---DeskClock.class--->NOTIF_TIMES_UP_STOP");
             // Stop Ringtone if no timers are in times-up status
             stopRingtoneIfNoTimesup(context);
+            TimerFragment3.BACK_FROM_ALRM = false;
+            Intent desk_Intent = new Intent(context,DeskClock.class);
+            desk_Intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_USER_ACTION);
+            context.startActivity(desk_Intent);
         } else if (Timers.NOTIF_TIMES_UP_PLUS_ONE.equals(actionType)) {
             // Find the timer (if it doesn't exists, it was probably deleted).
             if (t == null) {
@@ -196,21 +220,25 @@ public class TimerReceiver extends BroadcastReceiver {
             // Restarting the timer with 1 minute left.
             t.setState(TimerObj.STATE_RUNNING);
             t.mStartTime = Utils.getTimeNow();
-            t.mTimeLeft = t. mOriginalLength = TimerObj.MINUTE_IN_MILLIS;
+            t.mTimeLeft = t.mOriginalLength = TimerObj.MINUTE_IN_MILLIS;
             t.writeToSharedPref(prefs);
 
             // Flag to tell DeskClock to re-sync with the database
             prefs.edit().putBoolean(Timers.REFRESH_UI_WITH_LATEST_DATA, true).apply();
 
-            cancelTimesUpNotification(context, t);
+//            cancelTimesUpNotification(context, t);
 
             // If the app is not open, refresh the in-use notification
             if (!prefs.getBoolean(Timers.NOTIF_APP_OPEN, false)) {
-                showInUseNotification(context);
+//                showInUseNotification(context);
             }
-
             // Stop Ringtone if no timers are in times-up status
             stopRingtoneIfNoTimesup(context);
+            LogUtils.d(TAG, "startActivity---DeskClock.class--->NOTIF_TIMES_UP_PLUS_ONE");
+            TimerFragment3.BACK_FROM_ALRM = true;
+            Intent desk_Intent = new Intent(context,DeskClock.class);
+            desk_Intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_USER_ACTION);
+            context.startActivity(desk_Intent);
         } else if (Timers.TIMER_UPDATE.equals(actionType)) {
             // Find the timer (if it doesn't exists, it was probably deleted).
             if (t == null) {
@@ -221,13 +249,14 @@ public class TimerReceiver extends BroadcastReceiver {
             // Refresh buzzing notification
             if (t.mState == TimerObj.STATE_TIMESUP) {
                 // Must cancel the previous notification to get all updates displayed correctly
-                cancelTimesUpNotification(context, t);
-                showTimesUpNotification(context, t);
+//                cancelTimesUpNotification(context, t);
+//                showTimesUpNotification(context, t);
+                LogUtils.d(TAG, "timer to update,TIMER_UPDATE");
             }
         }
         if (intent.getBooleanExtra(Timers.UPDATE_NEXT_TIMESUP, true)) {
             // Update the next "Times up" alarm unless explicitly told not to.
-        	Log.d(TAG, "onReceiver:timer_update_next_timesup");
+            Log.d(jyyTAG, "onReceiver:timer_update_next_timesup");
             updateNextTimesup(context);
         }
     }
@@ -247,11 +276,11 @@ public class TimerReceiver extends BroadcastReceiver {
     // If no timer exists, clear "time's up" message.
     private void updateNextTimesup(Context context) {
         TimerObj t = getNextRunningTimer(mTimers, false, Utils.getTimeNow());
-        Log.d(TAG, "updateNextTimesup TimerObj id="+t);
+        Log.d(TAG, "updateNextTimesup TimerObj id=" + t);
         long nextTimesup = (t == null) ? -1 : t.getTimesupTime();
         int timerId = (t == null) ? -1 : t.mTimerId;
 
-        Intent intent = new Intent();
+        intent = new Intent();
         intent.setAction(Timers.TIMES_UP);
         intent.setClass(context, TimerReceiver.class);
         // Time-critical, should be foreground
@@ -259,15 +288,17 @@ public class TimerReceiver extends BroadcastReceiver {
         if (!mTimers.isEmpty()) {
             intent.putExtra(Timers.TIMER_INTENT_EXTRA, timerId);
         }
-        AlarmManager mngr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager mngr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent p = PendingIntent.getBroadcast(context,
                 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_UPDATE_CURRENT);
+        //如果点击了停止，会清除timer数据，所以此时t==null!
         if (t != null) {
             if (Utils.isKitKatOrLater()) {
                 mngr.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, nextTimesup, p);
+                Log.d(TAG, "isKitKatOrLater nextTimesup:" + nextTimesup);
             } else {
-            	Log.d(TAG, "isKitKatOrLater nextTimesup:"+nextTimesup);
                 mngr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, nextTimesup, p);
+                Log.d(TAG, "noKitKatOrLater nextTimesup:" + nextTimesup);
             }
             if (Timers.LOGGING) {
                 Log.d(TAG, "Setting times up to " + nextTimesup);
@@ -278,9 +309,20 @@ public class TimerReceiver extends BroadcastReceiver {
             mngr.cancel(p);
             p.cancel();
             if (Timers.LOGGING) {
-                Log.v(TAG, "no next times up");
+                Log.v(TAG, "no next times up , t is null");
             }
         }
+    }
+
+    private void cancelAlarm(Context context) {
+        intent = new Intent();
+        intent.setAction(Timers.TIMES_UP);
+        intent.setClass(context, TimerReceiver.class);
+        AlarmManager mngr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent p = PendingIntent.getBroadcast(context,
+                0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_UPDATE_CURRENT);
+        mngr.cancel(p);
+        p.cancel();
     }
 
     private void showInUseNotification(final Context context) {
@@ -288,9 +330,11 @@ public class TimerReceiver extends BroadcastReceiver {
         boolean appOpen = prefs.getBoolean(Timers.NOTIF_APP_OPEN, false);
         ArrayList<TimerObj> timersInUse = Timers.timersInUse(mTimers);
         int numTimersInUse = timersInUse.size();
-        LogUtils.d(TAG, "showInUseNotification: timer size is %d", timersInUse.size());
+        LogUtils.d(TAG, "showInUseNotification: timer size is %d");
 
         if (appOpen || numTimersInUse == 0) {
+            LogUtils.d(TAG, "showInUseNotification:not timer used");
+            //如果闹钟在当前用户界面或者没有timer在使用，则退出该方法
             return;
         }
 
@@ -339,7 +383,7 @@ public class TimerReceiver extends BroadcastReceiver {
 
     private long getBroadcastTime(long now, long timeUntilBroadcast) {
         long seconds = timeUntilBroadcast / 1000;
-        seconds = seconds - ( (seconds / 60) * 60 );
+        seconds = seconds - ((seconds / 60) * 60);
         return now + (seconds * 1000);
     }
 
@@ -372,7 +416,7 @@ public class TimerReceiver extends BroadcastReceiver {
     }
 
     private static void showCollapsedNotification(final Context context, String title, String text,
-            int priority, PendingIntent pendingIntent, int notificationId, boolean showTicker) {
+                                                  int priority, PendingIntent pendingIntent, int notificationId, boolean showTicker) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setAutoCancel(false)
                 .setContentTitle(title)
@@ -427,7 +471,7 @@ public class TimerReceiver extends BroadcastReceiver {
 
     private TimerObj getNextRunningTimer(
             ArrayList<TimerObj> timers, boolean requireNextUpdate, long now) {
-    	Log.d(TAG, "getNextRunningTimer timers size="+timers.size());
+        Log.d(TAG, "getNextRunningTimer timers size=" + timers.size());
 //        long nextTimesup = Long.MAX_VALUE;
         boolean nextTimerFound = false;
 //        Iterator<TimerObj> i = timers.iterator();
@@ -444,10 +488,10 @@ public class TimerReceiver extends BroadcastReceiver {
                 }
             }
         }*/
-        if (timers!=null&&timers.size()>0) {
-			t=timers.get(0);
-			nextTimerFound = true;
-		}
+        if (timers.size() > 0) {
+            t = timers.get(0);
+            nextTimerFound = true;
+        }
         if (nextTimerFound) {
             return t;
         } else {
@@ -460,7 +504,7 @@ public class TimerReceiver extends BroadcastReceiver {
     }
 
     private void showTimesUpNotification(final Context context) {
-        for (TimerObj timerObj : Timers.timersInTimesUp(mTimers) ) {
+        for (TimerObj timerObj : Timers.timersInTimesUp(mTimers)) {
             showTimesUpNotification(context, timerObj);
         }
     }
@@ -502,14 +546,15 @@ public class TimerReceiver extends BroadcastReceiver {
                 .setContentText(context.getResources().getString(R.string.timer_times_up))
                 .setSmallIcon(R.drawable.stat_notify_timer)
                 .setOngoing(true)
+                .setShowWhen(true)
                 .setAutoCancel(false)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setDefaults(NotificationCompat.DEFAULT_LIGHTS)
-                .setWhen(0);
+                .setDefaults(NotificationCompat.DEFAULT_LIGHTS);
 
         // Send the notification using the timer's id to identify the
         // correct notification
         NotificationManagerCompat.from(context).notify(timerObj.mTimerId, builder.build());
+        LogUtils.d(TAG,"showTimesUpNotification success!!!");
         if (Timers.LOGGING) {
             Log.v(TAG, "Setting times-up notification for "
                     + timerObj.getLabelOrDefault(context) + " #" + timerObj.mTimerId);
@@ -517,7 +562,7 @@ public class TimerReceiver extends BroadcastReceiver {
     }
 
     private void cancelTimesUpNotification(final Context context) {
-        for (TimerObj timerObj : Timers.timersInTimesUp(mTimers) ) {
+        for (TimerObj timerObj : Timers.timersInTimesUp(mTimers)) {
             cancelTimesUpNotification(context, timerObj);
         }
     }

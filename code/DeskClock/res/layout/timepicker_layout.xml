@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="10dp"
+    tools:context="com.example.jiayangzhang.newdemo.MainActivity" >
+
+    <TextView
+        android:id="@+id/selected_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:text="选择时间"
+        android:textColor="#8d61aacc"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:id="@+id/hour_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_below="@id/selected_time"
+        android:layout_marginStart="40dp"
+        android:orientation="horizontal" >
+
+        <NumberPicker
+            
+            android:id="@+id/listView_hour"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true" />
+
+        <TextView
+            android:id="@+id/hour"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:gravity="center_vertical"
+            android:text="时"
+            android:textColor="#8D4FBFF4"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/minute_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_below="@id/selected_time"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@id/hour_layout"
+        android:orientation="horizontal" >
+
+        <NumberPicker
+            android:id="@+id/listView_minute"
+            android:layout_width="35dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/minute"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:gravity="center_vertical"
+            android:text="@string/minutes_label"
+            android:textColor="#8D4FBFF4"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/second_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_below="@id/selected_time"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@id/minute_layout"
+        android:orientation="horizontal" >
+
+        <NumberPicker
+            android:id="@+id/listView_second"
+            android:layout_width="35dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/second"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:gravity="center_vertical"
+            android:text="@string/seconds_label"
+            android:textColor="#8D4FBFF4"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/second_layout"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/time_picker_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="30dp"
+            android:background="#4b8e8484"
+            android:text="@string/time_picker_cancel" />
+
+        <Button
+           
+            android:id="@+id/time_picker_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="50dp"
+            android:background="#4bccc0c0"
+            android:text="@string/time_picker_set" />
+    </LinearLayout>
+
+</RelativeLayout>

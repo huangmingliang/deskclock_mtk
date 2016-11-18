@@ -95,7 +95,7 @@ import java.util.HashSet;
 public abstract class AlarmClockFragment extends DeskClockFragment implements
 		LoaderManager.LoaderCallbacks<Cursor>, View.OnTouchListener {
 
-	private String TAG = getClass().getSimpleName();
+	private static String TAG ="AlarmClockFragment";
 	
 	private static final int HOUR_INDEX = 1;
 	private static final int MINUTES_INDEX = 2;
@@ -165,7 +165,7 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 	protected Alarm mAddedAlarm;
 	private boolean mUndoShowing;
 
-	private Context mContext;
+	private static Context mContext;
 	// Determines the order that days of the week are shown in the UI
 	private int[] mDayOrder;
 
@@ -183,6 +183,7 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 	// /M: added to sync animation states
 	private ValueAnimator mCollapseAnimator;
 	private ValueAnimator mExpandAnimator;
+	
 
 	// Abstract methods to to be overridden by for post- and pre-L
 	// implementations as necessary
@@ -199,7 +200,7 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 	@Override
 	public void onCreate(Bundle savedState) {
 		super.onCreate(savedState);
-		mContext = getContext();
+		mContext = getContext().getApplicationContext();
 		mCursorLoader = getLoaderManager().initLoader(0, null, this);
 		// /M: get default alarm ringtone from the preference,
 		// if there was no this item, just save system alarm ringtone to
@@ -480,7 +481,7 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 		}
 	}
 
-	private void processAlarm(Alarm alarm, String time) {
+	private void processAlarm(Alarm alarm) {
 		if (alarm == null) {
 			return;
 		}
@@ -491,11 +492,10 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 		if (mSelectedAlarm == null) {
 			// If mSelectedAlarm is null then we're creating a new alarm.
 			mAddedAlarm = alarm;
-			asyncAddAlarm(alarm, time);
+			asyncAddAlarm(alarm);
 		} else {
 			mSelectedAlarm = alarm;
 			mScrollToAlarmId = mSelectedAlarm.id;
-			setAlarmSilentAfter(mSelectedAlarm.id, time);
 			asyncUpdateAlarm(mSelectedAlarm, true);
 			mSelectedAlarm = null;
 		}
@@ -700,14 +700,6 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 						@Override
 						public boolean onLongClick(View v) {
 							// TODO Auto-generated method stub
-							/*if ((alarm.hour==6&&alarm.minutes==0)||(alarm.hour==9&&alarm.minutes==0)) {
-								Toast toast = Toast.makeText(mContext, "默认闹钟无法删除",
-										Toast.LENGTH_LONG);
-								ToastMaster.setToast(toast);
-								toast.show();
-								return true;
-							}*/
-							//asyncDeleteAlarm(alarm);
 							showDeleteAlarmWindow(alarm);
 							return true;
 						}
@@ -875,7 +867,7 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 		deleteTask.execute();
 	}
 
-	protected void asyncAddAlarm(final Alarm alarm, final String time) {
+	protected void asyncAddAlarm(final Alarm alarm) {
 		final Context context = AlarmClockFragment.this.getActivity()
 				.getApplicationContext();
 		final AsyncTask<Void, Void, AlarmInstance> updateTask = new AsyncTask<Void, Void, AlarmInstance>() {
@@ -889,7 +881,6 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 					// Add alarm to db
 					Alarm newAlarm = Alarm.addAlarm(cr, alarm);
 					mScrollToAlarmId = newAlarm.id;
-					setAlarmSilentAfter(newAlarm.id, time);
 					// Create and add instance to db
 					if (newAlarm.enabled) {
 						return setupAlarmInstance(context, newAlarm);
@@ -997,7 +988,7 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 		LogUtils.v("setSystemAlarmRingtone: " + systemDefaultRingtone);
 	}
 
-	private void setAlarmSilentAfter(long id, String time) {
+	private static void setAlarmSilentAfter(long id, String time) {
 		Log.d(TAG, "setAlarmSilentAfter id=" + id);
 		if (id == 0) {
 			return;
@@ -1006,12 +997,23 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 			time = KEY_DEFAULT_SILENT_AFTER;
 		}
 		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(getActivity());
+				.getDefaultSharedPreferences(mContext);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putString(KEY_AUTO_SILENCE + id, time);
 		editor.apply();
 	}
 	
+	
+	public static void deleteAlarmSilentAfer(long id){
+		if (id == 0) {
+			return;
+		}
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(mContext);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.remove(KEY_AUTO_SILENCE + id);
+		editor.apply();
+	}
 
 	/**
 	 * M: Set the internal used default Ringtones
@@ -1068,9 +1070,8 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 			switch (requestCode) {
 			case REQUEST_CODE_ALARM_SETUP:
 				Alarm a = (Alarm) data.getParcelableExtra("alarm");
-				String time = data.getStringExtra("silent_after");
-				Log.d(TAG, "onActivityResult time=" + time);
-				processAlarm(a, time);
+				Log.d(TAG, "silentAfter="+a.silentAfter);
+				processAlarm(a);
 				break;
 			default:
 				LogUtils.w("Unhandled request code in onActivityResult: "

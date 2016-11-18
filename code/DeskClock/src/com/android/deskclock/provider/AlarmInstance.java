@@ -72,7 +72,8 @@ public final class AlarmInstance implements ClockContract.InstancesColumns {
             VIBRATE,
             RINGTONE,
             ALARM_ID,
-            ALARM_STATE
+            ALARM_STATE,
+            SILENT_AFTER
     };
 
     /**
@@ -90,8 +91,9 @@ public final class AlarmInstance implements ClockContract.InstancesColumns {
     private static final int RINGTONE_INDEX = 8;
     private static final int ALARM_ID_INDEX = 9;
     private static final int ALARM_STATE_INDEX = 10;
+    private static final int SILENT_AFTER_INDEX=11;
 
-    private static final int COLUMN_COUNT = ALARM_STATE_INDEX + 1;
+    private static final int COLUMN_COUNT = SILENT_AFTER_INDEX + 1;
 
     public static ContentValues createContentValues(AlarmInstance instance) {
         ContentValues values = new ContentValues(COLUMN_COUNT);
@@ -115,6 +117,7 @@ public final class AlarmInstance implements ClockContract.InstancesColumns {
         }
         values.put(ALARM_ID, instance.mAlarmId);
         values.put(ALARM_STATE, instance.mAlarmState);
+        values.put(SILENT_AFTER, instance.mSilentAfter);
         return values;
     }
 
@@ -306,6 +309,7 @@ public final class AlarmInstance implements ClockContract.InstancesColumns {
     public Uri mRingtone;
     public Long mAlarmId;
     public int mAlarmState;
+    public int mSilentAfter;
 
     public AlarmInstance(Calendar calendar, Long alarmId) {
         this(calendar);
@@ -342,6 +346,7 @@ public final class AlarmInstance implements ClockContract.InstancesColumns {
             mAlarmId = c.getLong(ALARM_ID_INDEX);
         }
         mAlarmState = c.getInt(ALARM_STATE_INDEX);
+        mSilentAfter=c.getInt(SILENT_AFTER_INDEX);
     }
 
     public String getLabelOrDefault(Context context) {
@@ -413,9 +418,7 @@ public final class AlarmInstance implements ClockContract.InstancesColumns {
      * @return the time when alarm should be silence, or null if never
      */
     public Calendar getTimeout(Context context) {
-        String timeoutSetting = PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(SettingsActivity.KEY_AUTO_SILENCE+mId, DEFAULT_ALARM_TIMEOUT_SETTING);
-        int timeoutMinutes = Integer.parseInt(timeoutSetting);
+        int timeoutMinutes = mSilentAfter;
         Log.d("AlarmInstance", "getTimeout timeoutMinutes="+timeoutMinutes);
         // Alarm silence has been set to "None"
         if (timeoutMinutes < 0) {
@@ -453,6 +456,7 @@ public final class AlarmInstance implements ClockContract.InstancesColumns {
                 ", mRingtone=" + mRingtone +
                 ", mAlarmId=" + mAlarmId +
                 ", mAlarmState=" + mAlarmState +
+                ", mSiletnAfter=" +mSilentAfter+
                 '}';
     }
 }

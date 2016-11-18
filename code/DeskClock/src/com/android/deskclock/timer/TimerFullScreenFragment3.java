@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.deskclock.DeskClockFragment;
 import com.android.deskclock.LogUtils;
@@ -37,7 +38,8 @@ public class TimerFullScreenFragment3 extends DeskClockFragment implements
 	private TimerObj mAlertTimer;
 	private NotificationManager mNotificationManager;
 	private TimerAlertListener listener;
-	
+	private FullScreenBackListener backListener;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -56,6 +58,7 @@ public class TimerFullScreenFragment3 extends DeskClockFragment implements
 			Log.d(TAG,"mAlertTimer.mState="+mAlertTimer.mState);
 		}
 		listener=(TimerAlertListener) getActivity();
+		backListener = new TimerFragment3();
 	}
 	private void initView(View view){
 		mAddOneMinuteBtn=(TextView)view.findViewById(R.id.add_one);
@@ -89,16 +92,19 @@ public class TimerFullScreenFragment3 extends DeskClockFragment implements
 		switch (v.getId()) {
 		case R.id.alert_stop:
 			onStopButtonPressed(mAlertTimer);
+			Toast.makeText(getActivity(), "倒计时已停止", Toast.LENGTH_SHORT).show();
 			break;
         case R.id.add_one:
         	onPlusOneButtonPressed(mAlertTimer);
-        	break;
+			Toast.makeText(getActivity(), "还剩不到一分钟", Toast.LENGTH_SHORT).show();
+			break;
 		default:
 			break;
 		}
 	}
 	
 	 private void onPlusOneButtonPressed(TimerObj t) {
+		 Log.d(TAG,"onPlusOneButtonPressed --- " + t.mState);
 	        switch (t.mState) {
 	            case TimerObj.STATE_RUNNING:
 	                t.addTime(TimerObj.MINUTE_IN_MILLIS);
@@ -111,16 +117,17 @@ public class TimerFullScreenFragment3 extends DeskClockFragment implements
 	                break;
 	            case TimerObj.STATE_TIMESUP:
 	                // +1 min when the time is up will restart the timer with 1 minute left.
+					cancelTimerNotification(t.mTimerId);
 	                t.setState(TimerObj.STATE_RUNNING);
 	                t.mStartTime = Utils.getTimeNow();
 	                t.mTimeLeft = t.mOriginalLength = TimerObj.MINUTE_IN_MILLIS;
 	                updateTimersState(t, Timers.RESET_TIMER);
 	                Events.sendTimerEvent(R.string.action_add_minute, R.string.label_deskclock);
-
 	                updateTimersState(t, Timers.START_TIMER);
 	                Events.sendTimerEvent(R.string.action_start, R.string.label_deskclock);
 	                listener.onTimerChanged();
-	                cancelTimerNotification(t.mTimerId);
+					backListener.backAddOneMin();
+//	                cancelTimerNotification(t.mTimerId);
 	                break;
 	            case TimerObj.STATE_STOPPED:
 	                t.setState(TimerObj.STATE_RESTART);
@@ -129,7 +136,6 @@ public class TimerFullScreenFragment3 extends DeskClockFragment implements
 	                //t.mView.setTime(t.mTimeLeft, false);
 	                //t.mView.set(t.mOriginalLength, t.mTimeLeft, false);
 	                updateTimersState(t, Timers.RESET_TIMER);
-
 	                Events.sendTimerEvent(R.string.action_reset, R.string.label_deskclock);
 	                break;
 	            default:
@@ -219,9 +225,10 @@ public class TimerFullScreenFragment3 extends DeskClockFragment implements
 	
 	 private void cancelTimerNotification(int timerId) {
 	        mNotificationManager.cancel(timerId);
-	    }
+	 }
 	
 	 private void onStopButtonPressed(TimerObj t) {
+		 LogUtils.d(TAG,"TimerObj.state--->"+t.mState);
 	        switch (t.mState) {
 	            case TimerObj.STATE_RUNNING:
 	                // Stop timer and save the remaining time of the timer
@@ -242,6 +249,7 @@ public class TimerFullScreenFragment3 extends DeskClockFragment implements
 	                break;
 	            case TimerObj.STATE_TIMESUP:
 	                if (t.mDeleteAfterUse) {
+						LogUtils.d(TAG,"onStopButtonPressed--->deleteAfterUse");
 	                    cancelTimerNotification(t.mTimerId);
 	                    // Tell receiver the timer was deleted.
 	                    // It will stop all activity related to the
@@ -250,6 +258,7 @@ public class TimerFullScreenFragment3 extends DeskClockFragment implements
 	                    updateTimersState(t, Timers.DELETE_TIMER);
 	                    Events.sendTimerEvent(R.string.action_delete, R.string.label_deskclock);
 	                    listener.onTimerRemove();
+						backListener.backNoThing();
 	                } else {
 	                    resetTimer(t);
 	                }
@@ -285,8 +294,8 @@ public class TimerFullScreenFragment3 extends DeskClockFragment implements
 	    }
 	 
 	 interface TimerAlertListener{
-	    	abstract public void onTimerRemove();
-	    	abstract public void onTimerChanged();
+	    	 void onTimerRemove();
+	    	 void onTimerChanged();
 	    }
 	 
 

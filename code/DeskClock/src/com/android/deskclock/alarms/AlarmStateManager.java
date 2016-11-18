@@ -804,9 +804,11 @@ public final class AlarmStateManager extends BroadcastReceiver {
         for (AlarmInstance instance : instances) {
             unregisterInstance(context, instance);
             AlarmInstance.deleteInstance(context.getContentResolver(), instance.mId);
+            AlarmClockFragment.deleteAlarmSilentAfer(instance.mId);
         }
         updateNextAlarm(context);
     }
+    
 
     /**
      * Fix and update all alarm instance when a time change event occurs.

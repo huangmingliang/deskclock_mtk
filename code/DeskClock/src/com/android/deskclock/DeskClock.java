@@ -38,14 +38,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.view.KeyEvent;
 import android.view.MenuInflater;
 import android.widget.PopupMenu;
@@ -56,20 +54,15 @@ import com.android.deskclock.provider.Alarm;
 import com.android.deskclock.stopwatch.StopwatchFragment;
 import com.android.deskclock.stopwatch.StopwatchService;
 import com.android.deskclock.stopwatch.Stopwatches;
-import com.android.deskclock.timer.TimerFragment;
 import com.android.deskclock.timer.TimerFragment3;
 import com.android.deskclock.timer.TimerObj;
 import com.android.deskclock.timer.Timers;
 
-import android.content.pm.PackageManager;
-import android.Manifest;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.TimeZone;
 
-import android.widget.Toast;
 
 /**
  * DeskClock clock view for desk docks.

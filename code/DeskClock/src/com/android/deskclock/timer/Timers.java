@@ -25,6 +25,7 @@ public class Timers {
 
     // Private actions processed by the receiver
     public static final String START_TIMER = "start_timer";
+    public static final String RESTART_TIMER = "reStart_timer";
     public static final String STOP_TIMER = "stop_timer";
     public static final String DELETE_TIMER = "delete_timer";
     public static final String RESET_TIMER = "reset_timer";

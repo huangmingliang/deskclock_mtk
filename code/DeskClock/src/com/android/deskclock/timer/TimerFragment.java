@@ -41,6 +41,7 @@ import android.text.format.DateUtils;
 import android.transition.AutoTransition;
 import android.transition.Transition;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -50,6 +51,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.deskclock.AnimatorUtils;
 import com.android.deskclock.DeskClock;
@@ -60,6 +62,7 @@ import com.android.deskclock.TimerSetupView;
 import com.android.deskclock.Utils;
 import com.android.deskclock.VerticalViewPager;
 import com.android.deskclock.events.Events;
+
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 
@@ -489,85 +492,86 @@ public class TimerFragment extends DeskClockFragment implements OnSharedPreferen
         return animatorSet;
     }
 
-    @Override
-    public void onFabClick(View view) {
-        if (mLastView != mTimerView) {
-            // Timer is at Setup View, so fab is "play", rotate from setup view to timer view
-            final AnimatorListenerAdapter adapter = new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    final int timerLength = mSetupView.getTime();
-                    final TimerObj timerObj = new TimerObj(timerLength * DateUtils.SECOND_IN_MILLIS,
-                        getActivity());
-                    timerObj.setState(TimerObj.STATE_RUNNING);
-                    Events.sendTimerEvent(R.string.action_create, R.string.label_deskclock);
-
-                    updateTimerState(timerObj, Timers.START_TIMER);
-                    Events.sendTimerEvent(R.string.action_start, R.string.label_deskclock);
-
-                    // Go to the newly created timer view
-                    mAdapter.addTimer(timerObj);
-                    mViewPager.setCurrentItem(0);
-                    highlightPageIndicator(0);
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mSetupView.reset(); // Make sure the setup is cleared for next time
-                    mSetupView.setScaleX(1.0f); // Reset the scale for setup view
-                    goToPagerView();
-                }
-            };
-            createRotateAnimator(adapter, false).start();
-        } else {
-            // Timer is at view pager, so fab is "play" or "pause" or "square that means reset"
-            final TimerObj t = getCurrentTimer();
-            switch (t.mState) {
-                case TimerObj.STATE_RUNNING:
-                    // Stop timer and save the remaining time of the timer
-                    t.setState(TimerObj.STATE_STOPPED);
-                    t.mView.pause();
-                    t.updateTimeLeft(true);
-                    updateTimerState(t, Timers.STOP_TIMER);
-                    Events.sendTimerEvent(R.string.action_stop, R.string.label_deskclock);
-                    break;
-                case TimerObj.STATE_STOPPED:
-                case TimerObj.STATE_RESTART:
-                // It is possible for a Timer from an older version of Clock to be in STATE_DELETED and
-                // still exist in the list
-                case TimerObj.STATE_DELETED:
-                    // Reset the remaining time and continue timer
-                    t.setState(TimerObj.STATE_RUNNING);
-                    t.mStartTime = Utils.getTimeNow() - (t.mOriginalLength - t.mTimeLeft);
-                    t.mView.start();
-                    updateTimerState(t, Timers.START_TIMER);
-                    Events.sendTimerEvent(R.string.action_start, R.string.label_deskclock);
-                    break;
-                case TimerObj.STATE_TIMESUP:
-                    if (t.mDeleteAfterUse) {
-                        cancelTimerNotification(t.mTimerId);
-                        // Tell receiver the timer was deleted.
-                        // It will stop all activity related to the
-                        // timer
-                        t.setState(TimerObj.STATE_DELETED);
-                        updateTimerState(t, Timers.DELETE_TIMER);
-                        Events.sendTimerEvent(R.string.action_delete, R.string.label_deskclock);
-                    } else {
-                        t.setState(TimerObj.STATE_RESTART);
-                        t.mOriginalLength = t.mSetupLength;
-                        t.mTimeLeft = t.mSetupLength;
-                        t.mView.stop();
-                        t.mView.setTime(t.mTimeLeft, false);
-                        t.mView.set(t.mOriginalLength, t.mTimeLeft, false);
-                        updateTimerState(t, Timers.RESET_TIMER);
-                        cancelTimerNotification(t.mTimerId);
-                        Events.sendTimerEvent(R.string.action_reset, R.string.label_deskclock);
-                    }
-                    break;
-            }
-            setTimerViewFabIcon(t);
-        }
-    }
+//    @Override
+//    public void onFabClick(View view) {
+//
+//        if (mLastView != mTimerView) {
+//            // Timer is at Setup View, so fab is "play", rotate from setup view to timer view
+//            final AnimatorListenerAdapter adapter = new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationStart(Animator animation) {
+//                    final int timerLength = mSetupView.getTime();
+//                    final TimerObj timerObj = new TimerObj(timerLength * DateUtils.SECOND_IN_MILLIS,
+//                        getActivity());
+//                    timerObj.setState(TimerObj.STATE_RUNNING);
+//                    Events.sendTimerEvent(R.string.action_create, R.string.label_deskclock);
+//
+//                    updateTimerState(timerObj, Timers.START_TIMER);
+//                    Events.sendTimerEvent(R.string.action_start, R.string.label_deskclock);
+//
+//                    // Go to the newly created timer view
+//                    mAdapter.addTimer(timerObj);
+//                    mViewPager.setCurrentItem(0);
+//                    highlightPageIndicator(0);
+//                }
+//
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mSetupView.reset(); // Make sure the setup is cleared for next time
+//                    mSetupView.setScaleX(1.0f); // Reset the scale for setup view
+//                    goToPagerView();
+//                }
+//            };
+//            createRotateAnimator(adapter, false).start();
+//        } else {
+//            // Timer is at view pager, so fab is "play" or "pause" or "square that means reset"
+//            final TimerObj t = getCurrentTimer();
+//            switch (t.mState) {
+//                case TimerObj.STATE_RUNNING:
+//                    // Stop timer and save the remaining time of the timer
+//                    t.setState(TimerObj.STATE_STOPPED);
+//                    t.mView.pause();
+//                    t.updateTimeLeft(true);
+//                    updateTimerState(t, Timers.STOP_TIMER);
+//                    Events.sendTimerEvent(R.string.action_stop, R.string.label_deskclock);
+//                    break;
+//                case TimerObj.STATE_STOPPED:
+//                case TimerObj.STATE_RESTART:
+//                // It is possible for a Timer from an older version of Clock to be in STATE_DELETED and
+//                // still exist in the list
+//                case TimerObj.STATE_DELETED:
+//                    // Reset the remaining time and continue timer
+//                    t.setState(TimerObj.STATE_RUNNING);
+//                    t.mStartTime = Utils.getTimeNow() - (t.mOriginalLength - t.mTimeLeft);
+//                    t.mView.start();
+//                    updateTimerState(t, Timers.START_TIMER);
+//                    Events.sendTimerEvent(R.string.action_start, R.string.label_deskclock);
+//                    break;
+//                case TimerObj.STATE_TIMESUP:
+//                    if (t.mDeleteAfterUse) {
+//                        cancelTimerNotification(t.mTimerId);
+//                        // Tell receiver the timer was deleted.
+//                        // It will stop all activity related to the
+//                        // timer
+//                        t.setState(TimerObj.STATE_DELETED);
+//                        updateTimerState(t, Timers.DELETE_TIMER);
+//                        Events.sendTimerEvent(R.string.action_delete, R.string.label_deskclock);
+//                    } else {
+//                        t.setState(TimerObj.STATE_RESTART);
+//                        t.mOriginalLength = t.mSetupLength;
+//                        t.mTimeLeft = t.mSetupLength;
+//                        t.mView.stop();
+//                        t.mView.setTime(t.mTimeLeft, false);
+//                        t.mView.set(t.mOriginalLength, t.mTimeLeft, false);
+//                        updateTimerState(t, Timers.RESET_TIMER);
+//                        cancelTimerNotification(t.mTimerId);
+//                        Events.sendTimerEvent(R.string.action_reset, R.string.label_deskclock);
+//                    }
+//                    break;
+//            }
+//            setTimerViewFabIcon(t);
+//        }
+//    }
 
 
     private TimerObj getCurrentTimer() {

@@ -80,7 +80,8 @@ class ClockDatabaseHelper extends SQLiteOpenHelper {
                 ClockContract.AlarmsColumns.VIBRATE + " INTEGER NOT NULL, " +
                 ClockContract.AlarmsColumns.LABEL + " TEXT NOT NULL, " +
                 ClockContract.AlarmsColumns.RINGTONE + " TEXT, " +
-                ClockContract.AlarmsColumns.DELETE_AFTER_USE + " INTEGER NOT NULL DEFAULT 0);");
+                ClockContract.AlarmsColumns.DELETE_AFTER_USE + " INTEGER NOT NULL DEFAULT 0,"+
+                ClockContract.AlarmsColumns.SILENT_AFTER+" INTEGER NOT NULL DEFAULT 10);");
         LogUtils.i("Alarms Table created");
     }
 
@@ -98,8 +99,8 @@ class ClockDatabaseHelper extends SQLiteOpenHelper {
                 ClockContract.InstancesColumns.ALARM_STATE + " INTEGER NOT NULL, " +
                 ClockContract.InstancesColumns.ALARM_ID + " INTEGER REFERENCES " +
                     ALARMS_TABLE_NAME + "(" + ClockContract.AlarmsColumns._ID + ") " +
-                    "ON UPDATE CASCADE ON DELETE CASCADE" +
-                ");");
+                    "ON UPDATE CASCADE ON DELETE CASCADE," +
+                ClockContract.InstancesColumns.SILENT_AFTER+" INTEGER NOT NULL DEFAULT 10);");
         LogUtils.i("Instance table created");
     }
 

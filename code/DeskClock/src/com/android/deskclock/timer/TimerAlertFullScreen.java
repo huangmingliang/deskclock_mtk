@@ -87,7 +87,7 @@ public class TimerAlertFullScreen extends BaseActivity implements TimerAlertList
         super.onResume();
 
         // Only show notifications for times-up when this activity closed.
-        Utils.cancelTimesUpNotifications(this);
+//        Utils.cancelTimesUpNotifications(this);
     }
 
     @Override
@@ -148,6 +148,7 @@ public class TimerAlertFullScreen extends BaseActivity implements TimerAlertList
 		// TODO Auto-generated method stub
 		Log.d(TAG, "onTimerRemove");
 		//onTimerChanged();
+
 		finish();
 	}
 
@@ -158,5 +159,6 @@ public class TimerAlertFullScreen extends BaseActivity implements TimerAlertList
 		finish();
 		Utils.showInUseNotifications(this);
 	}
-    
+
+
 }

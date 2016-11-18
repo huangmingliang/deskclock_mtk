@@ -1,159 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:timer="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
+
     <FrameLayout
-        android:id="@+id/timer_view" 
+        android:id="@+id/timer_view"
         android:layout_width="match_parent"
-        android:layout_height="262dp">
-         <com.android.deskclock.CircleTimerView
+        android:layout_height="262dp" >
+
+        <com.android.deskclock.CircleTimerView
             android:id="@+id/timer_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            timer:timer_modle="true"
+            android:layout_marginBottom="40dip"
             android:layout_marginTop="14dip"
-            android:layout_marginBottom="40dip"/>
-
+            timer:timer_modle="true" />
+        
+        <RelativeLayout
+            android:id="@+id/CountingTimer_shape"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            />
+        
         <com.android.deskclock.timer.CountingTimerView
             android:id="@+id/timer_time_text"
             android:layout_width="match_parent"
             android:layout_height="230dp" />
-        
+
+
         <Button
+        
             android:id="@+id/timer_label"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="56dip"
             android:layout_gravity="top|center_horizontal"
             android:layout_marginTop="44dp"
-            android:clickable="false"
             android:ellipsize="end"
             android:gravity="center"
             android:hint="@string/label"
             android:singleLine="true"
             android:src="@drawable/ic_label"
             android:textAppearance="@style/SecondaryLabelTextAppearance" />
-        
     </FrameLayout>
-    
+
     <LinearLayout
+        android:id="@+id/timeGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="14dp"
         android:layout_marginEnd="14dp"
-        android:orientation="horizontal">
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal" >
+
         <RelativeLayout
             android:id="@+id/timer30m"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <ImageView 
+            android:layout_weight="1" >
+
+            <ImageView
                 android:id="@+id/img30m"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/timer_30m"/>
-            <TextView 
+                android:src="@drawable/timer_30m" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/img30m"
                 android:layout_centerHorizontal="true"
-                android:textSize="12sp"
                 android:alpha="205"
-                android:text="30mins"/>
+                android:text="30mins"
+                android:textSize="12sp" />
         </RelativeLayout>
-        
+
         <RelativeLayout
             android:id="@+id/timer15m"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-             <ImageView 
+            android:layout_weight="1" >
+
+            <ImageView
                 android:id="@+id/img15m"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/timer_15m"/>
-            <TextView 
+                android:src="@drawable/timer_15m" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/img15m"
                 android:layout_centerHorizontal="true"
-                android:textSize="12sp"
                 android:alpha="205"
-                android:text="15mins"/>
+                android:text="15mins"
+                android:textSize="12sp" />
         </RelativeLayout>
-        
+
         <RelativeLayout
             android:id="@+id/timer10m"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-             <ImageView 
+            android:layout_weight="1" >
+
+            <ImageView
                 android:id="@+id/img10m"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/timer_10m"/>
-            <TextView 
+                android:src="@drawable/timer_10m" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/img10m"
                 android:layout_centerHorizontal="true"
-                android:textSize="12sp"
                 android:alpha="205"
-                android:text="10mins"/>
+                android:text="10mins"
+                android:textSize="12sp" />
         </RelativeLayout>
-        
+
         <RelativeLayout
             android:id="@+id/timer5m"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-             <ImageView 
+            android:layout_weight="1" >
+
+            <ImageView
                 android:id="@+id/img5m"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/timer_5m"/>
-            <TextView 
+                android:src="@drawable/timer_5m" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/img5m"
                 android:layout_centerHorizontal="true"
-                android:textSize="12sp"
                 android:alpha="205"
-                android:text="5mins"/>
+                android:text="5mins"
+                android:textSize="12sp" />
         </RelativeLayout>
     </LinearLayout>
-    
-    <RelativeLayout 
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView 
+        android:layout_height="match_parent" >
+
+        <ImageView
             android:id="@+id/timer_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="80dp"
             android:layout_marginBottom="6dp"
-            android:src="@drawable/reset_green"/>
+            android:layout_marginStart="80dp"
+            android:alpha="0.7"
+            android:src="@drawable/reset_green" />
+
         <ImageView
             android:id="@+id/timer_pause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="80dp"
+            android:layout_alignParentEnd="true"
             android:layout_marginBottom="6dp"
-            android:src="@drawable/pause_green"/>
+            android:layout_marginEnd="80dp"
+            android:src="@drawable/pause_green" />
     </RelativeLayout>
 
 </LinearLayout>
