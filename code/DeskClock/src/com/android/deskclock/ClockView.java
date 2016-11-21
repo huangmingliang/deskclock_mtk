@@ -24,11 +24,11 @@ public class ClockView extends View{
 	
 	private String TAG=getClass().getSimpleName();
 	private Context context;
-	private int defViewWidth=dipToPx(193);
-	private int defViewHeight=dipToPx(193);
+	private int defViewWidth=dipToPx(197);
+	private int defViewHeight=dipToPx(197);
 	private int xCenter=defViewWidth/2;
 	private int yCenter=defViewHeight/2;
-	private int bigCircleRadius=dipToPx(94);
+	private int bigCircleRadius=dipToPx(96);
 	private int smallCircleRaius=dipToPx(83);
 	private int bigCircleAlpha=alphaPercentToInt(20);
 	private int smallCircleAlpha=alphaPercentToInt(10);
