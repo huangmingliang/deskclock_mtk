@@ -58,15 +58,10 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
     private final static String TAG = "ClockFragment";
 
     private boolean mButtonsHidden = false;
-    private View mAnalogClock, mClockFrame, mHairline;
     private WorldClockAdapter mAdapter;
     private ListView mList;
     private SharedPreferences mPrefs;
-    private String mDateFormat;
-    private String mDateFormatForAccessibility;
     private String mDefaultClockStyle;
-    private String mClockStyle;
-
     private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -86,12 +81,6 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
                     // Locale change: update digital clock format and
                     // reload the cities list with new localized names
                     if (action.equals(Intent.ACTION_LOCALE_CHANGED)) {
-                        /*if (mDigitalClock != null) {
-                            Utils.setTimeFormat(context,
-                                (TextClock) mDigitalClock.findViewById(R.id.digital_clock),
-                                context.getResources().getDimensionPixelSize(
-                                    R.dimen.main_ampm_font_size));
-                        }*/
                         mAdapter.loadCitiesDb(context);
                         mAdapter.notifyDataSetChanged();
                     }
@@ -141,80 +130,8 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
             mButtonsHidden = icicle.getBoolean(BUTTONS_HIDDEN_KEY, false);
         }
         mList = (ListView) v.findViewById(R.id.cities);
-//        mList.setDivider(null);
-
-        OnTouchListener longPressNightMode = new OnTouchListener() {
-            private float mMaxMovementAllowed = -1;
-            private int mLongPressTimeout = -1;
-            private float mLastTouchX,mLastTouchY;
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (mMaxMovementAllowed == -1) {
-                    mMaxMovementAllowed = ViewConfiguration.get(getActivity()).getScaledTouchSlop();
-                    mLongPressTimeout = ViewConfiguration.getLongPressTimeout();
-                }
-
-                switch (event.getAction()) {
-                    case (MotionEvent.ACTION_DOWN):
-                        long time = Utils.getTimeNow();
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(new Intent(getActivity(), ScreensaverActivity.class));
-                            }
-                        }, mLongPressTimeout);
-                        mLastTouchX = event.getX();
-                        mLastTouchY = event.getY();
-                        return true;
-                    case (MotionEvent.ACTION_MOVE):
-                        float xDiff = Math.abs(event.getX() - mLastTouchX);
-                        float yDiff = Math.abs(event.getY() - mLastTouchY);
-                        if (xDiff >= mMaxMovementAllowed || yDiff >= mMaxMovementAllowed) {
-                            mHandler.removeCallbacksAndMessages(null);
-                        }
-                        break;
-                    default:
-                        mHandler.removeCallbacksAndMessages(null);
-                }
-                return false;
-            }
-        };
-
-        // On tablet landscape, the clock frame will be a distinct view. Otherwise, it'll be added
-        // on as a header to the main listview.
-        /*mClockFrame = v.findViewById(R.id.main_clock_left_pane);
-        mHairline = v.findViewById(R.id.hairline);
-        if (mClockFrame == null) {
-            mClockFrame = inflater.inflate(R.layout.main_clock_frame, mList, false);
-            mHairline = mClockFrame.findViewById(R.id.hairline);
-            mHairline.setVisibility(View.VISIBLE);
-            mList.addHeaderView(mClockFrame, null, false);
-        } else {
-            mHairline.setVisibility(View.GONE);
-            // The main clock frame needs its own touch listener for night mode now.
-            v.setOnTouchListener(longPressNightMode);
-        }
-        mList.setOnTouchListener(longPressNightMode);
-
-        // If the current layout has a fake overflow menu button, let the parent
-        // activity set up its click and touch listeners.
-        View menuButton = v.findViewById(R.id.menu_button);
-        if (menuButton != null) {
-            setupFakeOverflowMenuButton(menuButton);
-        }*/
-
-//        mDigitalClock = mClockFrame.findViewById(R.id.digital_clock);
-        mAnalogClock = v.findViewById(R.id.analog_clock);
-       /* Utils.setTimeFormat(getActivity(),
-            (TextClock) mDigitalClock.findViewById(R.id.digital_clock),
-            getResources().getDimensionPixelSize(R.dimen.main_ampm_font_size));*/
-        View footerView = inflater.inflate(R.layout.blank_footer_view, mList, false);
-        mList.addFooterView(footerView, null, false);
+        v.findViewById(R.id.analog_clock);
         mAdapter = new WorldClockAdapter(getActivity());
-        if (mAdapter.getCount() == 0) {
-            mHairline.setVisibility(View.GONE);
-        }
         mList.setAdapter(mAdapter);
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -229,12 +146,11 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
         final DeskClock activity = (DeskClock) getActivity();
         if (activity.getSelectedTab() == DeskClock.CLOCK_TAB_INDEX) {
             setFabAppearance();
-            setLeftRightButtonAppearance();
         }
 
         mPrefs.registerOnSharedPreferenceChangeListener(this);
-        mDateFormat = getString(R.string.abbrev_wday_month_day_no_year);
-        mDateFormatForAccessibility = getString(R.string.full_wday_month_day_no_year);
+        getString(R.string.abbrev_wday_month_day_no_year);
+        getString(R.string.full_wday_month_day_no_year);
 
         Utils.setQuarterHourUpdater(mHandler, mQuarterHourUpdater);
         // Besides monitoring when quarter-hour changes, monitor other actions that
@@ -251,33 +167,13 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
             mAdapter.loadCitiesDb(activity);
             mAdapter.reloadData(activity);
         }
-        // Resume can invoked after changing the clock style.
-        /*View clockView = Utils.setClockStyle(activity, mDigitalClock, mAnalogClock,
-                SettingsActivity.KEY_CLOCK_STYLE);
-        mClockStyle = (clockView == mDigitalClock ?
-                Utils.CLOCK_TYPE_DIGITAL : Utils.CLOCK_TYPE_ANALOG);*/
-        mClockStyle=Utils.CLOCK_TYPE_ANALOG;
         // Center the main clock frame if cities are empty.
         if (getView().findViewById(R.id.main_clock_left_pane) != null && mAdapter.getCount() == 0) {
             mList.setVisibility(View.GONE);
         } else {
             mList.setVisibility(View.VISIBLE);
-            /**
-             * M: Reset the mHairline's visibility. The condition of hairline's
-             * state is visible. @{
-             */
-           /* if (mAdapter.getCount() > 0
-                    && getView().findViewById(R.id.main_clock_left_pane) == null) {
-                mHairline.setVisibility(View.VISIBLE);
-            } else {
-                mHairline.setVisibility(View.GONE);
-            }*/
-            /** @} */
         }
         mAdapter.notifyDataSetChanged();
-
-        //Utils.updateDate(mDateFormat, mDateFormatForAccessibility, mClockFrame);
-        //Utils.refreshAlarm(activity, mClockFrame);
         if (PRE_L_DEVICE) {
             activity.getContentResolver().registerContentObserver(
                 Settings.System.getUriFor(Settings.System.NEXT_ALARM_FORMATTED),
@@ -307,7 +203,7 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         if (key == SettingsActivity.KEY_CLOCK_STYLE) {
-            mClockStyle = prefs.getString(SettingsActivity.KEY_CLOCK_STYLE, mDefaultClockStyle);
+            prefs.getString(SettingsActivity.KEY_CLOCK_STYLE, mDefaultClockStyle);
             mAdapter.notifyDataSetChanged();
         }
     }
@@ -327,16 +223,5 @@ public class ClockFragment extends DeskClockFragment implements OnSharedPreferen
         mFab.setVisibility(View.VISIBLE);
         mFab.setImageResource(R.drawable.fab_world_clock);
         mFab.setContentDescription(getString(R.string.button_cities));
-    }
-
-    @Override
-    public void setLeftRightButtonAppearance() {
-        final DeskClock activity = (DeskClock) getActivity();
-        if (mLeftButton == null || mRightButton == null ||
-                activity.getSelectedTab() != DeskClock.CLOCK_TAB_INDEX) {
-            return;
-        }
-        mLeftButton.setVisibility(View.INVISIBLE);
-        mRightButton.setVisibility(View.INVISIBLE);
     }
 }

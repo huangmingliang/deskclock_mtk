@@ -656,8 +656,8 @@ public class Utils {
         Spannable sp = new SpannableString(pattern);
         /*sp.setSpan(new StyleSpan(Typeface.NORMAL), amPmPos, amPmPos + 1,
                 Spannable.SPAN_POINT_MARK);*/
-        sp.setSpan(new SuperscriptSpan(), amPmPos, amPmPos+1, 
-        		Spannable.SPAN_POINT_MARK);
+//        sp.setSpan(new SuperscriptSpan(), amPmPos, amPmPos+1, 
+//        		Spannable.SPAN_POINT_MARK);
         sp.setSpan(new AbsoluteSizeSpan(amPmFontSize), amPmPos, amPmPos + 1,
                 Spannable.SPAN_POINT_MARK);
         sp.setSpan(new TypefaceSpan("sans-serif"), amPmPos, amPmPos + 1,

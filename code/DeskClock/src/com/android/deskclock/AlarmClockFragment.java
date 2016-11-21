@@ -143,7 +143,6 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 	// deleted.
 	public static final String SCROLL_TO_ALARM_INTENT_EXTRA = "deskclock.scroll.to.alarm";
 
-	private FrameLayout mMainLayout;
 	// / M: The Uri string of system default alarm alert
 	public static final String SYSTEM_SETTINGS_ALARM_ALERT = "content://settings/system/alarm_alert";
 
@@ -272,7 +271,6 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 		}
 
 		mEmptyView = v.findViewById(R.id.alarms_empty_view);
-		mMainLayout = (FrameLayout) v.findViewById(R.id.main);
 		mAlarmsList = (ListView) v.findViewById(R.id.alarms_list);
 		frameLayout=(FrameLayout)v.findViewById(R.id.main);
 
@@ -292,11 +290,10 @@ public abstract class AlarmClockFragment extends DeskClockFragment implements
 																	 * fade in
 																	 */
 						(count > 0 && prevAdapterCount == 0) /* should fade out */)) {
-					TransitionManager.beginDelayedTransition(mMainLayout,
+					TransitionManager.beginDelayedTransition(frameLayout,
 							mEmptyViewTransition);
 				}
 				mEmptyView.setVisibility(count == 0 ? View.VISIBLE : View.GONE);
-
 				// Cache this adapter's count for when the adapter changes.
 				prevAdapterCount = count;
 				super.onChanged();

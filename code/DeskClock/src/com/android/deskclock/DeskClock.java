@@ -656,31 +656,6 @@ public class DeskClock extends BaseActivity
         return mSelectedTab;
     }
 
-    /* M: No need do the RTL position translate, the position will change on action bar @{
-    private boolean isRtl() {
-        return TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) ==
-                View.LAYOUT_DIRECTION_RTL;
-    }
-
-    private int getRtlPosition(int position) {
-        if (isRtl()) {
-            switch (position) {
-                case TIMER_TAB_INDEX:
-                    return RTL_TIMER_TAB_INDEX;
-                case CLOCK_TAB_INDEX:
-                    return RTL_CLOCK_TAB_INDEX;
-                case STOPWATCH_TAB_INDEX:
-                    return RTL_STOPWATCH_TAB_INDEX;
-                case ALARM_TAB_INDEX:
-                    return RTL_ALARM_TAB_INDEX;
-                default:
-                    break;
-            }
-        }
-        return position;
-    }
-    @} */
-
     public ImageButton getFab() {
         return mFab;
     }

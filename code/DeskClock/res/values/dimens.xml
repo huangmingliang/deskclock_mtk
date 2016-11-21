@@ -191,5 +191,10 @@
     <!-- Alarm -->
     <dimen name="alarm_list_item_height">66dp</dimen>
     <dimen name="alarm_item_time_size">27sp</dimen>
+    
+    <!-- World Clock -->
+    <dimen name="world_time_list_date_size">12sp</dimen>
+    <dimen name="world_time_list_time_size">27sp</dimen>
+    <dimen name="world_time_list_city_size">16sp</dimen>
 
 </resources>

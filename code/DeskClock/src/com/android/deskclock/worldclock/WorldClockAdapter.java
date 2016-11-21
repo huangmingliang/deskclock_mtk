@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +52,6 @@ public class WorldClockAdapter extends BaseAdapter {
     protected Object [] mCitiesList;
     private final LayoutInflater mInflater;
     private final Context mContext;
-    private String mClockStyle;
     private final Collator mCollator = Collator.getInstance();
     protected HashMap<String, CityObj> mCitiesDb = new HashMap<String, CityObj>();
     protected int mClocksPerRow;
@@ -72,7 +72,7 @@ public class WorldClockAdapter extends BaseAdapter {
 
     public void loadData(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        mClockStyle = prefs.getString(SettingsActivity.KEY_CLOCK_STYLE,
+        prefs.getString(SettingsActivity.KEY_CLOCK_STYLE,
                 mContext.getResources().getString(R.string.default_clock_style));
         mCitiesList = Cities.readCitiesFromSharedPrefs(prefs).values().toArray();
         sortList();
@@ -255,13 +255,10 @@ public class WorldClockAdapter extends BaseAdapter {
         TextView jetLag=(TextView)(clock.findViewById(R.id.jetLag));
         TextClock date=(TextClock)(clock.findViewById(R.id.date));
         FrameLayout jetLagLayout=(FrameLayout)(clock.findViewById(R.id.jetLagLayout));
-
-        /*if (mClockStyle.equals("analog")) {
-            dclock.setVisibility(View.GONE);
-            aclock.setVisibility(View.VISIBLE);
-            aclock.setTimeZone(cityObj.mTimeZone);
-            aclock.enableSeconds(true);
-        } else {*/
+        String mm = DateFormat.getBestDateTimePattern(Locale.getDefault(),
+				"MMMMd");
+        date.setFormat12Hour(mm);
+        date.setFormat24Hour(mm);
         if (position==0) {
 			jetLagLayout.setVisibility(View.GONE);
 		}else {
@@ -272,12 +269,12 @@ public class WorldClockAdapter extends BaseAdapter {
             dclock.setTimeZone(cityObj.mTimeZone);
             date.setTimeZone(cityObj.mTimeZone);
             Utils.setTimeFormat(mContext, dclock,
-                    mContext.getResources().getDimensionPixelSize(R.dimen.label_font_size));
+                    mContext.getResources().getDimensionPixelSize(R.dimen.world_time_list_date_size));
 //        }
         CityObj cityInDb = mCitiesDb.get(cityObj.mCityId);
         // Home city or city not in DB , use data from the save selected cities list
         name.setText(Utils.getCityName(cityObj, cityInDb));
-        long i=getZonetimeDif(cityObj.mTimeZone);
+        float i=getZonetimeDif(cityObj.mTimeZone);
         Log.d(TAG, "timeZoneDif="+i);
         String diffTime="";
         if (i>0) {
@@ -286,24 +283,9 @@ public class WorldClockAdapter extends BaseAdapter {
 			diffTime=mContext.getString(R.string.timezone_diff,"Almost "+-i);
 		}
         jetLag.setText(diffTime);
-        //getJetLag(cityObj.mTimeZone);
-        /*final Calendar now = Calendar.getInstance();
-        now.setTimeZone(TimeZone.getDefault());
-        int myDayOfWeek = now.get(Calendar.DAY_OF_WEEK);
-        // Get timezone from cities DB if available
-        String cityTZ = (cityInDb != null) ? cityInDb.mTimeZone : cityObj.mTimeZone;
-        now.setTimeZone(TimeZone.getTimeZone(cityTZ));
-        int cityDayOfWeek = now.get(Calendar.DAY_OF_WEEK);
-        if (myDayOfWeek != cityDayOfWeek) {
-            dayOfWeek.setText(mContext.getString(R.string.world_day_of_week_label,
-                    now.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault())));
-            dayOfWeek.setVisibility(View.VISIBLE);
-        } else {
-            dayOfWeek.setVisibility(View.GONE);
-        }*/
     }
     
-    public long getZonetimeDif(String timeZone) {
+    public float getZonetimeDif(String timeZone) {
         //旧的就是当前的，新的就是目标的
         Calendar calendar=Calendar.getInstance();
         TimeZone oldZone=TimeZone.getDefault();
@@ -313,12 +295,12 @@ public class WorldClockAdapter extends BaseAdapter {
         return milliSecondToHour(timeOffset)+milliSecondToHour(dstOffSet);
     }
     
-    private long milliSecondToHour(int milliSecond){
+    private float milliSecondToHour(int milliSecond){
          int hour=milliSecond/(60*60*1000);
          int temp=milliSecond%(60*60*1000);
          int minute=temp/(60*1000);
          float lessHour=minute/(60*1.0f);
-         return (long) (hour+lessHour);
+         return hour+lessHour;
     }
 
 }

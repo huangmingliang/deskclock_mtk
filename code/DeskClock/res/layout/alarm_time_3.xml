@@ -41,5 +41,11 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:theme="@style/ControlAccentThemeOverlay" />
+    
+     <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/list_divider" />
 
 </RelativeLayout>
